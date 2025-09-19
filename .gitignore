@@ -1,0 +1,17 @@
+[Ll]ibrary/
+[Tt]emp/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+Obj/
+*.apk
+*.unitypackage
+
+# Ignore local config
+UserSettings/
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.user
