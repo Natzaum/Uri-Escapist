@@ -27,14 +27,12 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-        // Checagem de chão com Raycast
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
         Debug.DrawRay(transform.position, Vector3.down * (playerHeight * 0.5f + 0.2f), grounded ? Color.green : Color.red);
 
         MyInput();
         SpeedControl();
 
-        // Drag só quando no chão
         rb.linearDamping = grounded ? groundDrag : 0f;
     }
 
@@ -53,13 +51,11 @@ public class PlayerMove : MonoBehaviour
     {
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        // Aplica força só no chão
         if (grounded)
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         }
 
-        // Se não está se movendo, para horizontalmente
         if (grounded && horizontalInput == 0f && verticalInput == 0f)
         {
             rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
@@ -68,10 +64,8 @@ public class PlayerMove : MonoBehaviour
 
     void SpeedControl()
     {
-        // Ignora velocidade vertical
         Vector3 flatVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
-        // Limita a velocidade máxima
         if (flatVel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
