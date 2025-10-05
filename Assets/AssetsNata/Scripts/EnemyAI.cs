@@ -4,8 +4,8 @@ using System.Collections;
 
 public class EnemyAI : MonoBehaviour
 {
-    [Header("References")]
-    public Transform[] patrolPoints;   // pontos de patrulha
+    [Header("Patrol Points")]
+    public Transform[] patrolPoints;
     public Animator animator;
     public Transform player;
 
@@ -14,7 +14,7 @@ public class EnemyAI : MonoBehaviour
     public float chaseSpeed = 4f;
     public float chaseRange = 7f;
     public float catchRange = 1.5f;
-    public float waitTimeAtWaypoint = 2f; // tempo parado em cada ponto
+    public float waitTimeAtWaypoint = 2f;
 
     private NavMeshAgent agent;
     private int currentPatrolIndex = 0;
@@ -42,12 +42,12 @@ public class EnemyAI : MonoBehaviour
         switch (currentState)
         {
             case State.Patrol:
-                if (!isWaiting) // só patrulha se não estiver esperando
+                if (!isWaiting)
                     Patrol();
 
                 if (distanceToPlayer < chaseRange)
                 {
-                    StopAllCoroutines(); // interrompe a espera
+                    StopAllCoroutines();
                     agent.isStopped = false;
                     isWaiting = false;
                     animator.SetBool("isWalking", true);
@@ -81,7 +81,7 @@ public class EnemyAI : MonoBehaviour
 
         agent.speed = patrolSpeed;
 
-        if (isWaiting) return; // não força andar se está esperando
+        if (isWaiting) return;
 
         animator.SetBool("isWalking", true);
 
@@ -96,7 +96,7 @@ public class EnemyAI : MonoBehaviour
     {
         isWaiting = true;
 
-        Vector3 holdPos = transform.position; // guarda posição
+        Vector3 holdPos = transform.position;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
         animator.SetBool("isWalking", false);
@@ -104,7 +104,7 @@ public class EnemyAI : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < waitTimeAtWaypoint)
         {
-            transform.position = holdPos; // fixa posição
+            transform.position = holdPos;
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -116,19 +116,14 @@ public class EnemyAI : MonoBehaviour
         isWaiting = false;
     }
 
-
-
-
     void GoToNextPoint()
     {
         if (patrolPoints.Length == 0) return;
 
-        // avança para o próximo waypoint
         currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
 
         Vector3 target = patrolPoints[currentPatrolIndex].position;
 
-        // só define destino se não for praticamente o mesmo ponto
         if (Vector3.Distance(transform.position, target) > agent.stoppingDistance + 0.1f)
         {
             agent.SetDestination(target);
