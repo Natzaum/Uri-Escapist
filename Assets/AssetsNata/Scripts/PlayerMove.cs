@@ -27,8 +27,17 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-        Debug.DrawRay(transform.position, Vector3.down * (playerHeight * 0.5f + 0.2f), grounded ? Color.green : Color.red);
+        grounded = Physics.Raycast(
+            transform.position,
+            Vector3.down,
+            playerHeight * 0.5f + 0.2f,
+            whatIsGround
+        );
+        Debug.DrawRay(
+            transform.position,
+            Vector3.down * (playerHeight * 0.5f + 0.2f),
+            grounded ? Color.green : Color.red
+        );
 
         MyInput();
         SpeedControl();
