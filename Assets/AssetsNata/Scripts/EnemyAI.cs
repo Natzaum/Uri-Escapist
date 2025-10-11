@@ -1,6 +1,6 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -20,7 +20,13 @@ public class EnemyAI : MonoBehaviour
     private int currentPatrolIndex = 0;
     private bool isWaiting = false;
 
-    private enum State { Patrol, Chase, Catch }
+    private enum State
+    {
+        Patrol,
+        Chase,
+        Catch,
+    }
+
     private State currentState = State.Patrol;
 
     void Start()
@@ -74,23 +80,27 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-
     void Patrol()
     {
-        if (patrolPoints.Length == 0) return;
+        if (patrolPoints.Length == 0)
+            return;
 
         agent.speed = patrolSpeed;
 
-        if (isWaiting) return;
+        if (isWaiting)
+            return;
 
         animator.SetBool("isWalking", true);
 
-        if (!agent.pathPending && agent.hasPath && agent.remainingDistance <= agent.stoppingDistance + 0.05f)
+        if (
+            !agent.pathPending
+            && agent.hasPath
+            && agent.remainingDistance <= agent.stoppingDistance + 0.05f
+        )
         {
             StartCoroutine(WaitAtWaypoint());
         }
     }
-
 
     IEnumerator WaitAtWaypoint()
     {
@@ -118,7 +128,8 @@ public class EnemyAI : MonoBehaviour
 
     void GoToNextPoint()
     {
-        if (patrolPoints.Length == 0) return;
+        if (patrolPoints.Length == 0)
+            return;
 
         currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
 
@@ -130,6 +141,28 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    public void ForceChasePlayer(float duration)
+    {
+        StopAllCoroutines();
+        StartCoroutine(ForceChase(duration));
+    }
+
+    private IEnumerator ForceChase(float duration)
+    {
+        Debug.Log("O inimigo foi alertado!");
+        currentState = State.Chase;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            player = GameObject.FindWithTag("Player").transform;
+            agent.SetDestination(player.position);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        GoToNextPoint();
+    }
 
     void ChasePlayer()
     {

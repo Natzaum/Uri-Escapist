@@ -6,7 +6,7 @@ public class CameraHeadBob : MonoBehaviour
     public float walkAmplitude = 0.2f;
     public float walkFrequency = 4f;
     public float tiltAngle = 2f;
-    public bool enableLateralBob = false; // ✅ Toggle no Inspector
+    public bool enableLateralBob = false;
 
     [Header("Idle Settings")]
     public float idleAmplitude = 0.02f;
@@ -19,7 +19,8 @@ public class CameraHeadBob : MonoBehaviour
 
     void Start()
     {
-        if (cameraHolder == null) cameraHolder = transform;
+        if (cameraHolder == null)
+            cameraHolder = transform;
         startPos = cameraHolder.localPosition;
     }
 
@@ -27,20 +28,16 @@ public class CameraHeadBob : MonoBehaviour
     {
         if (IsMoving())
         {
-            // Calcula bob vertical
             float bobY = Mathf.Cos(Time.time * walkFrequency * 2f) * walkAmplitude * 0.5f;
 
-            // Calcula bob lateral só se estiver ativado
             float bobX = 0f;
             if (enableLateralBob)
                 bobX = Mathf.Sin(Time.time * walkFrequency) * (walkAmplitude * 0.2f); // bem sutil
 
             float tilt = Mathf.Sin(Time.time * walkFrequency) * tiltAngle;
 
-            // aplica posição
             cameraHolder.localPosition = startPos + new Vector3(bobX, bobY, 0f);
 
-            // aplica tilt relativo
             cameraHolder.localRotation = Quaternion.Euler(
                 cameraHolder.localRotation.eulerAngles + new Vector3(0f, 0f, tilt)
             );
@@ -49,7 +46,6 @@ public class CameraHeadBob : MonoBehaviour
         {
             float idleY = Mathf.Sin(Time.time * idleFrequency) * idleAmplitude;
 
-            // suaviza retorno
             cameraHolder.localPosition = Vector3.Lerp(
                 cameraHolder.localPosition,
                 startPos + new Vector3(0f, idleY, 0f),
@@ -58,7 +54,11 @@ public class CameraHeadBob : MonoBehaviour
 
             cameraHolder.localRotation = Quaternion.Lerp(
                 cameraHolder.localRotation,
-                Quaternion.Euler(0f, cameraHolder.localRotation.eulerAngles.y, cameraHolder.localRotation.eulerAngles.z),
+                Quaternion.Euler(
+                    0f,
+                    cameraHolder.localRotation.eulerAngles.y,
+                    cameraHolder.localRotation.eulerAngles.z
+                ),
                 Time.deltaTime * 2f
             );
         }
