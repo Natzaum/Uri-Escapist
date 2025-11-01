@@ -19,22 +19,50 @@ public class GameOverManager : MonoBehaviour
 
     public void ShowGameOver()
     {
+        Debug.Log("💀 ShowGameOver chamado!");
+        
+        // Fechar quiz se estiver aberto
+        if (QuizManager.Instance != null)
+        {
+            QuizManager.Instance.ForceCloseQuiz();
+            Debug.Log("✓ Quiz fechado pelo Game Over");
+        }
+        
         if (gameOverUI != null)
+        {
             gameOverUI.SetActive(true);
+            Debug.Log("✓ Game Over UI ativada");
+        }
+        else
+        {
+            Debug.LogError("⚠️ Game Over UI não está atribuída!");
+        }
 
         Time.timeScale = 0f;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        
+        Debug.Log("✓ Cursor liberado para clicar em Retry");
     }
 
     public void Retry()
     {
+        Debug.Log("🔄 Retry pressionado!");
+        
+        // Garantir que o tempo volte ao normal ANTES de recarregar
         Time.timeScale = 1f;
+
+        // Fechar quiz se ainda estiver aberto
+        if (QuizManager.Instance != null)
+        {
+            QuizManager.Instance.ForceCloseQuiz();
+        }
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        Debug.Log("🔄 Recarregando cena...");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
