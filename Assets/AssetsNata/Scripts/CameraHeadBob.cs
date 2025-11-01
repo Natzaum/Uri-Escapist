@@ -26,6 +26,24 @@ public class CameraHeadBob : MonoBehaviour
 
     void Update()
     {
+        // Não processar head bob se o cursor estiver visível (em menu/quiz)
+        if (Cursor.lockState != CursorLockMode.Locked || Cursor.visible)
+        {
+            // Suavemente retornar para a posição inicial
+            cameraHolder.localPosition = Vector3.Lerp(
+                cameraHolder.localPosition,
+                startPos,
+                Time.deltaTime * 5f
+            );
+
+            cameraHolder.localRotation = Quaternion.Lerp(
+                cameraHolder.localRotation,
+                Quaternion.identity,
+                Time.deltaTime * 5f
+            );
+            return;
+        }
+
         if (IsMoving())
         {
             float bobY = Mathf.Cos(Time.time * walkFrequency * 2f) * walkAmplitude * 0.5f;

@@ -15,6 +15,10 @@ public class EnemyAI : MonoBehaviour
     public float chaseRange = 7f;
     public float catchRange = 1.5f;
     public float waitTimeAtWaypoint = 2f;
+    public float waypointReachThreshold = 2f;
+    
+    [Header("Auto Scale")]
+    public bool autoScaleDistances = true; // Ajustar distâncias baseado na escala
 
     private NavMeshAgent agent;
     private int currentPatrolIndex = 0;
@@ -32,18 +36,52 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        
+        // Ajustar configurações baseado na escala
+        float scale = Mathf.Max(transform.localScale.x, transform.localScale.z);
+        
+        if (autoScaleDistances && scale > 1f)
+        {
+            // Escalar todas as distâncias
+            patrolSpeed *= scale;
+            chaseSpeed *= scale;
+            chaseRange *= scale;
+            catchRange *= scale;
+            waypointReachThreshold *= scale;
+            
+            Debug.Log($"Enemy AI escalado! Scale: {scale}, ChaseRange: {chaseRange}, CatchRange: {catchRange}");
+        }
+        
         agent.speed = patrolSpeed;
+        agent.stoppingDistance = 0.5f * scale;
+        agent.radius = 0.5f * scale;
+        agent.height = 2f * scale;
 
         if (patrolPoints.Length > 0)
         {
             GoToNextPoint();
-            animator.SetBool("isWalking", true);
+            if (animator != null)
+                animator.SetBool("isWalking", true);
         }
     }
 
     void Update()
     {
+        if (player == null)
+        {
+            player = GameObject.FindWithTag("Player")?.transform;
+            if (player == null)
+            {
+                Debug.LogWarning("Player não encontrado! Certifique-se que o Player tem a tag 'Player'");
+                return;
+            }
+        }
+
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
+        
+        // Debug visual
+        Debug.DrawLine(transform.position, player.position, 
+            distanceToPlayer < chaseRange ? Color.red : Color.blue);
 
         switch (currentState)
         {
@@ -53,10 +91,12 @@ public class EnemyAI : MonoBehaviour
 
                 if (distanceToPlayer < chaseRange)
                 {
+                    Debug.Log($"Player detectado! Distância: {distanceToPlayer} < ChaseRange: {chaseRange}");
                     StopAllCoroutines();
                     agent.isStopped = false;
                     isWaiting = false;
-                    animator.SetBool("isWalking", true);
+                    if (animator != null)
+                        animator.SetBool("isWalking", true);
                     currentState = State.Chase;
                 }
                 break;
@@ -92,13 +132,18 @@ public class EnemyAI : MonoBehaviour
 
         animator.SetBool("isWalking", true);
 
-        if (
-            !agent.pathPending
-            && agent.hasPath
-            && agent.remainingDistance <= agent.stoppingDistance + 0.05f
-        )
+        // Verificação melhorada para waypoint alcançado
+        if (patrolPoints[currentPatrolIndex] != null)
         {
-            StartCoroutine(WaitAtWaypoint());
+            float distanceToWaypoint = Vector3.Distance(transform.position, patrolPoints[currentPatrolIndex].position);
+            
+            if (distanceToWaypoint <= waypointReachThreshold)
+            {
+                if (!agent.pathPending && agent.hasPath)
+                {
+                    StartCoroutine(WaitAtWaypoint());
+                }
+            }
         }
     }
 
@@ -135,10 +180,8 @@ public class EnemyAI : MonoBehaviour
 
         Vector3 target = patrolPoints[currentPatrolIndex].position;
 
-        if (Vector3.Distance(transform.position, target) > agent.stoppingDistance + 0.1f)
-        {
-            agent.SetDestination(target);
-        }
+        // Sempre definir o destino, o NavMesh vai lidar com isso
+        agent.SetDestination(target);
     }
 
     public void ForceChasePlayer(float duration)
@@ -149,18 +192,38 @@ public class EnemyAI : MonoBehaviour
 
     private IEnumerator ForceChase(float duration)
     {
-        Debug.Log("O inimigo foi alertado!");
+        Debug.Log($"🚨 INIMIGO ALERTADO! Perseguindo por {duration} segundos!");
+        
+        // IMPORTANTE: Mudar para estado de perseguição
         currentState = State.Chase;
+        agent.isStopped = false;
+        isWaiting = false;
+        
+        // IMPORTANTE: Mudar para velocidade de perseguição
+        agent.speed = chaseSpeed;
+        
+        if (animator != null)
+            animator.SetBool("isWalking", true);
+        
         float timer = 0f;
 
         while (timer < duration)
         {
-            player = GameObject.FindWithTag("Player").transform;
-            agent.SetDestination(player.position);
+            if (player == null)
+                player = GameObject.FindWithTag("Player")?.transform;
+                
+            if (player != null)
+            {
+                agent.SetDestination(player.position);
+            }
+            
             timer += Time.deltaTime;
             yield return null;
         }
 
+        Debug.Log("⏱️ Tempo de alerta acabou. Voltando para patrulha.");
+        currentState = State.Patrol;
+        agent.speed = patrolSpeed;
         GoToNextPoint();
     }
 
@@ -174,9 +237,30 @@ public class EnemyAI : MonoBehaviour
     void CatchPlayer()
     {
         agent.isStopped = true;
-        animator.SetBool("isWalking", false);
+        if (animator != null)
+            animator.SetBool("isWalking", false);
 
         Debug.Log("Game Over! Player capturado!");
-        FindObjectOfType<GameOverManager>().ShowGameOver();
+        GameOverManager gom = FindObjectOfType<GameOverManager>();
+        if (gom != null)
+            gom.ShowGameOver();
+    }
+    
+    void OnDrawGizmosSelected()
+    {
+        // Visualizar chase range
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, chaseRange);
+        
+        // Visualizar catch range
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, catchRange);
+        
+        // Linha para o player
+        if (player != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(transform.position, player.position);
+        }
     }
 }
