@@ -10,10 +10,19 @@ public class PlayerCam : MonoBehaviour
     float rotationX;
     float rotationY;
 
-    void Start() { }
+    void Start()
+    {
+        // Garantir que o cursor está travado ao iniciar
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
 
     void Update()
     {
+        // Só processar input se o cursor estiver travado E visível = false
+        if (Cursor.lockState != CursorLockMode.Locked || Cursor.visible)
+            return;
+
         float mouseX = Input.GetAxis("Mouse X") * sensX * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * sensY * Time.deltaTime;
 
