@@ -18,7 +18,11 @@ public class BookManager : MonoBehaviour
     [Header("Inimigo")]
     public EnemyAI enemy;
     public float baseChaseSpeed = 4f;
+    public float basePatrolSpeed = 2f;
     public float speedIncreasePerCorrect = 0.5f;
+    public float speedIncreasePerError = 1f;
+    public float bonusSpeedEveryTwoCorrects = 0.5f;
+    public float finalChaseSpeed = 15f; // Velocidade no 4º erro (mais lenta, visível)
 
     private int booksCollected = 0;
     private int errors = 0;
@@ -56,12 +60,31 @@ public class BookManager : MonoBehaviour
         
         Debug.Log($"✓ Livro correto! Total: {booksCollected}/{totalBooks}");
         
-        // Aumentar velocidade do inimigo gradualmente
+        // Aumentar velocidade do inimigo (CHASE e PATROL)
         if (enemy != null)
         {
-            float newSpeed = baseChaseSpeed + (booksCollected * speedIncreasePerCorrect);
-            enemy.chaseSpeed = newSpeed;
-            Debug.Log($"🏃 Velocidade do inimigo aumentada para: {newSpeed}");
+            // Base: +0.5 por acerto
+            float speedIncrease = booksCollected * speedIncreasePerCorrect;
+            
+            // Bônus a cada 2 acertos: +1 adicional (+0.5 do bônus)
+            int bonusCount = booksCollected / 2; // Divisão inteira (2 acertos = 1 bônus, 4 acertos = 2 bônus, etc)
+            float bonusSpeed = bonusCount * bonusSpeedEveryTwoCorrects;
+            
+            // Atualizar CHASE SPEED
+            float newChaseSpeed = baseChaseSpeed + speedIncrease + bonusSpeed;
+            enemy.chaseSpeed = newChaseSpeed;
+            
+            // Atualizar PATROL SPEED (mesma proporção)
+            float newPatrolSpeed = basePatrolSpeed + speedIncrease + bonusSpeed;
+            enemy.patrolSpeed = newPatrolSpeed;
+            
+            if (bonusCount > 0 && booksCollected % 2 == 0)
+            {
+                Debug.Log($"🎉 BÔNUS! A cada 2 acertos: +{bonusSpeedEveryTwoCorrects} velocidade extra!");
+            }
+            
+            Debug.Log($"🏃 Chase Speed: {newChaseSpeed} | 🚶 Patrol Speed: {newPatrolSpeed}");
+            Debug.Log($"   (Base Chase: {baseChaseSpeed}, Base Patrol: {basePatrolSpeed} + Acertos: {speedIncrease} + Bônus: {bonusSpeed})");
         }
         
         UpdateUI();
@@ -74,9 +97,39 @@ public class BookManager : MonoBehaviour
         
         Debug.Log($"✗ Livro errado! Total de erros: {errors}/{maxErrors + 1}");
         
+        // Aumentar velocidade do inimigo por erro (CHASE e PATROL)
+        if (enemy != null)
+        {
+            float errorSpeedIncrease = errors * speedIncreasePerError;
+            
+            // Recalcular velocidade total (acertos + erros + bônus)
+            float correctSpeedIncrease = booksCollected * speedIncreasePerCorrect;
+            int bonusCount = booksCollected / 2;
+            float bonusSpeed = bonusCount * bonusSpeedEveryTwoCorrects;
+            
+            // Atualizar CHASE SPEED
+            float newChaseSpeed = baseChaseSpeed + correctSpeedIncrease + bonusSpeed + errorSpeedIncrease;
+            enemy.chaseSpeed = newChaseSpeed;
+            
+            // Atualizar PATROL SPEED (mesma proporção)
+            float newPatrolSpeed = basePatrolSpeed + correctSpeedIncrease + bonusSpeed + errorSpeedIncrease;
+            enemy.patrolSpeed = newPatrolSpeed;
+            
+            Debug.Log($"⚠️ Velocidade aumentada por ERRO!");
+            Debug.Log($"   🏃 Chase Speed: {newChaseSpeed} | 🚶 Patrol Speed: {newPatrolSpeed}");
+            Debug.Log($"   (+{speedIncreasePerError} por erro)");
+            
+            // NOVO: Ativar always chase após 2 erros (opcional)
+            if (errors >= 2)
+            {
+                enemy.SetAlwaysChase(true);
+                Debug.Log("🚨 2+ erros! Inimigo agora persegue SEMPRE!");
+            }
+        }
+        
         UpdateUI();
         
-        // 4º erro = game over instantâneo
+        // 4º erro = game over com velocidade visível
         if (errors > maxErrors)
         {
             Debug.Log("💀 MUITOS ERROS! Inimigo vindo à velocidade da luz!");
@@ -171,15 +224,16 @@ public class BookManager : MonoBehaviour
             yield break;
         }
 
-        Debug.Log("⚡ Inimigo vindo à velocidade da luz!");
+        Debug.Log("💀 4º ERRO! Inimigo vindo direto até você!");
 
-        // Teleportar inimigo mais perto do player primeiro
-        Vector3 directionToPlayer = (player.position - enemy.transform.position).normalized;
-        enemy.transform.position = player.position - directionToPlayer * 20f;
-
-        float speed = 100f; // MUITO rápido
-        float duration = 5f; // 5 segundos para pegar o player
+        // NÃO teleportar, deixar ele vir da posição atual
+        // O player pode VER ele chegando
+        
+        float speed = finalChaseSpeed; // Velocidade configurável, visível (padrão: 15)
+        float duration = 60f; // 60 segundos para pegar o player
         float elapsed = 0f;
+        
+        Debug.Log($"🏃 Inimigo perseguindo a {speed} unidades/seg (você pode vê-lo chegando!)");
 
         while (elapsed < duration)
         {
@@ -194,7 +248,7 @@ public class BookManager : MonoBehaviour
 
                 // Verificar distância para game over
                 float distance = Vector3.Distance(enemy.transform.position, player.position);
-                if (distance < 3f)
+                if (distance < 5f)
                 {
                     Debug.Log("💀 Inimigo pegou o player!");
                     DirectGameOver();
@@ -206,7 +260,8 @@ public class BookManager : MonoBehaviour
             yield return null;
         }
 
-        // Se não pegou em 5 segundos, game over mesmo assim
+        // Se não pegou em 60 segundos, game over mesmo assim
+        Debug.Log("⏱️ Tempo esgotado! Inimigo te alcançou!");
         DirectGameOver();
     }
 

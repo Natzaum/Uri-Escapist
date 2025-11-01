@@ -192,4 +192,30 @@ public class QuizManager : MonoBehaviour
         }
         yield return null;
     }
+    
+    // Método público para fechar o quiz forçadamente (usado pelo GameOver)
+    public void ForceCloseQuiz()
+    {
+        Debug.Log("Quiz fechado forçadamente!");
+        
+        StopAllCoroutines();
+        
+        if (quizPanel != null)
+            quizPanel.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        if (playerMovement)
+            playerMovement.enabled = true;
+        if (playerLook)
+            playerLook.enabled = true;
+            
+        // Reabilitar botões
+        foreach (Button btn in optionButtons)
+        {
+            if (btn != null)
+                btn.interactable = true;
+        }
+    }
 }

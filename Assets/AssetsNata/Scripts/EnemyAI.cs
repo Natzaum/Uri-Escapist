@@ -19,6 +19,11 @@ public class EnemyAI : MonoBehaviour
     
     [Header("Auto Scale")]
     public bool autoScaleDistances = true; // Ajustar distâncias baseado na escala
+    
+    [Header("Chase Behavior")]
+    public bool alwaysFollowPlayer = false; // Se true, sempre vai para o player em patrol speed até chegar perto
+    public bool alwaysChasePlayer = false; // Se true, sempre persegue em chase speed (ignora distância)
+    public float extendedDetectionRange = 15f; // Alcance de detecção aumentado
 
     private NavMeshAgent agent;
     private int currentPatrolIndex = 0;
@@ -79,9 +84,52 @@ public class EnemyAI : MonoBehaviour
 
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
         
-        // Debug visual
-        Debug.DrawLine(transform.position, player.position, 
-            distanceToPlayer < chaseRange ? Color.red : Color.blue);
+        // Usar alcance de detecção aumentado
+        float effectiveChaseRange = (alwaysChasePlayer || alwaysFollowPlayer) ? extendedDetectionRange : chaseRange;
+        
+        // Debug visual (vermelho = perseguindo, amarelo = seguindo, azul = patrulhando)
+        Color debugColor = Color.blue;
+        if (alwaysChasePlayer) debugColor = Color.red;
+        else if (alwaysFollowPlayer) debugColor = Color.yellow;
+        else if (distanceToPlayer < effectiveChaseRange) debugColor = Color.red;
+        
+        Debug.DrawLine(transform.position, player.position, debugColor);
+
+        // MODO 1: Always Chase Player (sempre em chase speed)
+        if (alwaysChasePlayer && currentState != State.Catch)
+        {
+            if (currentState != State.Chase)
+            {
+                Debug.Log("🎯 Modo Always Chase ativo - perseguindo em alta velocidade!");
+                currentState = State.Chase;
+                agent.speed = chaseSpeed;
+            }
+        }
+        
+        // MODO 2: Always Follow Player (patrol speed até chegar perto, depois chase)
+        if (alwaysFollowPlayer && !alwaysChasePlayer && currentState != State.Catch)
+        {
+            if (distanceToPlayer < chaseRange)
+            {
+                // Chegou perto, mudar para Chase
+                if (currentState != State.Chase)
+                {
+                    Debug.Log($"🏃 Player perto ({distanceToPlayer:F1}m)! Mudando para Chase Speed!");
+                    currentState = State.Chase;
+                    agent.speed = chaseSpeed;
+                }
+            }
+            else
+            {
+                // Longe, manter em Patrol (mas indo para o player)
+                if (currentState != State.Patrol)
+                {
+                    Debug.Log("🚶 Player longe, seguindo em Patrol Speed");
+                    currentState = State.Patrol;
+                    agent.speed = patrolSpeed;
+                }
+            }
+        }
 
         switch (currentState)
         {
@@ -89,9 +137,10 @@ public class EnemyAI : MonoBehaviour
                 if (!isWaiting)
                     Patrol();
 
-                if (distanceToPlayer < chaseRange)
+                // Detecção com alcance configurável
+                if (distanceToPlayer < effectiveChaseRange)
                 {
-                    Debug.Log($"Player detectado! Distância: {distanceToPlayer} < ChaseRange: {chaseRange}");
+                    Debug.Log($"Player detectado! Distância: {distanceToPlayer:F1} < Range: {effectiveChaseRange:F1}");
                     StopAllCoroutines();
                     agent.isStopped = false;
                     isWaiting = false;
@@ -106,8 +155,10 @@ public class EnemyAI : MonoBehaviour
 
                 if (distanceToPlayer < catchRange)
                     currentState = State.Catch;
-                else if (distanceToPlayer > chaseRange * 1.5f)
+                else if (distanceToPlayer > effectiveChaseRange * 1.5f && !alwaysChasePlayer)
                 {
+                    // Só voltar para patrulha se NÃO estiver em always chase
+                    Debug.Log("Player muito longe, voltando para patrulha");
                     currentState = State.Patrol;
                     agent.speed = patrolSpeed;
                     GoToNextPoint();
@@ -122,15 +173,31 @@ public class EnemyAI : MonoBehaviour
 
     void Patrol()
     {
-        if (patrolPoints.Length == 0)
-            return;
-
         agent.speed = patrolSpeed;
 
         if (isWaiting)
             return;
 
-        animator.SetBool("isWalking", true);
+        if (animator != null)
+            animator.SetBool("isWalking", true);
+
+        // MODO 1: Always Chase Player - vai direto em alta velocidade
+        if (alwaysChasePlayer && player != null)
+        {
+            agent.SetDestination(player.position);
+            return;
+        }
+        
+        // MODO 2: Always Follow Player - vai direto em baixa velocidade (patrol speed)
+        if (alwaysFollowPlayer && player != null)
+        {
+            agent.SetDestination(player.position);
+            return;
+        }
+
+        // Patrulha normal com waypoints
+        if (patrolPoints.Length == 0)
+            return;
 
         // Verificação melhorada para waypoint alcançado
         if (patrolPoints[currentPatrolIndex] != null)
@@ -192,15 +259,19 @@ public class EnemyAI : MonoBehaviour
 
     private IEnumerator ForceChase(float duration)
     {
-        Debug.Log($"🚨 INIMIGO ALERTADO! Perseguindo por {duration} segundos!");
+        Debug.Log($"🚨 INIMIGO ALERTADO POR ERRO! Perseguindo em velocidade de Chase por {duration}s!");
         
-        // IMPORTANTE: Mudar para estado de perseguição
-        currentState = State.Chase;
-        agent.isStopped = false;
+        // Parar patrulha
+        StopAllCoroutines();
         isWaiting = false;
         
-        // IMPORTANTE: Mudar para velocidade de perseguição
+        // FORÇAR estado de Chase
+        currentState = State.Chase;
+        agent.isStopped = false;
+        
+        // USAR velocidade de CHASE (não patrulha!)
         agent.speed = chaseSpeed;
+        Debug.Log($"⚡ Velocidade definida para Chase Speed: {chaseSpeed}");
         
         if (animator != null)
             animator.SetBool("isWalking", true);
@@ -246,11 +317,35 @@ public class EnemyAI : MonoBehaviour
             gom.ShowGameOver();
     }
     
+    // Método público para ativar/desativar perseguição constante
+    public void SetAlwaysChase(bool value)
+    {
+        alwaysChasePlayer = value;
+        
+        if (value)
+        {
+            Debug.Log("🎯 Modo Always Chase ATIVADO - Inimigo perseguirá sempre!");
+            currentState = State.Chase;
+            agent.speed = chaseSpeed;
+        }
+        else
+        {
+            Debug.Log("🎯 Modo Always Chase DESATIVADO - Inimigo voltará a patrulhar");
+        }
+    }
+    
     void OnDrawGizmosSelected()
     {
-        // Visualizar chase range
+        // Visualizar chase range normal
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, chaseRange);
+        
+        // Visualizar extended detection range (se always chase ativo)
+        if (alwaysChasePlayer)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(transform.position, extendedDetectionRange);
+        }
         
         // Visualizar catch range
         Gizmos.color = Color.red;
@@ -259,7 +354,7 @@ public class EnemyAI : MonoBehaviour
         // Linha para o player
         if (player != null)
         {
-            Gizmos.color = Color.blue;
+            Gizmos.color = alwaysChasePlayer ? Color.red : Color.blue;
             Gizmos.DrawLine(transform.position, player.position);
         }
     }

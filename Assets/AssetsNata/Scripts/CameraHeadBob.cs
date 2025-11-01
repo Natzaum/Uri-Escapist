@@ -2,14 +2,12 @@ using UnityEngine;
 
 public class CameraHeadBob : MonoBehaviour
 {
-    [Header("Walk Settings")]
-    public float walkAmplitude = 0.2f;
-    public float walkFrequency = 4f;
-    public float tiltAngle = 2f;
-    public bool enableLateralBob = false;
+    [Header("Walk Settings - Estilo Terror Clássico")]
+    public float walkAmplitude = 0.15f; // Intensidade do balanço vertical
+    public float walkFrequency = 3f;    // Velocidade do balanço (quanto maior, mais rápido)
 
     [Header("Idle Settings")]
-    public float idleAmplitude = 0.02f;
+    public float idleAmplitude = 0.02f; // Respiração sutil
     public float idleFrequency = 1f;
 
     public Transform cameraHolder;
@@ -36,32 +34,23 @@ public class CameraHeadBob : MonoBehaviour
                 Time.deltaTime * 5f
             );
 
-            cameraHolder.localRotation = Quaternion.Lerp(
-                cameraHolder.localRotation,
-                Quaternion.identity,
-                Time.deltaTime * 5f
-            );
+            // NÃO resetar rotação - deixar o PlayerCam controlar
             return;
         }
 
         if (IsMoving())
         {
-            float bobY = Mathf.Cos(Time.time * walkFrequency * 2f) * walkAmplitude * 0.5f;
+            // Movimento clássico de terror: apenas vertical (cima/baixo)
+            float bobY = Mathf.Sin(Time.time * walkFrequency) * walkAmplitude;
 
-            float bobX = 0f;
-            if (enableLateralBob)
-                bobX = Mathf.Sin(Time.time * walkFrequency) * (walkAmplitude * 0.2f); // bem sutil
+            // Apenas movimento Y, sem X (lateral) e sem Z
+            cameraHolder.localPosition = startPos + new Vector3(0f, bobY, 0f);
 
-            float tilt = Mathf.Sin(Time.time * walkFrequency) * tiltAngle;
-
-            cameraHolder.localPosition = startPos + new Vector3(bobX, bobY, 0f);
-
-            cameraHolder.localRotation = Quaternion.Euler(
-                cameraHolder.localRotation.eulerAngles + new Vector3(0f, 0f, tilt)
-            );
+            // NÃO TOCAR na rotação - deixar o PlayerCam controlar
         }
         else
         {
+            // Idle: movimento sutil vertical
             float idleY = Mathf.Sin(Time.time * idleFrequency) * idleAmplitude;
 
             cameraHolder.localPosition = Vector3.Lerp(
@@ -70,15 +59,7 @@ public class CameraHeadBob : MonoBehaviour
                 Time.deltaTime * 2f
             );
 
-            cameraHolder.localRotation = Quaternion.Lerp(
-                cameraHolder.localRotation,
-                Quaternion.Euler(
-                    0f,
-                    cameraHolder.localRotation.eulerAngles.y,
-                    cameraHolder.localRotation.eulerAngles.z
-                ),
-                Time.deltaTime * 2f
-            );
+            // NÃO TOCAR na rotação - deixar o PlayerCam controlar
         }
     }
 
