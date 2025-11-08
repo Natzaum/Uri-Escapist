@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cbf1fb63c564642479a61f439165e388
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 146253
+  packageName: School assets
+  packageVersion: 1.0
+  assetPath: Assets/school/Prefabs/props/fire.prefab
+  uploadId: 436609

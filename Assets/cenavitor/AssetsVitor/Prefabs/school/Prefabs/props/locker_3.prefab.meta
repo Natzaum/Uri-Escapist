@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7424a008cedcf5f48bbdf63777156d27
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 146253
+  packageName: School assets
+  packageVersion: 1.0
+  assetPath: Assets/school/Prefabs/props/locker_3.prefab
+  uploadId: 436609

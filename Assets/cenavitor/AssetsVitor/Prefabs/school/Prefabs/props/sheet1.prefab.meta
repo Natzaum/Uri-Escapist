@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a3f82ca9956633d4192133a90d26888b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 146253
+  packageName: School assets
+  packageVersion: 1.0
+  assetPath: Assets/school/Prefabs/props/sheet1.prefab
+  uploadId: 436609

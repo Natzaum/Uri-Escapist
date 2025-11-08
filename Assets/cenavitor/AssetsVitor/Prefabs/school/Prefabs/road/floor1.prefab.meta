@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b9c90a63ff9d61f4895e2c35fc7b371d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 146253
+  packageName: School assets
+  packageVersion: 1.0
+  assetPath: Assets/school/Prefabs/road/floor1.prefab
+  uploadId: 436609
