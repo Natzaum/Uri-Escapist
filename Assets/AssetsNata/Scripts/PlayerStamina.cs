@@ -11,7 +11,10 @@ public class PlayerStamina : MonoBehaviour
     public float regenDelay = 2f; // Delay antes de começar a regenerar
 
     [Header("Speed Settings")]
+    [Tooltip("Velocidade ao caminhar (ajuste aqui no Inspector)")]
     public float walkSpeed = 7f;
+    
+    [Tooltip("Velocidade ao correr (ajuste aqui no Inspector)")]
     public float sprintSpeed = 12f;
 
     [Header("UI")]
@@ -29,10 +32,8 @@ public class PlayerStamina : MonoBehaviour
         currentStamina = maxStamina;
         playerMove = GetComponent<PlayerMove>();
 
-        if (playerMove != null)
-        {
-            walkSpeed = playerMove.moveSpeed;
-        }
+        // NÃO pegar velocidade do PlayerMove - usar os valores do Inspector!
+        // Os valores walkSpeed e sprintSpeed são definidos aqui no Inspector
 
         // Esconder barra se estiver cheia (a menos que alwaysShowBar esteja ativo)
         if (staminaBarObject != null && !alwaysShowBar)
@@ -40,7 +41,9 @@ public class PlayerStamina : MonoBehaviour
         else if (staminaBarObject != null && alwaysShowBar)
             staminaBarObject.SetActive(true);
             
-        Debug.Log("PlayerStamina iniciado - Stamina Bar configurado: " + (staminaBar != null));
+        Debug.Log("✓ PlayerStamina iniciado");
+        Debug.Log($"  Walk Speed: {walkSpeed} | Sprint Speed: {sprintSpeed}");
+        Debug.Log("  💡 Ajuste walkSpeed e sprintSpeed no Inspector!");
     }
 
     void Update()
