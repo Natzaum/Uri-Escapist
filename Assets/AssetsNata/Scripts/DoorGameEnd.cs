@@ -17,10 +17,10 @@ public class DoorGameEnd : MonoBehaviour
 
     [Header("Mensagem")]
     [TextArea(3, 5)]
-    public string victoryMessage = "Parabéns você completou a faculdade de ciência da computação";
+    public string victoryMessage = "Parabéns você completou a faculdade";
     
     [TextArea(2, 3)]
-    public string deniedMessage = "requer 2 andar completo";
+    public string deniedMessage = "você precisa completar o 2 andar primeiro";
     
     [Range(30, 100)]
     public int fontSize = 60;
