@@ -10,8 +10,8 @@ public class EnemyAI : MonoBehaviour
     public Transform player;
 
     [Header("Settings")]
-    public float patrolSpeed = 0.2f;
-    public float chaseSpeed = 2f;
+    public float patrolSpeed = 0.375f;
+    public float chaseSpeed = 0.75f;
     public float chaseRange = 5f;
     public float catchRange = 1.5f;
     public float waitTimeAtWaypoint = 2f;
@@ -23,7 +23,17 @@ public class EnemyAI : MonoBehaviour
     [Header("Chase Behavior")]
     public bool alwaysFollowPlayer = false; // Se true, sempre vai para o player em patrol speed até chegar perto
     public bool alwaysChasePlayer = false; // Se true, sempre persegue em chase speed (ignora distância)
-    public float extendedDetectionRange = 15f; // Alcance de detecção aumentado
+    public float extendedDetectionRange = 20f; // Alcance de detecção aumentado
+    
+    [Header("Vision")]
+    [Tooltip("Se marcado, inimigo não vê através de paredes")]
+    public bool hasLineOfSight = true;
+    
+    [Tooltip("Layer de objetos que bloqueiam visão")]
+    public LayerMask obstacleLayer;
+    
+    [Tooltip("Altura dos olhos do inimigo (para raycast)")]
+    public float eyeHeight = 1.5f;
 
     private NavMeshAgent agent;
     private int currentPatrolIndex = 0;
@@ -87,16 +97,24 @@ public class EnemyAI : MonoBehaviour
         // Usar alcance de detecção aumentado
         float effectiveChaseRange = (alwaysChasePlayer || alwaysFollowPlayer) ? extendedDetectionRange : chaseRange;
         
-        // Debug visual (vermelho = perseguindo, amarelo = seguindo, azul = patrulhando)
+        // Verificar se tem linha de visão (não vê através de paredes)
+        bool canSeePlayer = !hasLineOfSight || CanSeePlayer();
+        
+        // Debug visual (vermelho = perseguindo, amarelo = seguindo, azul = patrulhando, cinza = bloqueado)
         Color debugColor = Color.blue;
-        if (alwaysChasePlayer) debugColor = Color.red;
-        else if (alwaysFollowPlayer) debugColor = Color.yellow;
-        else if (distanceToPlayer < effectiveChaseRange) debugColor = Color.red;
+        if (!canSeePlayer) 
+            debugColor = Color.gray; // Cinza: visão bloqueada
+        else if (alwaysChasePlayer) 
+            debugColor = Color.red;
+        else if (alwaysFollowPlayer) 
+            debugColor = Color.yellow;
+        else if (distanceToPlayer < effectiveChaseRange) 
+            debugColor = Color.red;
         
         Debug.DrawLine(transform.position, player.position, debugColor);
 
-        // MODO 1: Always Chase Player (sempre em chase speed)
-        if (alwaysChasePlayer && currentState != State.Catch)
+        // MODO 1: Always Chase Player (sempre em chase speed) - MAS SÓ SE VEJO
+        if (alwaysChasePlayer && currentState != State.Catch && canSeePlayer)
         {
             if (currentState != State.Chase)
             {
@@ -106,8 +124,8 @@ public class EnemyAI : MonoBehaviour
             }
         }
         
-        // MODO 2: Always Follow Player (patrol speed até chegar perto, depois chase)
-        if (alwaysFollowPlayer && !alwaysChasePlayer && currentState != State.Catch)
+        // MODO 2: Always Follow Player (patrol speed até chegar perto, depois chase) - MAS SÓ SE VEJO
+        if (alwaysFollowPlayer && !alwaysChasePlayer && currentState != State.Catch && canSeePlayer)
         {
             if (distanceToPlayer < chaseRange)
             {
@@ -356,6 +374,38 @@ public class EnemyAI : MonoBehaviour
         {
             Gizmos.color = alwaysChasePlayer ? Color.red : Color.blue;
             Gizmos.DrawLine(transform.position, player.position);
+        }
+    }
+
+    private bool CanSeePlayer()
+    {
+        // If player is not found, cannot see
+        if (player == null) return false;
+        
+        // Get eye position (slightly above ground)
+        Vector3 eyePosition = transform.position + transform.up * eyeHeight;
+        
+        // Direction from enemy to player
+        Vector3 directionToPlayer = player.position - eyePosition;
+        float distanceToPlayer = directionToPlayer.magnitude;
+        
+        // Perform raycast from eye position to player
+        RaycastHit hit;
+        bool hitSomething = Physics.Raycast(eyePosition, directionToPlayer.normalized, out hit, distanceToPlayer, obstacleLayer);
+        
+        // Debug visualization
+        if (hitSomething)
+        {
+            // Vision is blocked
+            Debug.DrawLine(eyePosition, hit.point, Color.red);
+            Debug.DrawLine(hit.point, player.position, Color.gray);
+            return false;
+        }
+        else
+        {
+            // Vision is clear
+            Debug.DrawLine(eyePosition, player.position, Color.green);
+            return true;
         }
     }
 }

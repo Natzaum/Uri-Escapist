@@ -17,12 +17,12 @@ public class BookManager : MonoBehaviour
 
     [Header("Inimigo")]
     public EnemyAI enemy;
-    public float baseChaseSpeed = 2f;
-    public float basePatrolSpeed = 2f;
-    public float speedIncreasePerCorrect = 0.5f;
-    public float speedIncreasePerError = 1f;
-    public float bonusSpeedEveryTwoCorrects = 0.5f;
-    public float finalChaseSpeed = 15f; // Velocidade no 4º erro (mais lenta, visível)
+    public float baseChaseSpeed = 0.75f;
+    public float basePatrolSpeed = 0.375f;
+    public float speedIncreasePerCorrect = 0.05f;
+    public float speedIncreasePerError = 0.1f;
+    public float bonusSpeedEveryTwoCorrects = 0.05f;
+    public float finalChaseSpeed = 1.1f; // Velocidade no 4º erro (mais lenta, visível)
 
     private int booksCollected = 0;
     private int errors = 0;

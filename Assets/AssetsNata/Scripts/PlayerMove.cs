@@ -4,7 +4,7 @@ public class PlayerMove : MonoBehaviour
 {
     [Header("Movement")]
     [Tooltip("Velocidade de movimento do player (ajuste aqui conforme necessário)")]
-    public float moveSpeed = 7f;
+    public float moveSpeed = 5f;
     public float groundDrag = 5f;
     public float stopForce = 0.9f; // Quanto mais próximo de 1, mais rápido para (0.9 = 90% de freio)
 

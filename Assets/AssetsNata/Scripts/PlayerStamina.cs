@@ -12,10 +12,10 @@ public class PlayerStamina : MonoBehaviour
 
     [Header("Speed Settings")]
     [Tooltip("Velocidade ao caminhar (ajuste aqui no Inspector)")]
-    public float walkSpeed = 7f;
+    public float walkSpeed = 5f;
     
     [Tooltip("Velocidade ao correr (ajuste aqui no Inspector)")]
-    public float sprintSpeed = 12f;
+    public float sprintSpeed = 10f;
 
     [Header("UI")]
     public Image staminaBar;

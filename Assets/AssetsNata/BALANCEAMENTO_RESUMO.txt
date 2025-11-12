@@ -1,0 +1,127 @@
+📊 BALANCEAMENTO PLAYER VS ENEMY - RESUMO
+
+=== VELOCIDADES ANTIGO vs NOVO ===
+
+PLAYER:
+  Antes:  Normal 7 m/s    | Sprint 12 m/s
+  Depois: Normal 5 m/s    | Sprint 10 m/s
+  ✓ Redução: ~28% mais devagar
+
+ENEMY (SEM ESCALA):
+  Patrol:
+    Antes:  0.2 m/s
+    Depois: 0.375 m/s
+    ✓ Aumento: ~87% mais rápido
+  
+  Chase:
+    Antes:  2 m/s
+    Depois: 0.75 m/s
+    ✓ Redução: ~62% mais lento
+  
+  Extended Range:
+    Antes:  15
+    Depois: 20
+    ✓ Aumento: +5 de alcance
+
+ENEMY (COM ESCALA x8):
+  Patrol:
+    Antes:  1.6 m/s
+    Depois: 3 m/s
+    ✓ ~88% mais rápido
+  
+  Chase:
+    Antes:  16 m/s
+    Depois: 6 m/s
+    ✓ ~62% mais lento
+
+AUMENTOS DO BOOKMANAGER (Por acerto/erro):
+  Antes:  +0.5 chase | +0.5 patrol
+  Depois: +0.05 chase | +0.05 patrol
+  ✓ 90% mais lento no crescimento
+  
+  Razão: Com escala, crescia muito rápido
+  Exemplo: 10 acertos = +5 de velocidade x8 = +40 m/s!
+
+=== DINÂMICA DE JOGO ESPERADA ===
+
+1. PATRULHA NORMAL:
+   Inimigo: 3 m/s | Player: 5 m/s
+   → Player consegue escapar caminhando
+   ✓ Jogador tem tempo para agir
+
+2. CHASE NORMAL:
+   Inimigo: 6 m/s | Player (walk): 5 m/s
+   → Inimigo ESTÁ QUASE LÁ, SPRINTE!
+   ✓ Decisão: "Devo sprintar agora?"
+
+3. SPRINT:
+   Inimigo: 6 m/s | Player: 10 m/s
+   → Consegue escapar, mas stamina acaba
+   ✓ Estratégia: "Economizo stamina?"
+
+4. SEM STAMINA:
+   Inimigo: 6 m/s | Player (walk): 5 m/s
+   → VOU SER PEGO! MUITO TENSO!
+   ✓ Climax: "Preciso de espaço para regenerar"
+
+5. ALWAYS CHASE (FINAL):
+   Inimigo: ~7 m/s | Player: 10 m/s
+   → Consegue escapar mas APERTADO
+   ✓ Tensão máxima até sair da cena
+
+=== TESTES RECOMENDADOS ===
+
+1. Ande normalmente na patrulha:
+   - Inimigo deve ser visivelmente mais lento
+   - Você consegue manter distância
+
+2. Fique parado quando avistado:
+   - Inimigo vem em sua direção lentamente
+   - Chase começa e fica INTENSO
+
+3. Sprint quando perseguido:
+   - Consegue abrir distância
+   - Vê a stamina diminuindo
+
+4. Deixe stamina acabar:
+   - Volta para velocidade normal
+   - Inimigo começa a chegar perto de novo
+   - SUSPENSE!
+
+5. Com muitos acertos (bônus de velocidade):
+   - Inimigo fica pouco mais rápido
+   - Gradual, não explosivo
+
+=== NÚMEROS FINAIS (COM ESCALA x8) ===
+
+Base:
+  Player walk: 5 m/s
+  Player sprint: 10 m/s
+  Enemy patrol: 3 m/s
+  Enemy chase: 6 m/s
+
+Após 10 acertos (ideal, sem erros):
+  Enemy patrol: 3 + (0.05 * 8 * 10) = 3 + 4 = 7 m/s
+  Enemy chase: 6 + (0.05 * 8 * 10) = 6 + 4 = 10 m/s
+  → Parece com player, mas razoável
+
+Após 4º erro (game over):
+  Enemy chase: 1.1 m/s (base sem escala aumentada)
+  Com escala: 1.1 * 8 = 8.8 m/s
+  → MUITO RÁPIDO! Inimigo infinito é difícil de escapar
+
+=== SE FICAR MUITO FÁCIL ===
+
+Opções de ajuste fino:
+1. Reduzir player walk para 4.5 m/s
+2. Aumentar enemy chase para 1 m/s
+3. Aumentar extendedDetectionRange para 25
+4. Reduzir stamina drain para 15 (recupera mais rápido)
+
+=== SE FICAR MUITO DIFÍCIL ===
+
+Opções de ajuste fino:
+1. Aumentar player sprint para 11 m/s
+2. Aumentar regenDelay para 3 segundos
+3. Reduzir enemy patrol para 0.3 m/s
+4. Aumentar chaseRange para 7 m/s (demora mais para chase começar)
