@@ -17,7 +17,7 @@ public class BookManager : MonoBehaviour
 
     [Header("Inimigo")]
     public EnemyAI enemy;
-    public float baseChaseSpeed = 4f;
+    public float baseChaseSpeed = 2f;
     public float basePatrolSpeed = 2f;
     public float speedIncreasePerCorrect = 0.5f;
     public float speedIncreasePerError = 1f;
@@ -26,6 +26,7 @@ public class BookManager : MonoBehaviour
 
     private int booksCollected = 0;
     private int errors = 0;
+    private bool gameOverShown = false; // Flag para evitar game over múltiplo
 
     private void Awake()
     {
@@ -41,6 +42,9 @@ public class BookManager : MonoBehaviour
 
     private void Start()
     {
+        // Resetar flag de game over (importante para reiniciar cenas)
+        gameOverShown = false;
+        
         UpdateUI();
         
         // Contar quantos livros existem na cena
@@ -198,7 +202,7 @@ public class BookManager : MonoBehaviour
         // SceneManager.LoadScene("NextLevel");
     }
 
-    void InstantGameOver()
+    public void InstantGameOver()
     {
         if (enemy != null)
         {
@@ -224,7 +228,14 @@ public class BookManager : MonoBehaviour
             yield break;
         }
 
-        Debug.Log("💀 4º ERRO! Inimigo vindo direto até você!");
+        Debug.Log("💀 TEMPO ACABOU! Inimigo vindo direto até você!");
+
+        // Garantir que o tempo está rodando
+        if (Time.timeScale != 1f)
+        {
+            Debug.Log($"⏱️ Resetando Time.timeScale de {Time.timeScale} para 1f");
+            Time.timeScale = 1f;
+        }
 
         // NÃO teleportar, deixar ele vir da posição atual
         // O player pode VER ele chegando
@@ -233,7 +244,7 @@ public class BookManager : MonoBehaviour
         float duration = 60f; // 60 segundos para pegar o player
         float elapsed = 0f;
         
-        Debug.Log($"🏃 Inimigo perseguindo a {speed} unidades/seg (você pode vê-lo chegando!)");
+        Debug.Log($"🏃 Inimigo perseguindo a {speed} unidades/seg por {duration}s (você pode vê-lo chegando!)");
 
         while (elapsed < duration)
         {
@@ -251,6 +262,8 @@ public class BookManager : MonoBehaviour
                 if (distance < 5f)
                 {
                     Debug.Log("💀 Inimigo pegou o player!");
+                    // Pequeno delay antes de mostrar game over
+                    yield return new WaitForSeconds(0.5f);
                     DirectGameOver();
                     yield break;
                 }
@@ -267,7 +280,22 @@ public class BookManager : MonoBehaviour
 
     void DirectGameOver()
     {
-        Debug.Log("💀 GAME OVER!");
+        // Evitar chamar game over múltiplas vezes
+        if (gameOverShown)
+        {
+            Debug.LogWarning("⚠️ Game Over já foi chamado! Ignorando...");
+            return;
+        }
+
+        gameOverShown = true;
+        Debug.Log("💀 GAME OVER! Mostrando tela de retry...");
+        
+        // Garantir que tempo está rodando para não travar
+        if (Time.timeScale != 1f)
+        {
+            Debug.Log($"⏱️ Garantindo Time.timeScale = 1f para mostrar UI");
+            Time.timeScale = 1f;
+        }
         
         GameOverManager gom = FindObjectOfType<GameOverManager>();
         if (gom != null)
@@ -285,6 +313,15 @@ public class BookManager : MonoBehaviour
     public bool CanProgress()
     {
         return booksCollected >= minBooksToWin;
+    }
+
+    // Chamado quando o tempo acabar (TimerManager)
+    public void OnTimeUp()
+    {
+        Debug.LogError("💀 TEMPO ACABOU! Inimigo vindo infinitamente!");
+        
+        // Chamar InstantChasePlayer para o inimigo vir infinitamente
+        InstantGameOver();
     }
 
     // Getters para outras classes

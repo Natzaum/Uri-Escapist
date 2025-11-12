@@ -10,9 +10,9 @@ public class EnemyAI : MonoBehaviour
     public Transform player;
 
     [Header("Settings")]
-    public float patrolSpeed = 2f;
-    public float chaseSpeed = 4f;
-    public float chaseRange = 7f;
+    public float patrolSpeed = 0.2f;
+    public float chaseSpeed = 2f;
+    public float chaseRange = 5f;
     public float catchRange = 1.5f;
     public float waitTimeAtWaypoint = 2f;
     public float waypointReachThreshold = 2f;

@@ -38,7 +38,9 @@ public class GameOverManager : MonoBehaviour
             Debug.LogError("⚠️ Game Over UI não está atribuída!");
         }
 
-        Time.timeScale = 0f;
+        // NÃO PAUSAR O TEMPO! Deixar o inimigo vindo enquanto mostra UI
+        // Time.timeScale = 0f;
+        Debug.Log("⚠️ Tempo NÃO foi pausado! Inimigo continua vindo!");
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -49,6 +51,7 @@ public class GameOverManager : MonoBehaviour
     public void Retry()
     {
         Debug.Log("🔄 Retry pressionado!");
+        Debug.Log("⏱️ Aguardando 1 segundo antes de recarregar...");
         
         // Garantir que o tempo volte ao normal ANTES de recarregar
         Time.timeScale = 1f;
@@ -62,7 +65,13 @@ public class GameOverManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        Debug.Log("🔄 Recarregando cena...");
+        // Delay para garantir que a UI fecha corretamente
+        Invoke(nameof(ReloadScene), 1f);
+    }
+
+    void ReloadScene()
+    {
+        Debug.Log("🔄 Recarregando cena agora...");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
