@@ -95,13 +95,14 @@ public class QuizManager : MonoBehaviour
         // Processar resposta - isso vai chamar OnCorrectAnswer ou OnWrongAnswer
         currentBook.Answer(index);
         
-        // Fechar quiz após um breve delay (para mostrar feedback se existir)
-        StartCoroutine(CloseQuizAfterDelay(1f));
+        // Fechar quiz IMEDIATAMENTE (sem delay)
+        StartCoroutine(CloseQuizAfterDelay(0f));
     }
     
     IEnumerator CloseQuizAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        if (delay > 0)
+            yield return new WaitForSeconds(delay);
         
         quizPanel.SetActive(false);
 
