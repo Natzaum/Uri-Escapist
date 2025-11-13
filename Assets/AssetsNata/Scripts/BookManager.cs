@@ -289,8 +289,7 @@ public class BookManager : MonoBehaviour
 
         gameOverShown = true;
         Debug.Log("💀 GAME OVER! Mostrando tela de retry...");
-        
-        // Garantir que tempo está rodando para não travar
+
         if (Time.timeScale != 1f)
         {
             Debug.Log($"⏱️ Garantindo Time.timeScale = 1f para mostrar UI");
@@ -309,22 +308,18 @@ public class BookManager : MonoBehaviour
         }
     }
 
-    // Método público para verificar se pode avançar
     public bool CanProgress()
     {
         return booksCollected >= minBooksToWin;
     }
 
-    // Chamado quando o tempo acabar (TimerManager)
     public void OnTimeUp()
     {
         Debug.LogError("💀 TEMPO ACABOU! Inimigo vindo infinitamente!");
         
-        // Chamar InstantChasePlayer para o inimigo vir infinitamente
         InstantGameOver();
     }
 
-    // Getters para outras classes
     public int GetBooksCollected() => booksCollected;
     public int GetErrors() => errors;
     public int GetRemainingBooks() => totalBooks - booksCollected - errors;
