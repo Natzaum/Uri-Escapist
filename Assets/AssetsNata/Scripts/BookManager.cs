@@ -136,8 +136,8 @@ public class BookManager : MonoBehaviour
         // 4º erro = game over com velocidade visível
         if (errors > maxErrors)
         {
-            Debug.Log("💀 MUITOS ERROS! Inimigo vindo à velocidade da luz!");
-            InstantGameOver();
+            Debug.Log("💀 MUITOS ERROS! Game Over imediato.");
+            DirectGameOver();
         }
     }
 
@@ -289,6 +289,13 @@ public class BookManager : MonoBehaviour
 
         gameOverShown = true;
         Debug.Log("💀 GAME OVER! Mostrando tela de retry...");
+
+        StopAllCoroutines();
+
+        if (enemy != null)
+        {
+            enemy.enabled = false;
+        }
 
         if (Time.timeScale != 1f)
         {

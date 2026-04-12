@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class GameOverManager : MonoBehaviour
 {
     [Header("UI")]
     public GameObject gameOverUI;
+    private bool isShowingGameOver = false;
 
     void Start()
     {
@@ -17,9 +19,19 @@ public class GameOverManager : MonoBehaviour
             gameOverUI.SetActive(false);
     }
 
+    void LateUpdate()
+    {
+        if (!isShowingGameOver)
+            return;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
     public void ShowGameOver()
     {
         Debug.Log("💀 ShowGameOver chamado!");
+        isShowingGameOver = true;
         
         // Fechar quiz se estiver aberto
         if (QuizManager.Instance != null)
@@ -38,12 +50,18 @@ public class GameOverManager : MonoBehaviour
             Debug.LogError("⚠️ Game Over UI não está atribuída!");
         }
 
-        // NÃO PAUSAR O TEMPO! Deixar o inimigo vindo enquanto mostra UI
-        // Time.timeScale = 0f;
-        Debug.Log("⚠️ Tempo NÃO foi pausado! Inimigo continua vindo!");
+        Time.timeScale = 0f;
+        Debug.Log("⏸️ Jogo pausado para mostrar a tela de retry");
+
+        DisablePlayerControls();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        if (EventSystem.current != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
         
         Debug.Log("✓ Cursor liberado para clicar em Retry");
     }
@@ -51,7 +69,7 @@ public class GameOverManager : MonoBehaviour
     public void Retry()
     {
         Debug.Log("🔄 Retry pressionado!");
-        Debug.Log("⏱️ Aguardando 1 segundo antes de recarregar...");
+        isShowingGameOver = false;
         
         // Garantir que o tempo volte ao normal ANTES de recarregar
         Time.timeScale = 1f;
@@ -65,8 +83,7 @@ public class GameOverManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        // Delay para garantir que a UI fecha corretamente
-        Invoke(nameof(ReloadScene), 1f);
+        ReloadScene();
     }
 
     void ReloadScene()
@@ -79,5 +96,25 @@ public class GameOverManager : MonoBehaviour
     {
         Debug.Log("Sair do jogo!");
         Application.Quit();
+    }
+
+    void DisablePlayerControls()
+    {
+        DisableBehavioursByTypeName("PlayerMove");
+        DisableBehavioursByTypeName("PlayerCam");
+        DisableBehavioursByTypeName("PlayerStamina");
+        DisableBehavioursByTypeName("CameraHeadBob");
+    }
+
+    void DisableBehavioursByTypeName(string typeName)
+    {
+        MonoBehaviour[] behaviours = FindObjectsOfType<MonoBehaviour>(true);
+        foreach (MonoBehaviour behaviour in behaviours)
+        {
+            if (behaviour != null && behaviour.GetType().Name == typeName)
+            {
+                behaviour.enabled = false;
+            }
+        }
     }
 }
