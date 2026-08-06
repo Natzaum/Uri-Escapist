@@ -1,0 +1,10 @@
+PWD d:\Main\Projetos\Uri-Escapist\docs\artigo-latex
+INPUT C:\Users\natac\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
+INPUT d:\Main\Projetos\Uri-Escapist\docs\artigo-latex\artigo-uri-escapist.tex
+OUTPUT artigo-uri-escapist.log
+INPUT C:\Users\natac\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
+INPUT C:\Users\natac\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
+INPUT C:\Users\natac\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
+INPUT C:\Users\natac\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
+INPUT C:\Users\natac\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
+INPUT C:\Users\natac\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr12.tfm

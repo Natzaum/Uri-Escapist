@@ -1,0 +1,50 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.6.22)  24 JUN 2026 19:22
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**d:/Main/Projetos/Uri-Escapist/docs/artigo-latex/artigo-uri-escapist.tex
+(d:/Main/Projetos/Uri-Escapist/docs/artigo-latex/artigo-uri-escapist.tex
+LaTeX2e <2026-06-01>
+L3 programming layer <2026-05-26>
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/base\size12.clo
+File: size12.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count276
+\c@section=\count277
+\c@subsection=\count278
+\c@subsubsection=\count279
+\c@paragraph=\count280
+\c@subparagraph=\count281
+\c@figure=\count282
+\c@table=\count283
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen150
+)
+
+! LaTeX Error: File `article-config/sbc-template.sty' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: sty)
+
+Enter file name: 
+d:/Main/Projetos/Uri-Escapist/docs/artigo-latex/artigo-uri-escapist.tex:4: Emergency stop.
+<read *> 
+         
+l.4 \usepackage
+               [brazilian]{babel}^^M
+*** (cannot \read from terminal in nonstop modes)
+
+ 
+Here is how much of TeX's memory you used:
+ 247 strings out of 467509
+ 3269 string characters out of 5408780
+ 435365 words of memory out of 5000000
+ 29576 multiletter control sequences out of 15000+600000
+ 628019 words of font info for 41 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 35i,0n,38p,184b,36s stack positions out of 10000i,1000n,20000p,200000b,200000s
+d:/Main/Projetos/Uri-Escapist/docs/artigo-latex/artigo-uri-escapist.tex:4:  ==> Fatal error occurred, no output PDF file produced!

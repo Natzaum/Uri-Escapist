@@ -1,0 +1,312 @@
+\documentclass[12pt]{article}
+
+\usepackage{article-config/sbc-template}
+\usepackage[brazilian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{article-config/pages-style}
+
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+\sloppy
+
+\input{article-config/event-info}
+
+% A figura real sera exibida quando o arquivo existir. Enquanto isso, uma
+% caixa indica no PDF qual imagem deve ser adicionada ao projeto.
+\newcommand{\gamefigure}[4][0.82\textwidth]{
+    \begin{figure}[H]
+        \centering
+        \IfFileExists{#2}{
+            \includegraphics[width=#1]{#2}
+        }{
+            \fbox{
+                \parbox[c][5cm][c]{0.78\textwidth}{
+                    \centering
+                    \textbf{Espaço reservado para imagem}\\[0.4cm]
+                    Adicionar o arquivo: \texttt{\detokenize{#2}}
+                }
+            }
+        }
+        \caption{#3}
+        \label{#4}
+    \end{figure}
+}
+
+\title{URI Escapist: um jogo digital 3D para aprendizagem em ambiente universitário \\
+\medskip
+\small{
+    \textit{URI Escapist: a 3D Digital Game for Learning in a University Environment}
+}
+}
+
+\author{Natã Cezer Bordignon\inst{1}, Fabio Asturian Zanin\inst{1}}
+
+\address{
+    Universidade Regional Integrada do Alto Uruguai e das Missões \\
+    Departamento de Engenharias e Ciência da Computação\\
+    Caixa Postal 743 -- 99.709-910 -- Erechim -- RS -- Brasil
+\email{103574@aluno.uricer.edu.br, faz@uricer.edu.br}
+}
+
+\begin{document}
+\maketitle
+
+\thispagestyle{plain}
+\pagestyle{plain2}
+
+\begin{abstract}
+\textbf{Introduction:} Digital games can support educational practices by combining challenges, immediate feedback and active participation. In this context, URI Escapist is a three-dimensional game inspired by URI Erechim Campus II, in which the university environment is transformed into a setting for exploration, suspense and academic challenges.
+\textbf{Objective:} This work aims to develop an interactive experience that combines entertainment and learning through multiple-choice questions, exploration and progression mechanics.
+\textbf{Methodology or Steps:} The research has an applied and qualitative approach and adopts an iterative and incremental development process. Its stages include bibliographic research, game planning, implementation in Unity, internal tests and qualitative analysis of the prototype.
+\textbf{Expected Results:} A functional prototype is expected, capable of demonstrating the potential of digital games as a complementary educational resource and providing a dynamic and engaging way to interact with academic content.
+\textbf{Conclusion:} The proposal seeks to contribute a contextualized serious game in which educational content directly affects gameplay, while also providing a practical basis for evaluating engagement and usability in higher education.
+\end{abstract}
+
+\keywords{Serious games, Game-based learning, Educational games, Unity, URI Escapist.}
+
+\begin{resumo}
+\textbf{Introdução:} Os jogos digitais podem apoiar práticas educacionais ao combinar desafios, feedback imediato e participação ativa. Nesse contexto, o URI Escapist é um jogo tridimensional inspirado na URI Erechim Campus II, no qual o ambiente universitário é transformado em um cenário de exploração, suspense e desafios acadêmicos.
+\textbf{Objetivo:} Este trabalho tem como objetivo desenvolver uma experiência interativa que una entretenimento e aprendizagem por meio de perguntas de múltipla escolha, exploração e mecânicas de progressão.
+\textbf{Metodologia ou Etapas:} A pesquisa possui natureza aplicada e abordagem qualitativa, adotando um processo de desenvolvimento iterativo e incremental. Suas etapas incluem pesquisa bibliográfica, planejamento do jogo, implementação na Unity, testes internos e análise qualitativa do protótipo.
+\textbf{Resultados Esperados:} Espera-se obter um protótipo funcional capaz de demonstrar o potencial dos jogos digitais como recurso educacional complementar e proporcionar uma forma dinâmica e envolvente de interação com conteúdos acadêmicos.
+\textbf{Conclusão:} A proposta busca contribuir com um jogo sério contextualizado, no qual o conteúdo educacional produz efeitos diretos na jogabilidade, além de oferecer uma base prática para avaliar engajamento e usabilidade no ensino superior.
+\end{resumo}
+
+\palavraschave{Jogos sérios, Aprendizagem baseada em jogos, Jogos educacionais, Unity, URI Escapist.}
+
+\section{Introdução}
+
+Os jogos digitais consolidaram-se como uma importante forma de entretenimento e passaram a ocupar espaço também em áreas como educação, saúde e capacitação profissional. Quando desenvolvidos com uma finalidade que ultrapassa o entretenimento, esses sistemas podem ser classificados como jogos sérios, pois preservam características lúdicas enquanto buscam promover aprendizagem, treinamento ou conscientização \cite{abt1970,michael2006}.
+
+No contexto educacional, a aprendizagem baseada em jogos utiliza desafios, regras, recompensas, feedback e progressão para favorecer a participação ativa do estudante. Prensky \cite{prensky2001} observa que as tecnologias interativas se aproximam da linguagem utilizada pelas novas gerações, enquanto Gee \cite{gee2003} destaca que os jogos permitem aprender pela exploração, pela tentativa e pelo erro. Essas características tornam o jogo digital uma possibilidade complementar aos métodos tradicionais de ensino.
+
+É nesse cenário que se insere o URI Escapist, um jogo digital em ambiente 3D inspirado na Universidade Regional Integrada do Alto Uruguai e das Missões, URI Erechim Campus II. O projeto transforma elementos da vivência universitária em uma experiência de exploração e suspense. Durante a partida, o jogador percorre ambientes acadêmicos, encontra livros com perguntas de múltipla escolha e precisa responder aos desafios enquanto administra o tempo disponível e evita ser capturado por um inimigo.
+
+A escolha do tema está relacionada ao interesse do autor pela área de jogos digitais e ao potencial desse tipo de aplicação para apresentar conteúdos de maneira diferente e divertida. Em vez de substituir práticas educacionais existentes, o projeto procura investigar como uma experiência lúdica pode atuar como recurso complementar, estimulando atenção, raciocínio, tomada de decisão e engajamento.
+
+O objetivo geral deste trabalho é desenvolver um jogo digital inspirado no ambiente universitário que una entretenimento e aprendizagem. De forma específica, pretende-se construir cenários reconhecíveis, implementar mecânicas de exploração e progressão, apresentar conteúdos por meio de perguntas, desenvolver uma ambientação imersiva e demonstrar o potencial dos jogos como apoio ao processo de ensino e aprendizagem.
+
+As principais contribuições previstas são a criação de um jogo sério contextualizado na realidade universitária local, a integração das respostas acadêmicas ao comportamento do inimigo e à progressão da partida, e a construção de uma base que permita organizar perguntas por área ou disciplina. A proposta também contribui como experiência prática de desenvolvimento, reunindo programação, design de jogos, inteligência artificial, interfaces e avaliação com usuários.
+
+O restante deste artigo está organizado da seguinte forma: a Seção 2 apresenta os trabalhos relacionados; a Seção 3 reúne os conceitos que fundamentam o projeto; a Seção 4 descreve a metodologia; a Seção 5 detalha o desenvolvimento e as decisões técnicas; a Seção 6 apresenta os resultados esperados e a forma planejada de discussão; e a Seção 7 expõe as conclusões e os trabalhos futuros.
+
+\section{Trabalhos Relacionados}
+
+Estudos sobre jogos e estratégias lúdicas no ensino superior indicam resultados promissores, mas também ressaltam que os efeitos dependem do contexto, do desenho da atividade e da relação entre mecânica e conteúdo. Vlachopoulos e Makri \cite{vlachopoulos2017} analisaram jogos e simulações no ensino superior e identificaram contribuições para aprendizagem, habilidades e envolvimento, embora tenham apontado diferenças entre métodos e formas de avaliação.
+
+Dichev e Dicheva \cite{dichev2017} realizaram uma revisão crítica sobre gamificação na educação. Os autores observaram benefícios relacionados à motivação e ao engajamento, mas destacaram que ainda existem limitações metodológicas e evidências insuficientes para generalizações. Essa observação reforça a necessidade de avaliar o URI Escapist não apenas pela presença de elementos de jogo, mas pela experiência produzida e pela maneira como as perguntas são incorporadas às regras.
+
+Wang e Tahir \cite{wang2020} revisaram estudos sobre a plataforma Kahoot!, baseada em quizzes. Os resultados apontaram efeitos positivos frequentes na aprendizagem, na dinâmica da sala e na atitude dos estudantes. Entretanto, a plataforma concentra a experiência na apresentação e resposta das questões, enquanto o URI Escapist insere o quiz em um ambiente tridimensional explorável, no qual erros e acertos alteram a perseguição, a dificuldade e o acesso a novas áreas.
+
+Din, Baig e Khan \cite{din2023} atualizaram uma revisão sobre jogos sérios e identificaram questionários, entrevistas e comparações antes e depois da intervenção entre os procedimentos utilizados para avaliar essas aplicações. O estudo apoia a escolha de combinar observação, registros da partida e questionários na avaliação do protótipo.
+
+A Tabela~\ref{tab:comparacao} sintetiza as relações entre esses trabalhos e a proposta atual.
+
+\begin{table}[H]
+\centering
+\caption{Comparação entre abordagens relacionadas e o URI Escapist}
+\label{tab:comparacao}
+\small
+\begin{tabularx}{\textwidth}{p{2.7cm}X X X}
+\toprule
+\textbf{Trabalho} & \textbf{Abordagem} & \textbf{Contribuição principal} & \textbf{Diferença em relação ao URI Escapist} \\
+\midrule
+Vlachopoulos e Makri \cite{vlachopoulos2017} & Revisão de jogos e simulações no ensino superior & Síntese de resultados educacionais e formas de aplicação & Não desenvolve um jogo contextualizado em um campus específico \\
+\addlinespace
+Dichev e Dicheva \cite{dichev2017} & Revisão crítica de gamificação educacional & Identificação de benefícios e limitações das evidências existentes & Analisa elementos gamificados em geral, enquanto o projeto desenvolve um jogo completo \\
+\addlinespace
+Wang e Tahir \cite{wang2020} & Revisão de uma plataforma de quizzes & Evidências sobre aprendizagem, interação e atitude dos estudantes & O quiz não está associado à exploração tridimensional e à perseguição por inimigo \\
+\addlinespace
+Din, Baig e Khan \cite{din2023} & Revisão atualizada de jogos sérios & Tendências de aplicação e métodos de avaliação & Possui escopo amplo, sem foco no cotidiano universitário local \\
+\addlinespace
+URI Escapist & Jogo sério 3D com exploração e suspense & Integra perguntas, progressão e dificuldade em um cenário inspirado na universidade & Propõe uma experiência contextualizada, com consequências imediatas dos acertos e erros \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+O diferencial pretendido pelo URI Escapist está na combinação entre conteúdo acadêmico, representação de um espaço universitário reconhecível e mecânicas de suspense. A pergunta não funciona apenas como uma atividade sobreposta ao jogo: seu resultado modifica o estado da partida e a ameaça enfrentada pelo jogador. Essa integração constitui a lacuna específica explorada pelo trabalho.
+
+\section{Fundamentação Teórica}
+
+\subsection{Jogos sérios}
+
+O conceito de jogo sério descreve aplicações que utilizam os recursos dos jogos com um propósito educacional, social ou de treinamento explicitamente planejado \cite{abt1970}. Apesar de possuírem metas externas ao entretenimento, essas aplicações dependem de elementos como desafio, regras, interação e feedback para manter o interesse do jogador.
+
+Michael e Chen \cite{michael2006} apontam que a atratividade dos jogos pode ser empregada para envolver usuários em tarefas relacionadas à aprendizagem e ao desenvolvimento de habilidades. Zyda \cite{zyda2005}, por sua vez, ressalta a combinação entre narrativa, simulação e objetivos práticos como um diferencial dos jogos sérios. Dessa maneira, a experiência virtual pode contribuir para competências e conhecimentos aplicáveis fora do jogo.
+
+O URI Escapist aproxima-se desse conceito ao inserir perguntas acadêmicas em uma experiência de exploração. O conteúdo educacional não é apresentado isoladamente: responder às questões interfere diretamente na progressão, no comportamento do inimigo e nas condições para concluir a fase.
+
+\subsection{Aprendizagem baseada em jogos}
+
+A aprendizagem baseada em jogos, também conhecida como \textit{Game-Based Learning}, utiliza jogos como parte do processo educacional. Diferentemente da simples inserção de pontos ou recompensas em uma atividade, essa abordagem integra o conteúdo às regras e decisões da experiência \cite{prensky2001}.
+
+Os jogos oferecem um ambiente no qual o participante pode experimentar, receber feedback imediato e ajustar sua estratégia. Gee \cite{gee2003} relaciona essas características a uma aprendizagem ativa, na qual o jogador desenvolve conhecimento ao resolver problemas contextualizados. Gros \cite{gros2007} também destaca a importância do planejamento da experiência e da relação entre os objetivos pedagógicos e as ações realizadas no jogo.
+
+No projeto proposto, os livros encontrados no mapa apresentam perguntas de múltipla escolha. O resultado da resposta é informado imediatamente e produz consequências na partida. O acerto contribui para o progresso, enquanto o erro eleva a pressão sobre o jogador, reforçando a integração entre conhecimento e jogabilidade.
+
+\subsection{Prototipação e desenvolvimento iterativo}
+
+A prototipação permite validar conceitos e mecânicas antes da conclusão de todas as partes de um jogo. Fullerton \cite{fullerton2018} apresenta essa prática como uma etapa central do design, pois possibilita observar como as regras funcionam quando utilizadas por jogadores. Salen e Zimmerman \cite{salen2004} acrescentam que a iteração é importante para equilibrar o sistema e aproximar a experiência do resultado pretendido.
+
+Essa abordagem é especialmente adequada ao URI Escapist, uma vez que aspectos como velocidade do inimigo, duração da fase, quantidade de perguntas e resistência do jogador precisam ser avaliados em conjunto. O desenvolvimento em ciclos permite implementar uma mecânica, testá-la e ajustar seus parâmetros antes da inclusão de novas funcionalidades.
+
+\section{Metodologia}
+
+Este trabalho caracteriza-se como uma pesquisa de natureza aplicada, com abordagem predominantemente qualitativa e caráter exploratório, prático e projetual. Além da discussão teórica sobre jogos digitais na educação, busca-se produzir e analisar um protótipo funcional que represente a proposta.
+
+Inicialmente, será realizada uma pesquisa bibliográfica sobre jogos sérios, aprendizagem baseada em jogos, gamificação e desenvolvimento de jogos digitais. A revisão fornecerá suporte para relacionar as escolhas de design aos conceitos discutidos na literatura, comparar o projeto com abordagens existentes e definir os critérios de avaliação do protótipo.
+
+Na etapa de planejamento serão organizados o conceito, a narrativa, as mecânicas, a estrutura das fases e o fluxo de interação. O desenvolvimento seguirá uma abordagem iterativa e incremental, na qual as funcionalidades serão implementadas em módulos e avaliadas continuamente. Esse processo permitirá ajustar dificuldade, tempo, velocidade, distribuição dos elementos e clareza da interface.
+
+Serão realizados testes funcionais para verificar movimentação, colisões, transições, sistema de perguntas, contadores, cronômetro e comportamento do inimigo. Também serão conduzidas sessões de teste com participantes convidados, observando-se a compreensão das regras, as dificuldades encontradas e a percepção sobre a integração entre entretenimento e conteúdo educacional.
+
+A coleta de dados ocorrerá por meio de registros das etapas de desenvolvimento, observação das sessões de uso, dados básicos da partida e aplicação de um questionário breve. Serão considerados aspectos como facilidade de interação, clareza das perguntas, nível de desafio, imersão, interesse e percepção de utilidade educacional. Os registros de conclusão da fase, quantidade de acertos, erros e tempo utilizado complementarão a interpretação qualitativa.
+
+Os resultados serão analisados de forma descritiva, relacionando as observações e respostas dos participantes aos objetivos do trabalho e à fundamentação teórica. Não se pretende realizar generalizações estatísticas sobre toda a população universitária, pois a avaliação terá caráter exploratório e será limitada ao contexto e ao número de participantes disponíveis.
+
+\section{Desenvolvimento do URI Escapist}
+
+\subsection{Conceito e ambientação}
+
+O URI Escapist representa o ambiente universitário sob uma perspectiva lúdica e simbólica. Os espaços do campus deixam de funcionar apenas como cenário e passam a representar desafios, cobranças e etapas da trajetória acadêmica. A escolha de um local familiar busca favorecer a identificação dos estudantes e tornar a narrativa mais próxima de sua realidade.
+
+Os cenários são inspirados no início do Campus II, na entrada do Prédio 8 e em seus andares. A direção visual utiliza modelos tridimensionais, texturas e efeitos inspirados na estética de jogos do período do primeiro PlayStation. A presença de neblina, baixa precisão de cores e efeitos visuais de imagem contribui para uma atmosfera de suspense e para a identidade retrô do projeto.
+
+\gamefigure{Figuras/cenario-campus.png}
+{Cenário do URI Escapist inspirado na URI Erechim Campus II. Fonte: elaborado pelo autor.}
+{fig:cenario}
+
+\subsection{Jogabilidade e progressão}
+
+O jogador controla o personagem em primeira pessoa e pode caminhar ou correr pelo mapa. A corrida utiliza um sistema de resistência, exigindo que o recurso seja administrado durante as perseguições. A exploração tem como finalidade localizar livros, responder às perguntas e alcançar a quantidade mínima de acertos necessária para acessar a próxima área.
+
+Cada livro inicia uma questão com alternativas de resposta. Ao abrir a interface, o movimento e a câmera são temporariamente interrompidos para permitir a escolha. Após a resposta, o sistema apresenta o resultado, atualiza os contadores e remove o livro do cenário. A porta de saída verifica o progresso obtido e somente permite a transição quando o requisito da fase é atendido.
+
+\gamefigure{Figuras/sistema-quiz.png}
+{Interface de pergunta e respostas apresentada durante a interação com um livro. Fonte: elaborado pelo autor.}
+{fig:quiz}
+
+A partida também possui limite de tempo. A interface informa o tempo restante, a quantidade de livros respondidos corretamente e o número de erros. Quando o cronômetro se aproxima do fim, alterações visuais alertam o jogador. Se o tempo for esgotado ou o limite de erros for ultrapassado, a condição de derrota é acionada.
+
+\gamefigure{Figuras/interface-jogo.png}
+{Interface do jogo com informações de tempo, progresso e erros. Fonte: elaborado pelo autor.}
+{fig:interface}
+
+\subsection{Inimigo e dificuldade}
+
+O inimigo utiliza um sistema de navegação para patrulhar pontos definidos no cenário, detectar o jogador e persegui-lo. A percepção considera distância e linha de visão, impedindo, em condições normais, que o personagem detecte o jogador através de obstáculos. Quando ocorre a captura, a partida é encerrada e o jogador pode reiniciar a fase.
+
+A dificuldade é alterada pelo desempenho nas perguntas. Acertos e erros podem aumentar gradualmente a velocidade de patrulha e perseguição. Respostas incorretas também deixam o inimigo em estado de alerta por determinado período e, após vários erros, a perseguição torna-se constante. Essa relação faz com que as decisões educacionais produzam efeitos diretos na jogabilidade.
+
+\gamefigure{Figuras/inimigo.png}
+{Inimigo responsável pelas mecânicas de patrulha, detecção e perseguição. Fonte: elaborado pelo autor.}
+{fig:inimigo}
+
+Além do modo principal, o projeto prevê modos com variações de dificuldade. Entre eles, o modo pesadelo altera o comportamento do inimigo para manter a perseguição ativa desde o início. Também são previstas a distribuição aleatória dos livros, a expansão do cenário com novos andares e a possibilidade de organizar perguntas por área ou disciplina.
+
+\subsection{Arquitetura e organização dos sistemas}
+
+A implementação é organizada em componentes independentes da Unity, cada um responsável por uma parte da experiência. Essa divisão reduz o acoplamento entre as funcionalidades e permite testar e ajustar os sistemas de forma isolada.
+
+O módulo de controle do jogador reúne movimentação, câmera e resistência. O módulo de perguntas controla a proximidade dos livros, a abertura da interface, a seleção de alternativas e o retorno visual. Um gerenciador central mantém a quantidade de acertos e erros, verifica as condições de progressão e modifica os parâmetros de dificuldade.
+
+O inimigo possui um componente próprio para patrulha, percepção, perseguição e captura. Esse componente recebe alterações de velocidade ou estado após as respostas. O cronômetro controla o tempo total da fase, enquanto os componentes de porta verificam os requisitos e realizam a transição entre cenas. A Figura~\ref{fig:arquitetura} apresenta uma visão resumida dessa organização.
+
+\begin{figure}[H]
+\centering
+\fbox{
+\begin{minipage}{0.88\textwidth}
+\centering
+\textbf{Jogador e câmera}\\
+$\downarrow$ interação\\
+\textbf{Livro e sistema de quiz}
+$\longrightarrow$
+\textbf{Gerenciador de progresso}
+$\longrightarrow$
+\textbf{Porta e transição de cena}\\[0.25cm]
+\hfill $\downarrow$ acertos, erros e tempo \hfill\\[0.15cm]
+\textbf{Cronômetro}
+$\longrightarrow$
+\textbf{Estado da partida}
+$\longrightarrow$
+\textbf{IA do inimigo}
+\end{minipage}
+}
+\caption{Organização dos principais módulos do URI Escapist. Fonte: elaborado pelo autor.}
+\label{fig:arquitetura}
+\end{figure}
+
+\subsection{Ambiente e recursos de desenvolvimento}
+
+O desenvolvimento utiliza a Unity, na versão 6000.0.58f2, como motor de jogo, e a linguagem C\# para implementar regras e sistemas interativos. O Visual Studio é empregado na edição do código, enquanto o Blender pode ser utilizado para criação ou adaptação de modelos tridimensionais.
+
+Também são utilizados os recursos de interface da Unity para menus, perguntas e indicadores; o NavMesh para navegação do inimigo; e o gerenciamento de cenas para organizar a progressão. Modelos, texturas, materiais e animações podem ser obtidos em bibliotecas como Unity Asset Store e Mixamo, respeitando-se suas licenças. O Git e o GitHub são empregados no controle de versão e no histórico das alterações.
+
+Para executar o protótipo são necessários um computador compatível com aplicações tridimensionais, teclado e mouse. Não são exigidos equipamentos especializados, conexão permanente com a Internet ou dispositivos de realidade virtual.
+
+\subsection{Decisões técnicas e desafios}
+
+A utilização de componentes separados em C\# foi escolhida para facilitar a manutenção e a expansão do jogo. A navegação por NavMesh permite que o inimigo contorne obstáculos do cenário, enquanto a verificação de linha de visão evita detecções através de paredes. A interface de perguntas interrompe temporariamente os controles para impedir movimentos acidentais durante a resposta.
+
+Um dos principais desafios é equilibrar a velocidade do jogador e do inimigo. Caso o inimigo seja muito lento, a perseguição deixa de representar uma ameaça; caso seja excessivamente rápido, o jogador não consegue explorar ou responder às perguntas. Para reduzir esse problema, as velocidades de caminhada, corrida, patrulha e perseguição são configuráveis, e o aumento de dificuldade ocorre gradualmente.
+
+Outro desafio está na escala dos modelos e dos ambientes importados, que influencia colisores, distâncias de detecção e parâmetros de navegação. A implementação realiza ajustes proporcionais quando necessário e utiliza testes de cena para validar os valores. Também foram adotados controle de resistência, limite de erros e feedback visual do cronômetro para tornar as condições da partida mais compreensíveis.
+
+As otimizações concentram-se no reaproveitamento de componentes, na configuração de materiais e na limitação dos cálculos de percepção ao necessário para a jogabilidade. Como o projeto é um protótipo acadêmico para computadores, a prioridade atual está na estabilidade, legibilidade da interface e consistência das mecânicas, e não em otimizações destinadas a dispositivos móveis.
+
+\subsection{Delimitação do escopo}
+
+O trabalho contempla a criação do ambiente tridimensional, movimentação em primeira pessoa, interação com livros, perguntas de múltipla escolha, contagem de acertos e erros, dificuldade progressiva, inimigo com perseguição, limite de tempo, transição entre cenas, interface informativa e diferentes configurações de partida. Também faz parte da proposta desenvolver uma forma de organização das perguntas por disciplina e ampliar as áreas exploráveis.
+
+Não fazem parte do escopo a implementação de modo on-line ou multijogador, a integração direta com sistemas acadêmicos institucionais, o desenvolvimento de aplicativo móvel, o suporte a realidade virtual ou aumentada e a criação de uma inteligência artificial avançada que adapte todo o jogo ao perfil individual de cada estudante. Também não se pretende construir uma plataforma institucional completa de gestão educacional.
+
+\section{Resultados Esperados e Discussão Proposta}
+
+Espera-se que o desenvolvimento do URI Escapist resulte em um protótipo funcional capaz de unir entretenimento e aprendizagem em uma experiência inspirada no ambiente universitário. O jogo deverá demonstrar, de forma prática, como perguntas acadêmicas podem ser integradas a mecânicas de exploração, progressão e suspense, oferecendo aos estudantes uma forma diferente de interagir com conteúdos educacionais.
+
+Como resultados específicos, espera-se:
+
+\begin{itemize}[leftmargin=1.2cm]
+    \item desenvolver um jogo digital 3D funcional, com cenários inspirados na universidade;
+    \item implementar mecânicas de exploração, corrida, resistência, interação e transição entre ambientes;
+    \item disponibilizar um sistema de perguntas de múltipla escolha integrado ao progresso da partida;
+    \item implementar um inimigo com patrulha, detecção, perseguição e dificuldade progressiva;
+    \item oferecer diferentes configurações de desafio e ampliar a variedade entre as partidas;
+    \item possibilitar a organização de perguntas por área ou disciplina, favorecendo diferentes usos educacionais;
+    \item avaliar a compreensão, o engajamento e a percepção dos participantes durante os testes;
+    \item demonstrar a viabilidade dos jogos digitais como recurso complementar ao ensino; e
+    \item obter um produto que represente a aplicação dos conhecimentos adquiridos durante a graduação.
+\end{itemize}
+
+Não se espera que o protótipo substitua as metodologias tradicionais de ensino. Sua contribuição está em apresentar uma possibilidade complementar, capaz de aproximar conteúdos acadêmicos de uma linguagem interativa e familiar aos estudantes.
+
+Após as sessões de teste, os resultados serão organizados em quatro grupos: funcionamento técnico, desempenho nas partidas, percepção dos participantes e limitações observadas. O funcionamento técnico considerará falhas, estabilidade e conclusão das mecânicas. O desempenho reunirá tempo, acertos, erros e conclusão da fase. A percepção qualitativa abrangerá clareza, dificuldade, diversão, imersão e utilidade educacional.
+
+A discussão comparará esses dados com as conclusões dos trabalhos relacionados. Será observado, por exemplo, se o quiz mantém os benefícios de feedback e participação descritos por Wang e Tahir \cite{wang2020}, e se a integração entre conteúdo e jogo evita uma aplicação superficial dos elementos lúdicos, preocupação destacada por Dichev e Dicheva \cite{dichev2017}.
+
+Entre as limitações previstas estão a quantidade restrita de participantes, a realização dos testes em uma única instituição, o número inicial de perguntas e disciplinas e a ausência de um grupo de controle. Por isso, os resultados deverão ser interpretados como evidências exploratórias sobre o protótipo, e não como comprovação definitiva de melhoria da aprendizagem.
+
+\section{Conclusão e Trabalhos Futuros}
+
+O URI Escapist propõe uma releitura da experiência universitária por meio de um jogo digital que combina exploração, perguntas e suspense. Ao integrar o conteúdo acadêmico às regras da partida, o projeto procura evitar que a aprendizagem seja tratada como um elemento separado da jogabilidade.
+
+A pesquisa busca cumprir o objetivo de produzir uma experiência funcional que associe entretenimento e conteúdo educacional. As contribuições previstas incluem a representação de um ambiente universitário reconhecível, a integração de perguntas ao sistema de progressão, a dificuldade influenciada pelo desempenho e uma arquitetura modular que possibilite expansões.
+
+O trabalho também permitirá aplicar conceitos de jogos sérios e aprendizagem baseada em jogos em um produto concreto, envolvendo conhecimentos de programação, inteligência artificial para jogos, modelagem de ambientes, interfaces e testes de software. O desenvolvimento iterativo possibilitará aperfeiçoar as mecânicas de acordo com os problemas observados e com o retorno dos participantes.
+
+Como trabalhos futuros, propõe-se ampliar o número de disciplinas e perguntas, adicionar novos andares e áreas do campus, randomizar a posição dos livros, criar novos modos de jogo e desenvolver uma interface simplificada para que professores organizem conteúdos. Estudos posteriores também poderão empregar amostras maiores, grupos de comparação e avaliações anteriores e posteriores à utilização do jogo.
+
+\bibliographystyle{article-config/sbc}
+\bibliography{Referencias/referencias-uri-escapist}
+
+\end{document}
