@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -16,10 +17,23 @@ public class MenuPrincipal : MonoBehaviour
     public Toggle nightmareToggle;
     public TextMeshProUGUI titleText;
 
+    [Header("Sound")]
+    [Range(0f, 1f)]
+    public float ambientVolume = 0.12f;
+    [Range(0f, 1f)]
+    public float playFeedbackVolume = 0.45f;
+
     private static bool isNightmareMode = false;
+    private bool isStartingGame;
 
     void Start()
     {
+        MenuAmbientAudio ambientAudio = GetComponent<MenuAmbientAudio>();
+        if (ambientAudio == null)
+            ambientAudio = gameObject.AddComponent<MenuAmbientAudio>();
+
+        ambientAudio.Initialize(ambientVolume, playFeedbackVolume);
+
         // Encontrar elementos se não foram atribuídos no Inspector
         if (playButton == null)
             playButton = FindObjectOfType<Button>();
@@ -54,8 +68,28 @@ public class MenuPrincipal : MonoBehaviour
 
     void OnPlayButtonClicked()
     {
+        if (isStartingGame)
+            return;
+
+        StartCoroutine(StartGame());
+    }
+
+    private IEnumerator StartGame()
+    {
+        isStartingGame = true;
+        if (playButton != null)
+            playButton.interactable = false;
+
         Debug.Log($"🎮 Iniciando jogo... Modo Pesadelo: {isNightmareMode}");
         Time.timeScale = 1f;
+
+        MenuAmbientAudio ambientAudio = GetComponent<MenuAmbientAudio>();
+        if (ambientAudio != null)
+        {
+            ambientAudio.PlayStartFeedback();
+            yield return ambientAudio.FadeOut(0.75f);
+        }
+
         SceneManager.LoadScene("MainScene");
     }
 
