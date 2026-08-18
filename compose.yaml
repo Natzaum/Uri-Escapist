@@ -1,0 +1,83 @@
+name: uri-escapist
+
+services:
+  app:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8000}:80"
+    environment:
+      APP_NAME: URI Escapist
+      APP_BASE_URL: ""
+      APP_TIMEZONE: America/Sao_Paulo
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: uri_escapist
+      DB_USER: "${MYSQL_USER:-uri_app}"
+      DB_PASSWORD: "${MYSQL_PASSWORD:-uri_dev_password}"
+      INITIAL_TEACHER_NAME: "${INITIAL_TEACHER_NAME:-Professor}"
+      INITIAL_TEACHER_EMAIL: "${INITIAL_TEACHER_EMAIL:-professor@uri.local}"
+      INITIAL_TEACHER_PASSWORD: "${INITIAL_TEACHER_PASSWORD:-uri-professor-dev}"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/api/v1/health.php') === false ? 1 : 0);"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+    networks:
+      - uri-network
+
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    ports:
+      - "${MYSQL_PORT:-3307}:3306"
+    environment:
+      MYSQL_DATABASE: uri_escapist
+      MYSQL_USER: "${MYSQL_USER:-uri_app}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD:-uri_dev_password}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-uri_root_dev_password}"
+      TZ: America/Sao_Paulo
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./web/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_ROOT_PASSWORD mysqladmin ping -h 127.0.0.1 -uroot --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    networks:
+      - uri-network
+
+  phpmyadmin:
+    image: phpmyadmin:5.2-apache
+    restart: unless-stopped
+    ports:
+      - "${PHPMYADMIN_PORT:-8081}:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 0
+      UPLOAD_LIMIT: 64M
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - uri-network
+
+volumes:
+  mysql-data:
+    name: uri-escapist-mysql-data
+
+networks:
+  uri-network:
+    name: uri-escapist-network

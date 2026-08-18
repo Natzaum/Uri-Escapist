@@ -2,13 +2,24 @@
 
 Aplicação em PHP e MySQL para o professor organizar questões de múltipla escolha. A API entrega as perguntas publicadas para os livros existentes nas cenas da Unity.
 
+## Instalação recomendada com Docker
+
+O ambiente completo com PHP, Apache, MySQL e phpMyAdmin está definido na raiz do repositório. Consulte o [guia Docker](../DOCKER.md) ou execute:
+
+```powershell
+Copy-Item .env.example .env
+docker compose up -d --build
+```
+
+O painel ficará em `http://127.0.0.1:8000` e o phpMyAdmin em `http://127.0.0.1:8081`. A conta inicial do professor é criada com os valores definidos no `.env`.
+
 ## Requisitos
 
 - PHP 8.1 ou mais recente, com `pdo_mysql` e `mbstring`;
 - MySQL 8 ou MariaDB 10.4+;
 - Apache, Nginx ou o servidor embutido do PHP.
 
-## Instalação local
+## Instalação local sem Docker
 
 Execute os comandos a partir da pasta `web`.
 

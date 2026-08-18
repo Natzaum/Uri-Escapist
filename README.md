@@ -5,6 +5,8 @@ Cada fase representa uma disciplina e cada professor se torna um chefe de fase, 
 
 O projeto inclui um painel em **PHP + MySQL** para professores cadastrarem perguntas. A Unity busca as questões publicadas e as distribui entre os livros da fase. Veja a [instalação do painel web](web/README.md).
 
+Para iniciar PHP, MySQL e phpMyAdmin juntos, siga o [guia de execução com Docker](DOCKER.md).
+
 ---
 
 ## 🎮 Visão Geral

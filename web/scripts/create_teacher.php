@@ -9,7 +9,7 @@ if (PHP_SAPI !== 'cli') {
     exit;
 }
 
-$arguments = getopt('', ['name:', 'email:', 'password:']);
+$arguments = getopt('', ['name:', 'email:', 'password:', 'only-if-missing']);
 $name = trim((string) ($arguments['name'] ?? ''));
 $email = mb_strtolower(trim((string) ($arguments['email'] ?? '')), 'UTF-8');
 $password = (string) ($arguments['password'] ?? '');
@@ -20,6 +20,16 @@ if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($passwo
         "Uso: php scripts/create_teacher.php --name=\"Nome\" --email=professor@exemplo.com --password=\"senha-com-8-caracteres\"\n"
     );
     exit(1);
+}
+
+if (array_key_exists('only-if-missing', $arguments)) {
+    $existingTeacher = db()->prepare('SELECT COUNT(*) FROM teachers WHERE email = :email');
+    $existingTeacher->execute(['email' => $email]);
+
+    if ((int) $existingTeacher->fetchColumn() > 0) {
+        fwrite(STDOUT, "Professor inicial já existe: {$email}\n");
+        exit(0);
+    }
 }
 
 $statement = db()->prepare(

@@ -19,3 +19,6 @@ UserSettings/
 
 # Credenciais locais do painel web
 /web/config/local.php
+
+# Variáveis e segredos locais do Docker
+/.env
