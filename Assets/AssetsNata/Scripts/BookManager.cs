@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,12 @@ public class BookManager : MonoBehaviour
     public int totalBooks = 10;
     public int minBooksToWin = 7;
     public int maxErrors = 3; // 4º erro = game over instantâneo
+
+    [Header("Perguntas online")]
+    public bool loadQuestionsFromWeb = true;
+    public string questionsApiUrl = "http://127.0.0.1:8000/api/v1/questions.php";
+    public string disciplineSlug = "geral";
+    [Range(2, 30)] public int questionRequestTimeout = 10;
 
     [Header("UI")]
     public TMP_Text booksCounterText;
@@ -40,7 +47,7 @@ public class BookManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
         // Resetar flag de game over (importante para reiniciar cenas)
         gameOverShown = false;
@@ -48,7 +55,7 @@ public class BookManager : MonoBehaviour
         UpdateUI();
         
         // Contar quantos livros existem na cena
-        BookQuiz[] books = FindObjectsOfType<BookQuiz>();
+        BookQuiz[] books = FindObjectsByType<BookQuiz>(FindObjectsSortMode.None);
         totalBooks = books.Length;
         
         Debug.Log($"📚 BookManager iniciado: {totalBooks} livros na cena");
@@ -56,6 +63,23 @@ public class BookManager : MonoBehaviour
         Debug.Log($"⚠️ Máximo de erros permitidos: {maxErrors}");
         
         UpdateUI();
+
+        if (loadQuestionsFromWeb && books.Length > 0)
+        {
+            yield return RemoteQuestionLoader.LoadAndAssign(
+                questionsApiUrl,
+                disciplineSlug,
+                questionRequestTimeout,
+                books,
+                loadedCount =>
+                {
+                    if (loadedCount > 0)
+                    {
+                        Debug.Log($"Perguntas online aplicadas em {loadedCount}/{books.Length} livros.");
+                    }
+                }
+            );
+        }
     }
 
     public void OnBookCorrect()

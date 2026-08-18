@@ -16,3 +16,6 @@ UserSettings/
 *.sln
 *.user
 /.config
+
+# Credenciais locais do painel web
+/web/config/local.php

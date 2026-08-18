@@ -7,6 +7,9 @@ public class BookQuiz : MonoBehaviour
     public string question;
     public string[] options = new string[4];
     public int correctIndex;
+
+    [HideInInspector]
+    public int remoteQuestionId;
     
     [Header("Detecção")]
     public float detectionRadius = 3f; // Raio de detecção (ajusta automaticamente com escala)
@@ -105,6 +108,35 @@ public class BookQuiz : MonoBehaviour
         }
     }
     
+    public bool SetQuestionData(int questionId, string newQuestion, string[] newOptions, int newCorrectIndex)
+    {
+        if (string.IsNullOrWhiteSpace(newQuestion))
+        {
+            Debug.LogWarning($"Book {name}: pergunta remota vazia ignorada.");
+            return false;
+        }
+
+        if (newOptions == null || newOptions.Length != 4)
+        {
+            Debug.LogWarning($"Book {name}: a pergunta remota precisa ter exatamente 4 alternativas.");
+            return false;
+        }
+
+        if (newCorrectIndex < 0 || newCorrectIndex >= newOptions.Length)
+        {
+            Debug.LogWarning($"Book {name}: indice de resposta remota invalido ({newCorrectIndex}).");
+            return false;
+        }
+
+        remoteQuestionId = questionId;
+        question = newQuestion;
+        options = (string[])newOptions.Clone();
+        correctIndex = newCorrectIndex;
+
+        Debug.Log($"Book {name} recebeu a pergunta remota #{remoteQuestionId}.");
+        return true;
+    }
+
     private void OnDrawGizmosSelected()
     {
         // Visualizar área de detecção
