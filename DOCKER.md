@@ -57,6 +57,34 @@ No phpMyAdmin, use o valor de `MYSQL_USER` como usuário e `MYSQL_PASSWORD` como
 
 A URL padrão configurada no `BookManager` da Unity já aponta para a porta `8000`. Se alterar `APP_PORT` no `.env`, atualize também **Questions Api Url** no Inspector.
 
+## Acessar por outro computador na mesma rede
+
+O painel e o phpMyAdmin escutam em `0.0.0.0`, portanto podem ser acessados pelo IP da máquina que executa o Docker. O MySQL na porta `3307` continua restrito ao computador servidor; o acesso visual ao banco deve ser feito pelo phpMyAdmin.
+
+No computador servidor, abra o PowerShell **como Administrador** e execute:
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+.\scripts\habilitar-acesso-rede.ps1
+```
+
+O script inicia os containers, libera as portas publicadas do painel e do phpMyAdmin no Firewall do Windows para redes privadas e mostra os endereços de acesso. No outro computador, use, por exemplo:
+
+```text
+http://192.168.0.15:8000
+http://192.168.0.15:8081
+```
+
+Substitua `192.168.0.15` pelo IP mostrado pelo script. Use `http://`, e não `https://`. Os dois computadores precisam estar na mesma rede, e a conexão do Windows deve estar marcada como **Rede privada**.
+
+Para a Unity executada em outro computador, altere **Questions Api Url** nos dois `BookManager` para:
+
+```text
+http://IP-DO-SERVIDOR:8000/api/v1/questions.php
+```
+
+Não encaminhe as portas `8000` ou `8081` no roteador e não exponha este ambiente de desenvolvimento diretamente à internet.
+
 ## Operação diária
 
 Parar sem excluir os containers:
@@ -95,6 +123,18 @@ docker compose up -d --build
 O arquivo [`web/database/schema.sql`](web/database/schema.sql) é executado automaticamente somente quando o volume do MySQL está vazio.
 
 ## Problemas comuns
+
+### `ERR_CONNECTION_REFUSED` na porta 8081
+
+Primeiro confirme que o Docker Desktop está aberto e que o phpMyAdmin está em execução:
+
+```powershell
+docker compose up -d --build
+docker compose ps
+docker compose logs --tail=100 phpmyadmin db
+```
+
+O resultado de `docker compose ps` deve mostrar algo equivalente a `0.0.0.0:8081->80/tcp` para o phpMyAdmin. Teste primeiro `http://127.0.0.1:8081` no computador servidor. Se funcionar localmente, mas não pelo IP, execute `scripts/habilitar-acesso-rede.ps1` como Administrador para configurar o firewall.
 
 ### Porta ocupada
 

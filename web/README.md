@@ -13,6 +13,8 @@ docker compose up -d --build
 
 O painel ficará em `http://127.0.0.1:8000` e o phpMyAdmin em `http://127.0.0.1:8081`. A conta inicial do professor é criada com os valores definidos no `.env`.
 
+Para acessar de outro computador na mesma rede, execute `scripts/habilitar-acesso-rede.ps1` na raiz do projeto usando um PowerShell como Administrador e utilize o IP exibido pelo script. As instruções completas estão no [guia Docker](../DOCKER.md#acessar-por-outro-computador-na-mesma-rede).
+
 ## Requisitos
 
 - PHP 8.1 ou mais recente, com `pdo_mysql` e `mbstring`;
