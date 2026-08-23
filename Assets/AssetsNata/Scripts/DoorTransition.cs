@@ -11,8 +11,8 @@ public class DoorTransition : MonoBehaviour
     public GameObject playerObject;
 
     [Header("Cena de Destino")]
-    [Tooltip("Nome exato da cena (ex: cenavitor) - aparece em Assets/Scenes/")]
-    public string targetSceneName = "cenavitor";
+    [Tooltip("Nome exato da cena (ex: andar1) - aparece em Assets/Scenes/")]
+    public string targetSceneName = "andar1";
 
     [Header("Visual/Feedback")]
     [Tooltip("Mostrar mensagem ao encostar")]

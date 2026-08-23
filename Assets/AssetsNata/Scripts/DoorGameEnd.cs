@@ -4,7 +4,7 @@ using TMPro;
 
 /// <summary>
 /// Porta de conclusão que mostra mensagem de parabéns
-/// Somente funciona se o player já visitou a cena_ruan
+/// Somente funciona se o player já visitou o andar2
 /// </summary>
 public class DoorGameEnd : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class DoorGameEnd : MonoBehaviour
 
     [Header("Requisitos")]
     [Tooltip("Nome da cena que deve ser visitada antes")]
-    public string requiredSceneName = "cena_ruan";
+    public string requiredSceneName = "andar2";
 
     [Header("Mensagem")]
     [TextArea(3, 5)]

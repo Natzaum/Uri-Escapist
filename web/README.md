@@ -72,13 +72,13 @@ O projeto está configurado para aceitar HTTP durante o desenvolvimento local. E
 ### Buscar perguntas pela cena da Unity
 
 ```http
-GET /api/v1/questions.php?scene=cenavitor&limit=10&random=1
+GET /api/v1/questions.php?scene=andar1&limit=10&random=1
 ```
 
 Mapeamento inicial:
 
-- `cenavitor` → Andar 1;
-- `cena_ruan` → Andar 2.
+- `andar1` → Andar 1;
+- `andar2` → Andar 2.
 
 O parâmetro `limit` é preenchido automaticamente com a quantidade de livros ativos da cena.
 

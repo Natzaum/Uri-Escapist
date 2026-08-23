@@ -50,7 +50,7 @@ O comando também permite redefinir a senha caso seja executado novamente com o 
 |---|---|---|
 | Painel do professor | `http://127.0.0.1:8000/login.php` | `INITIAL_TEACHER_EMAIL` e `INITIAL_TEACHER_PASSWORD` do `.env` |
 | phpMyAdmin | `http://127.0.0.1:8081` | Usuário e senha do `.env` |
-| API para Unity | `http://127.0.0.1:8000/api/v1/questions.php?scene=cenavitor&limit=10` | Leitura pública |
+| API para Unity | `http://127.0.0.1:8000/api/v1/questions.php?scene=andar1&limit=10` | Leitura pública |
 | Saúde da API | `http://127.0.0.1:8000/api/v1/health.php` | — |
 
 No phpMyAdmin, use o valor de `MYSQL_USER` como usuário e `MYSQL_PASSWORD` como senha. O servidor já está definido internamente como `db`.

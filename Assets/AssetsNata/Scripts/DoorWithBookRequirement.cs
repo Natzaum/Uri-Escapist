@@ -13,8 +13,8 @@ public class DoorWithBookRequirement : MonoBehaviour
     public int booksRequired = 7;
 
     [Header("Cena de Destino")]
-    [Tooltip("Nome da cena para carregar (ex: cena_ruan)")]
-    public string targetSceneName = "cena_ruan";
+    [Tooltip("Nome da cena para carregar (ex: andar2)")]
+    public string targetSceneName = "andar2";
 
     [Header("Referências")]
     [Tooltip("GameObject do player - arraste aqui")]

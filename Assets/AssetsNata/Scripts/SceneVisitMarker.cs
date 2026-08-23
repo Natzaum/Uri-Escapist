@@ -1,19 +1,19 @@
 using UnityEngine;
 
 /// <summary>
-/// Script que marca quando o player visitou a cena_ruan
-/// Coloque este script em qualquer GameObject da cena_ruan
+/// Script que marca quando o player visitou o andar2
+/// Coloque este script em qualquer GameObject do andar2
 /// </summary>
 public class SceneVisitMarker : MonoBehaviour
 {
     [Header("Configuração")]
     [Tooltip("Nome desta cena")]
-    public string sceneName = "cena_ruan";
+    public string sceneName = "andar2";
 
     void Start()
     {
         // Registrar que visitou esta cena
-        if (sceneName == "cena_ruan")
+        if (sceneName == "andar2")
         {
             DoorGameEnd.SetVisitedRequiredScene();
             Debug.Log($"✅ {sceneName} visitada! Porta de conclusão desbloqueada!");
