@@ -9,10 +9,9 @@ $selectedCorrect = (int) old('correct_index', $question['correct_index']);
     </div>
 </section>
 
-<?php if ($disciplines === []): ?>
+<?php if ($disciplines === [] || $floors === []): ?>
     <div class="alert alert-warning">
-        <span>Cadastre uma disciplina antes de criar perguntas.</span>
-        <a href="<?= e(url('/disciplines.php')) ?>">Ir para disciplinas</a>
+        <span>É necessário ter pelo menos uma disciplina e um andar ativos antes de criar perguntas.</span>
     </div>
 <?php endif; ?>
 
@@ -51,6 +50,20 @@ $selectedCorrect = (int) old('correct_index', $question['correct_index']);
                 <span class="eyebrow">Configuração</span>
                 <h2>Publicação</h2>
             </div>
+        </div>
+
+        <div class="field-group">
+            <label for="floor_id">Andar do jogo</label>
+            <select id="floor_id" name="floor_id" required>
+                <option value="">Selecione...</option>
+                <?php foreach ($floors as $floor): ?>
+                    <?php $selectedFloor = (int) old('floor_id', $question['floor_id']); ?>
+                    <option value="<?= (int) $floor['id'] ?>" <?= $selectedFloor === (int) $floor['id'] ? 'selected' : '' ?>>
+                        <?= e($floor['name']) ?> — cena <?= e($floor['scene_name']) ?><?= (int) $floor['active'] === 0 ? ' (inativo)' : '' ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <small>A Unity identifica este andar automaticamente pelo nome da cena.</small>
         </div>
 
         <div class="field-group">

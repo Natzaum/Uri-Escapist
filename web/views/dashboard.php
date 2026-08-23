@@ -52,6 +52,7 @@
                 <article class="question-row">
                     <div class="question-main">
                         <div class="badges">
+                            <span class="badge badge-floor"><?= e($question['floor']) ?></span>
                             <span class="badge"><?= e($question['discipline']) ?></span>
                             <span class="badge badge-<?= e($question['status']) ?>">
                                 <?= $question['status'] === 'published' ? 'Publicada' : 'Rascunho' ?>

@@ -52,10 +52,10 @@ Para produção, configure o *document root* do servidor em `web/public`, use HT
 ## Fluxo professor → jogo
 
 1. O professor entra no painel.
-2. Cria uma disciplina e observa sua chave, por exemplo `computacao-grafica`.
-3. Cadastra questões, marca a alternativa correta e seleciona **Publicada**.
-4. Na Unity, seleciona o objeto `BookManager` da fase e informa a mesma chave em **Discipline Slug**.
-5. Quando a fase inicia, o jogo consulta a API e distribui as questões entre os componentes `BookQuiz` presentes na cena.
+2. Cria ou seleciona uma disciplina, por exemplo `Computação Gráfica`.
+3. Cadastra a questão escolhendo também **Andar 1** ou **Andar 2** e seleciona **Publicada**.
+4. Quando a fase inicia, a Unity envia automaticamente o nome da cena atual.
+5. A API identifica o andar e distribui somente as questões destinadas a ele entre os componentes `BookQuiz` da cena.
 
 O `BookManager` já vem configurado para o servidor local:
 
@@ -69,7 +69,20 @@ O projeto está configurado para aceitar HTTP durante o desenvolvimento local. E
 
 ## API
 
-### Buscar perguntas
+### Buscar perguntas pela cena da Unity
+
+```http
+GET /api/v1/questions.php?scene=cenavitor&limit=10&random=1
+```
+
+Mapeamento inicial:
+
+- `cenavitor` → Andar 1;
+- `cena_ruan` → Andar 2.
+
+O parâmetro `limit` é preenchido automaticamente com a quantidade de livros ativos da cena.
+
+### Buscar por disciplina — compatibilidade
 
 ```http
 GET /api/v1/questions.php?discipline=geral&limit=10&random=1
@@ -78,6 +91,7 @@ GET /api/v1/questions.php?discipline=geral&limit=10&random=1
 Parâmetros:
 
 - `discipline`: chave da disciplina; padrão `geral`;
+- `scene`: nome exato da cena Unity; quando informado, possui prioridade sobre `discipline`;
 - `limit`: quantidade entre 1 e 50; padrão 10;
 - `random`: use `1` para ordem aleatória ou `0` para ordenar por ID.
 
@@ -118,6 +132,15 @@ O código HTTP é `200` quando o banco responde e `503` quando está indisponív
 - Se a API não responder, os livros mantêm as perguntas preenchidas localmente no projeto Unity.
 - Se houver menos perguntas publicadas do que livros, somente os primeiros livros recebem conteúdo remoto; os demais mantêm suas perguntas locais.
 - Rascunhos e questões de disciplinas inativas nunca são enviados ao jogo.
+- Perguntas antigas sem andar associado continuam disponíveis nos dois andares até serem editadas.
+
+## Atualizar um banco existente
+
+No Docker, as migrações são executadas automaticamente quando o container `app` inicia. Sem Docker, execute:
+
+```powershell
+php scripts/migrate.php
+```
 
 ## Estrutura
 

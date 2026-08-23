@@ -26,7 +26,7 @@ try {
     $statement = db()->prepare('INSERT INTO disciplines (name, slug, active) VALUES (:name, :slug, 1)');
     $statement->execute(['name' => $name, 'slug' => $slug]);
     clear_old_input();
-    flash('success', 'Disciplina cadastrada. Use a chave “' . $slug . '” na Unity.');
+    flash('success', 'Disciplina cadastrada com o identificador “' . $slug . '”.');
 } catch (PDOException $exception) {
     if ((string) $exception->getCode() === '23000') {
         flash('error', 'Essa chave já está sendo usada por outra disciplina.');

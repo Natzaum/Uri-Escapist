@@ -16,6 +16,7 @@ $teacherId = (int) current_teacher()['id'];
 $questionId = max(0, (int) ($_POST['id'] ?? 0));
 $input = [
     'discipline_id' => max(0, (int) ($_POST['discipline_id'] ?? 0)),
+    'floor_id' => max(0, (int) ($_POST['floor_id'] ?? 0)),
     'prompt' => trim((string) ($_POST['prompt'] ?? '')),
     'option_a' => trim((string) ($_POST['option_a'] ?? '')),
     'option_b' => trim((string) ($_POST['option_b'] ?? '')),
@@ -31,6 +32,10 @@ $errors = [];
 
 if ($input['discipline_id'] < 1) {
     $errors[] = 'Selecione uma disciplina.';
+}
+
+if ($input['floor_id'] < 1) {
+    $errors[] = 'Selecione o andar em que a pergunta deve aparecer.';
 }
 
 if ($input['prompt'] === '' || mb_strlen($input['prompt']) > 500) {
@@ -72,6 +77,13 @@ if ((int) $disciplineStatement->fetchColumn() !== 1) {
     $errors[] = 'A disciplina selecionada não existe.';
 }
 
+$floorStatement = db()->prepare('SELECT COUNT(*) FROM floors WHERE id = :id');
+$floorStatement->execute(['id' => $input['floor_id']]);
+
+if ((int) $floorStatement->fetchColumn() !== 1) {
+    $errors[] = 'O andar selecionado não existe.';
+}
+
 if ($questionId > 0) {
     $ownerStatement = db()->prepare('SELECT COUNT(*) FROM questions WHERE id = :id AND teacher_id = :teacher_id');
     $ownerStatement->execute(['id' => $questionId, 'teacher_id' => $teacherId]);
@@ -96,6 +108,7 @@ if ($questionId > 0) {
     $statement = db()->prepare(
         'UPDATE questions SET
             discipline_id = :discipline_id,
+            floor_id = :floor_id,
             prompt = :prompt,
             option_a = :option_a,
             option_b = :option_b,
@@ -110,11 +123,11 @@ if ($questionId > 0) {
 } else {
     $statement = db()->prepare(
         'INSERT INTO questions (
-            discipline_id, teacher_id, prompt,
+            discipline_id, floor_id, teacher_id, prompt,
             option_a, option_b, option_c, option_d,
             correct_index, difficulty, status
          ) VALUES (
-            :discipline_id, :teacher_id, :prompt,
+            :discipline_id, :floor_id, :teacher_id, :prompt,
             :option_a, :option_b, :option_c, :option_d,
             :correct_index, :difficulty, :status
          )'

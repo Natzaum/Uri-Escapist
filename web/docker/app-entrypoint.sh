@@ -2,6 +2,8 @@
 
 set -eu
 
+php /var/www/html/scripts/migrate.php
+
 if [ -n "${INITIAL_TEACHER_NAME:-}" ] \
     && [ -n "${INITIAL_TEACHER_EMAIL:-}" ] \
     && [ -n "${INITIAL_TEACHER_PASSWORD:-}" ]; then

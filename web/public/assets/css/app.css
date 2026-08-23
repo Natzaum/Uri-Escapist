@@ -574,6 +574,12 @@ h3 {
     color: var(--primary-bright);
 }
 
+.badge-floor {
+    border-color: rgba(83, 216, 229, 0.2);
+    color: var(--cyan);
+    background: rgba(83, 216, 229, 0.06);
+}
+
 .correct-answer {
     margin: 0.55rem 0 0;
     color: var(--muted);
@@ -626,7 +632,7 @@ h3 {
 
 .filter-form {
     display: grid;
-    grid-template-columns: minmax(220px, 1fr) minmax(170px, 0.4fr) minmax(150px, 0.35fr) auto auto;
+    grid-template-columns: minmax(220px, 1fr) minmax(145px, 0.35fr) minmax(170px, 0.4fr) minmax(150px, 0.35fr) auto auto;
     gap: 0.65rem;
 }
 

@@ -10,6 +10,7 @@ $questionId = max(0, (int) ($_GET['id'] ?? 0));
 $question = [
     'id' => 0,
     'discipline_id' => '',
+    'floor_id' => '',
     'prompt' => '',
     'option_a' => '',
     'option_b' => '',
@@ -34,12 +35,14 @@ if ($questionId > 0) {
 }
 
 $disciplines = db()->query('SELECT id, name, active FROM disciplines ORDER BY active DESC, name')->fetchAll();
+$floors = db()->query('SELECT id, name, scene_name, active FROM floors ORDER BY active DESC, id')->fetchAll();
 
 render('questions/form', [
     'pageTitle' => $questionId > 0 ? 'Editar pergunta' : 'Nova pergunta',
     'activePage' => 'questions',
     'question' => $question,
     'disciplines' => $disciplines,
+    'floors' => $floors,
 ]);
 
 clear_old_input();

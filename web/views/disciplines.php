@@ -39,7 +39,7 @@
     <aside class="panel create-discipline-card">
         <span class="eyebrow">Nova categoria</span>
         <h2>Cadastrar disciplina</h2>
-        <p class="muted">A chave é usada pela Unity para escolher o conjunto de perguntas da fase.</p>
+        <p class="muted">A disciplina organiza e identifica o conteúdo cadastrado pelo professor.</p>
 
         <form class="stack-form" action="<?= e(url('/actions/discipline-save.php')) ?>" method="post">
             <?= csrf_field() ?>
@@ -48,15 +48,15 @@
                 <input type="text" name="name" value="<?= e(old('name')) ?>" maxlength="120" placeholder="Ex.: Computação Gráfica" required>
             </label>
             <label>
-                <span>Chave da Unity <small>(opcional)</small></span>
+                <span>Identificador interno <small>(opcional)</small></span>
                 <input type="text" name="slug" value="<?= e(old('slug')) ?>" maxlength="120" pattern="[a-z0-9-]+" placeholder="computacao-grafica">
             </label>
             <button class="button button-primary button-wide" type="submit">Cadastrar disciplina</button>
         </form>
 
         <div class="info-box">
-            <strong>Como conectar</strong>
-            <p>Copie a chave exibida na lista para o campo <code>disciplineSlug</code> do BookManager na Unity.</p>
+            <strong>Integração automática</strong>
+            <p>A disciplina organiza o conteúdo no painel. A Unity escolhe as perguntas pelo andar associado ao nome da cena, sem configurar a matéria no BookManager.</p>
         </div>
     </aside>
 </section>

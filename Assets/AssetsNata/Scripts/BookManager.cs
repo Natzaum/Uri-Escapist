@@ -15,7 +15,6 @@ public class BookManager : MonoBehaviour
     [Header("Perguntas online")]
     public bool loadQuestionsFromWeb = true;
     public string questionsApiUrl = "http://127.0.0.1:8000/api/v1/questions.php";
-    public string disciplineSlug = "geral";
     [Range(2, 30)] public int questionRequestTimeout = 10;
 
     [Header("UI")]
@@ -68,7 +67,7 @@ public class BookManager : MonoBehaviour
         {
             yield return RemoteQuestionLoader.LoadAndAssign(
                 questionsApiUrl,
-                disciplineSlug,
+                SceneManager.GetActiveScene().name,
                 questionRequestTimeout,
                 books,
                 loadedCount =>

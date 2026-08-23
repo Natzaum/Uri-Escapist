@@ -12,6 +12,17 @@
             <input type="search" name="search" value="<?= e($filters['search']) ?>" placeholder="Pesquisar no enunciado...">
         </label>
         <label>
+            <span class="sr-only">Andar</span>
+            <select name="floor">
+                <option value="0">Todos os andares</option>
+                <?php foreach ($floors as $floor): ?>
+                    <option value="<?= (int) $floor['id'] ?>" <?= (int) $filters['floor'] === (int) $floor['id'] ? 'selected' : '' ?>>
+                        <?= e($floor['name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </label>
+        <label>
             <span class="sr-only">Disciplina</span>
             <select name="discipline">
                 <option value="0">Todas as disciplinas</option>
@@ -31,7 +42,7 @@
             </select>
         </label>
         <button class="button button-secondary" type="submit">Filtrar</button>
-        <?php if ($filters['search'] !== '' || $filters['discipline'] > 0 || $filters['status'] !== ''): ?>
+        <?php if ($filters['search'] !== '' || $filters['floor'] > 0 || $filters['discipline'] > 0 || $filters['status'] !== ''): ?>
             <a class="button button-ghost" href="<?= e(url('/questions.php')) ?>">Limpar</a>
         <?php endif; ?>
     </form>
@@ -58,6 +69,7 @@
                 <article class="question-row question-row-detailed">
                     <div class="question-main">
                         <div class="badges">
+                            <span class="badge badge-floor"><?= e($question['floor']) ?></span>
                             <span class="badge"><?= e($question['discipline']) ?></span>
                             <span class="badge badge-difficulty"><?= e(ucfirst($question['difficulty'])) ?></span>
                             <span class="badge badge-<?= e($question['status']) ?>">

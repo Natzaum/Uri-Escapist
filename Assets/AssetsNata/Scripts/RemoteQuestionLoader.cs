@@ -24,7 +24,7 @@ public static class RemoteQuestionLoader
 
     public static IEnumerator LoadAndAssign(
         string apiUrl,
-        string disciplineSlug,
+        string sceneName,
         int timeoutSeconds,
         BookQuiz[] books,
         Action<int> onCompleted = null)
@@ -42,11 +42,11 @@ public static class RemoteQuestionLoader
             yield break;
         }
 
-        string discipline = string.IsNullOrWhiteSpace(disciplineSlug) ? "geral" : disciplineSlug.Trim();
+        string scene = string.IsNullOrWhiteSpace(sceneName) ? "unknown" : sceneName.Trim();
         string separator = apiUrl.Contains("?") ? "&" : "?";
         string requestUrl = apiUrl
             + separator
-            + "discipline=" + UnityWebRequest.EscapeURL(discipline)
+            + "scene=" + UnityWebRequest.EscapeURL(scene)
             + "&limit=" + books.Length
             + "&random=1";
 
@@ -85,7 +85,7 @@ public static class RemoteQuestionLoader
                 string detail = response != null && !string.IsNullOrWhiteSpace(response.message)
                     ? " Detalhe: " + response.message
                     : string.Empty;
-                Debug.LogWarning($"A API nao retornou perguntas publicadas para '{discipline}'.{detail} Usando perguntas locais.");
+                Debug.LogWarning($"A API nao retornou perguntas publicadas para a cena '{scene}'.{detail} Usando perguntas locais.");
                 onCompleted?.Invoke(0);
                 yield break;
             }
