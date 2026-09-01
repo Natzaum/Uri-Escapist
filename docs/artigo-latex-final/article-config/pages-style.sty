@@ -1,0 +1,58 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Modifyied by Prof. MSc. Daniel Menin Tortelli
+% Computer Science - URICER - Brazil
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xcolor}
+\newcommand*\DefVar[1]{\@namedef{#1}##1{\global\@namedef{get#1}{##1}}}
+\DefVar{anais}
+\DefVar{curso}
+\DefVar{ano}
+\DefVar{local}
+\DefVar{edicao}
+\DefVar{evento}
+\DefVar{anais}
+
+\evento{\getedicao~Trabalho de Conclusão de Curso \getano - \getlocal}
+
+
+
+% Updated in 17 apr 2024
+% Avoid warning
+\setlength{\headheight}{50.0pt}
+\fancypagestyle{plain}
+{
+    \fancyhf{} 
+    \fancyfoot[C]{\thepage}
+    \fancyhead[C]{\includegraphics[width=15.5cm, height=2.5cm]{article-config/logo.png}}
+    \renewcommand{\headrulewidth}{0.5pt}
+}
+
+\fancypagestyle{plain2}
+{
+    \fancyhf{} 
+    \fancyhead[L]{
+    {\scriptsize
+        \begin{tabular}[t]{@{}l@{}}
+           \getevento\\
+           %\getanais\\
+        \end{tabular}
+    }
+}
+\fancyhead[R]{
+    {\scriptsize
+        
+        \begin{tabular}[t]{@{}r@{}}
+            Curso: \getcurso
+        \end{tabular}
+    }
+}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyfoot[C]{\hfill\thepage\hfill}
+}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
