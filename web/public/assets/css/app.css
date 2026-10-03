@@ -245,7 +245,7 @@ h3 {
     height: 8px;
     border-radius: 50%;
     background: var(--success);
-    box-shadow: 0 0 0 5px rgba(78, 212, 155, 0.1);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--success) 12%, transparent);
 }
 
 .workspace {
@@ -559,9 +559,9 @@ h3 {
 }
 
 .badge-published {
-    border-color: rgba(78, 212, 155, 0.2);
+    border-color: color-mix(in srgb, var(--success) 25%, transparent);
     color: var(--success);
-    background: rgba(78, 212, 155, 0.07);
+    background: color-mix(in srgb, var(--success) 9%, transparent);
 }
 
 .badge-draft {
@@ -748,8 +748,8 @@ textarea::placeholder {
 }
 
 .answer-input:has(input[type='radio']:checked) {
-    border-color: rgba(78, 212, 155, 0.34);
-    background: rgba(78, 212, 155, 0.035);
+    border-color: color-mix(in srgb, var(--success) 42%, transparent);
+    background: color-mix(in srgb, var(--success) 6%, transparent);
 }
 
 .answer-input input[type='radio'],
@@ -913,8 +913,8 @@ textarea::placeholder {
 }
 
 .alert-success {
-    border-color: rgba(78, 212, 155, 0.2);
-    color: #89e9bd;
+    border-color: color-mix(in srgb, var(--success) 25%, transparent);
+    color: var(--success);
 }
 
 .alert-error {
@@ -1225,18 +1225,18 @@ textarea::placeholder {
 
 :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #202420;
-    --surface: #292f2a;
-    --surface-raised: #323832;
-    --surface-soft: #393f39;
-    --border: #414840;
-    --border-strong: #535c52;
-    --text: #efeee6;
-    --muted: #b1b4a9;
+    --bg: #1d2734;
+    --surface: #263342;
+    --surface-raised: #2e3d4e;
+    --surface-soft: #37485b;
+    --border: #405267;
+    --border-strong: #566b83;
+    --text: #edf2f8;
+    --muted: #b4c1d0;
     --primary: #9dbfe0;
     --primary-bright: #b2d0eb;
     --cyan: #a8c5df;
-    --success: #91c3a1;
+    --success: #8fbee8;
     --warning: #dfbf79;
     --danger: #e19a8f;
     --shadow: 0 16px 38px rgba(0, 0, 0, 0.22);
@@ -1333,8 +1333,8 @@ h2 {
 }
 
 :root[data-theme="dark"] .hero-panel {
-    border-color: #465360;
-    background: #303d49;
+    border-color: #465c73;
+    background: #2c3d51;
 }
 
 .hero-panel::after {
@@ -1506,7 +1506,7 @@ textarea::placeholder {
 }
 
 :root[data-theme="dark"] .login-visual {
-    background: #2e4052;
+    background: #29496b;
 }
 
 .login-visual::before {
@@ -1534,7 +1534,7 @@ textarea::placeholder {
 }
 
 .visual-content .eyebrow {
-    color: #c5d5c5;
+    color: #c4d8eb;
 }
 
 .visual-content h2 {
@@ -1546,7 +1546,7 @@ textarea::placeholder {
 
 .visual-content p:last-child {
     max-width: 380px;
-    color: #d3dbd0;
+    color: #d7e4f0;
 }
 
 .login-form-wrap {
