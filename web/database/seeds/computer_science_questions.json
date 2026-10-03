@@ -1,0 +1,1172 @@
+[
+  {
+    "discipline": "programacao",
+    "disciplineName": "Programação",
+    "difficulty": "facil",
+    "prompt": "Qual estrutura permite executar um bloco de código enquanto uma condição permanece verdadeira?",
+    "options": [
+      "Laço de repetição",
+      "Declaração de constante",
+      "Comentário de código",
+      "Importação de biblioteca"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "programacao",
+    "disciplineName": "Programação",
+    "difficulty": "facil",
+    "prompt": "Qual é a finalidade de uma variável em um programa?",
+    "options": [
+      "Garantir que o programa não tenha erros",
+      "Armazenar um valor que pode ser utilizado pelo programa",
+      "Converter todo código em linguagem de máquina",
+      "Substituir o sistema operacional"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "programacao",
+    "disciplineName": "Programação",
+    "difficulty": "facil",
+    "prompt": "Em uma função, o que representa um parâmetro?",
+    "options": [
+      "Uma instrução obrigatória de repetição",
+      "O arquivo executável do programa",
+      "Um dado de entrada recebido pela função",
+      "Um erro detectado pelo compilador"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "algoritmos",
+    "disciplineName": "Algoritmos",
+    "difficulty": "facil",
+    "prompt": "O que é um algoritmo?",
+    "options": [
+      "Um componente físico de memória",
+      "Um protocolo exclusivo de redes sem fio",
+      "Uma linguagem específica de programação",
+      "Uma sequência finita de passos para resolver um problema"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "algoritmos",
+    "disciplineName": "Algoritmos",
+    "difficulty": "facil",
+    "prompt": "Em uma lista sem ordenação, qual busca examina os elementos sequencialmente até encontrar o alvo ou chegar ao fim?",
+    "options": [
+      "Busca linear",
+      "Busca binária",
+      "Ordenação por seleção",
+      "Ordenação por intercalação"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "algoritmos",
+    "disciplineName": "Algoritmos",
+    "difficulty": "facil",
+    "prompt": "Qual é o resultado de ordenar [8, 3, 5, 1] em ordem crescente?",
+    "options": [
+      "[8, 5, 3, 1]",
+      "[1, 3, 5, 8]",
+      "[3, 1, 8, 5]",
+      "[5, 8, 1, 3]"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "estruturas",
+    "disciplineName": "Estruturas de Dados",
+    "difficulty": "facil",
+    "prompt": "Qual estrutura remove primeiro o último elemento inserido, seguindo LIFO?",
+    "options": [
+      "Fila",
+      "Conjunto sem ordem",
+      "Pilha",
+      "Tabela relacional"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "estruturas",
+    "disciplineName": "Estruturas de Dados",
+    "difficulty": "facil",
+    "prompt": "Qual estrutura segue FIFO, removendo primeiro o primeiro elemento inserido?",
+    "options": [
+      "Pilha",
+      "Árvore binária de busca",
+      "Tabela hash",
+      "Fila"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "estruturas",
+    "disciplineName": "Estruturas de Dados",
+    "difficulty": "facil",
+    "prompt": "Em um vetor com índices iniciados em zero, qual é o índice do terceiro elemento?",
+    "options": [
+      "2",
+      "3",
+      "1",
+      "0"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "bancos",
+    "disciplineName": "Banco de Dados",
+    "difficulty": "facil",
+    "prompt": "Qual comando SQL é usado para consultar registros de uma tabela?",
+    "options": [
+      "INSERT",
+      "SELECT",
+      "DELETE",
+      "UPDATE"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "bancos",
+    "disciplineName": "Banco de Dados",
+    "difficulty": "facil",
+    "prompt": "Qual é a função de uma chave primária em uma tabela relacional?",
+    "options": [
+      "Ordenar fisicamente todos os registros por data",
+      "Permitir apenas valores de texto",
+      "Identificar unicamente cada registro",
+      "Criptografar automaticamente todas as colunas"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "bancos",
+    "disciplineName": "Banco de Dados",
+    "difficulty": "facil",
+    "prompt": "Qual comando SQL altera valores de registros existentes?",
+    "options": [
+      "CREATE TABLE",
+      "INSERT",
+      "DROP TABLE",
+      "UPDATE"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "redes",
+    "disciplineName": "Redes de Computadores",
+    "difficulty": "facil",
+    "prompt": "Qual é a principal função do DNS?",
+    "options": [
+      "Resolver nomes de domínio em registros, como endereços IP",
+      "Criptografar todos os arquivos do computador",
+      "Fornecer energia elétrica ao roteador",
+      "Compactar imagens antes da transmissão"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "redes",
+    "disciplineName": "Redes de Computadores",
+    "difficulty": "facil",
+    "prompt": "Qual equipamento encaminha pacotes entre redes IP diferentes?",
+    "options": [
+      "Teclado",
+      "Roteador",
+      "Monitor",
+      "Leitor de código de barras"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "redes",
+    "disciplineName": "Redes de Computadores",
+    "difficulty": "facil",
+    "prompt": "Qual protocolo é usado na comunicação entre navegadores e servidores para transferir recursos da Web?",
+    "options": [
+      "SMTP",
+      "IMAP",
+      "HTTP",
+      "DHCP"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "sistemas",
+    "disciplineName": "Sistemas Operacionais",
+    "difficulty": "facil",
+    "prompt": "Qual é uma função central do sistema operacional?",
+    "options": [
+      "Substituir todos os programas aplicativos",
+      "Produzir energia para o processador",
+      "Projetar fisicamente os circuitos do computador",
+      "Gerenciar recursos como processador, memória e dispositivos"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "sistemas",
+    "disciplineName": "Sistemas Operacionais",
+    "difficulty": "facil",
+    "prompt": "O que é um processo em um sistema operacional?",
+    "options": [
+      "Uma instância de um programa em execução",
+      "Um arquivo de imagem compactado",
+      "Uma porta física USB",
+      "Um tipo de cabo de rede"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "sistemas",
+    "disciplineName": "Sistemas Operacionais",
+    "difficulty": "facil",
+    "prompt": "Qual é a finalidade de um sistema de arquivos?",
+    "options": [
+      "Definir a resolução do monitor",
+      "Organizar e permitir o acesso a arquivos e diretórios",
+      "Executar exclusivamente cálculos matemáticos",
+      "Controlar somente a velocidade das ventoinhas"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "arquitetura",
+    "disciplineName": "Arquitetura de Computadores",
+    "difficulty": "facil",
+    "prompt": "Qual componente executa instruções de programas de propósito geral?",
+    "options": [
+      "Fonte de alimentação",
+      "Monitor",
+      "CPU",
+      "Gabinete"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "arquitetura",
+    "disciplineName": "Arquitetura de Computadores",
+    "difficulty": "facil",
+    "prompt": "Na memória RAM volátil, o que normalmente acontece com os dados quando a energia é desligada?",
+    "options": [
+      "São copiados automaticamente para o SSD",
+      "Permanecem indefinidamente sem energia",
+      "São enviados automaticamente para a nuvem",
+      "São perdidos"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "arquitetura",
+    "disciplineName": "Arquitetura de Computadores",
+    "difficulty": "facil",
+    "prompt": "Em sistemas atuais, quantos bits formam um byte?",
+    "options": [
+      "8",
+      "2",
+      "16",
+      "32"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "seguranca",
+    "disciplineName": "Segurança da Informação",
+    "difficulty": "facil",
+    "prompt": "O que caracteriza um ataque de phishing?",
+    "options": [
+      "Uma técnica de compactação de arquivos",
+      "Uma tentativa de enganar alguém para revelar informações ou realizar uma ação",
+      "Uma cópia de segurança programada",
+      "Um teste de velocidade de conexão"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "seguranca",
+    "disciplineName": "Segurança da Informação",
+    "difficulty": "facil",
+    "prompt": "Qual situação exemplifica autenticação com dois fatores distintos?",
+    "options": [
+      "Duas senhas memorizadas pelo usuário",
+      "Nome de usuário e endereço de e-mail",
+      "Senha e código gerado em um dispositivo autenticador",
+      "Duas perguntas de segurança pessoais"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "seguranca",
+    "disciplineName": "Segurança da Informação",
+    "difficulty": "facil",
+    "prompt": "Qual é o principal objetivo de uma cópia de segurança?",
+    "options": [
+      "Eliminar a necessidade de atualizações",
+      "Impedir qualquer tipo de ataque",
+      "Aumentar a frequência do processador",
+      "Permitir recuperar dados após perda ou dano"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "engenharia",
+    "disciplineName": "Engenharia de Software",
+    "difficulty": "facil",
+    "prompt": "Para que serve um sistema de controle de versão como o Git?",
+    "options": [
+      "Registrar e organizar alterações nos arquivos de um projeto",
+      "Garantir automaticamente a ausência de defeitos",
+      "Substituir o compilador em qualquer linguagem",
+      "Hospedar obrigatoriamente o sistema em produção"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "engenharia",
+    "disciplineName": "Engenharia de Software",
+    "difficulty": "facil",
+    "prompt": "Qual exemplo descreve um requisito funcional?",
+    "options": [
+      "A página deve responder em até dois segundos",
+      "O sistema deve permitir cadastrar um aluno",
+      "O serviço deve ter disponibilidade de 99,9%",
+      "As senhas armazenadas devem usar um algoritmo de hash apropriado"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "engenharia",
+    "disciplineName": "Engenharia de Software",
+    "difficulty": "facil",
+    "prompt": "Qual é o foco de um teste unitário?",
+    "options": [
+      "Medir exclusivamente a velocidade da rede",
+      "Validar obrigatoriamente todo o sistema em produção",
+      "Verificar uma pequena unidade de comportamento do software",
+      "Substituir a análise de requisitos"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "fundamentos",
+    "disciplineName": "Fundamentos da Computação",
+    "difficulty": "facil",
+    "prompt": "Qual é o valor decimal do número binário 1010?",
+    "options": [
+      "8",
+      "12",
+      "5",
+      "10"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "fundamentos",
+    "disciplineName": "Fundamentos da Computação",
+    "difficulty": "facil",
+    "prompt": "Se P é verdadeiro e Q é falso, qual é o valor de P E Q?",
+    "options": [
+      "Falso",
+      "Verdadeiro",
+      "Depende do processador",
+      "Não pode ser determinado"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "fundamentos",
+    "disciplineName": "Fundamentos da Computação",
+    "difficulty": "facil",
+    "prompt": "Qual é a finalidade principal de um compilador?",
+    "options": [
+      "Armazenar permanentemente os dados do usuário",
+      "Traduzir código de uma linguagem de origem para uma linguagem de destino",
+      "Gerenciar os cabos da rede local",
+      "Desenhar automaticamente a interface de qualquer programa"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "programacao",
+    "disciplineName": "Programação",
+    "difficulty": "media",
+    "prompt": "No pseudocódigo x = 2; para i de 1 até 3, inclusive: x = x * 2. Qual é o valor final de x?",
+    "options": [
+      "8",
+      "16",
+      "12",
+      "6"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "programacao",
+    "disciplineName": "Programação",
+    "difficulty": "media",
+    "prompt": "Uma função recursiva calcula f(0) = 1 e f(n) = n * f(n - 1), para n positivo. Quanto vale f(4)?",
+    "options": [
+      "16",
+      "10",
+      "24",
+      "120"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "programacao",
+    "disciplineName": "Programação",
+    "difficulty": "media",
+    "prompt": "Em orientação a objetos, qual conceito permite chamar a mesma operação em objetos de tipos distintos e obter comportamentos específicos de cada tipo?",
+    "options": [
+      "Concatenação",
+      "Alocação contígua",
+      "Ordenação estável",
+      "Polimorfismo"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "algoritmos",
+    "disciplineName": "Algoritmos",
+    "difficulty": "media",
+    "prompt": "Em um vetor ordenado com n elementos, qual é o limite assintótico de tempo mais justo, entre as opções, para a busca binária no pior caso?",
+    "options": [
+      "O(log n)",
+      "O(n)",
+      "O(n log n)",
+      "O(n²)"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "algoritmos",
+    "disciplineName": "Algoritmos",
+    "difficulty": "media",
+    "prompt": "Dois laços aninhados executam, cada um, exatamente n iterações, e o corpo interno tem custo constante. Qual é a complexidade de tempo total?",
+    "options": [
+      "O(log n)",
+      "O(n²)",
+      "O(n)",
+      "O(1)"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "algoritmos",
+    "disciplineName": "Algoritmos",
+    "difficulty": "media",
+    "prompt": "Qual algoritmo encontra caminhos com o menor número de arestas a partir de uma origem em um grafo não ponderado?",
+    "options": [
+      "Busca em profundidade sem controle de distâncias",
+      "Ordenação por inserção",
+      "Busca em largura",
+      "Busca binária"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "estruturas",
+    "disciplineName": "Estruturas de Dados",
+    "difficulty": "media",
+    "prompt": "Uma pilha recebe, nesta ordem, push(A), push(B), pop(), push(C). Qual elemento será removido pelo próximo pop()?",
+    "options": [
+      "A",
+      "B",
+      "Nenhum, pois a pilha está vazia",
+      "C"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "estruturas",
+    "disciplineName": "Estruturas de Dados",
+    "difficulty": "media",
+    "prompt": "Em uma tabela hash, o que é uma colisão?",
+    "options": [
+      "Duas chaves distintas serem mapeadas para a mesma posição inicial",
+      "Uma chave ser removida duas vezes pelo usuário",
+      "A tabela estar sempre completamente cheia",
+      "O valor armazenado ser obrigatoriamente nulo"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "estruturas",
+    "disciplineName": "Estruturas de Dados",
+    "difficulty": "media",
+    "prompt": "Ao percorrer uma árvore binária de busca com chaves distintas em ordem simétrica (esquerda, raiz, direita), como as chaves são visitadas?",
+    "options": [
+      "Em ordem decrescente",
+      "Em ordem crescente",
+      "Sempre na ordem de inserção",
+      "Sempre por nível da árvore"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "bancos",
+    "disciplineName": "Banco de Dados",
+    "difficulty": "media",
+    "prompt": "Uma tabela tem três linhas, e a coluna nota contém 7, NULL e 9. Quais são os resultados de COUNT(*) e COUNT(nota), respectivamente?",
+    "options": [
+      "2 e 2",
+      "3 e 3",
+      "3 e 2",
+      "2 e 3"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "bancos",
+    "disciplineName": "Banco de Dados",
+    "difficulty": "media",
+    "prompt": "Em SQL, o que um INNER JOIN com condição de igualdade entre duas tabelas retorna?",
+    "options": [
+      "Todas as linhas da esquerda, mesmo sem correspondência",
+      "Somente as linhas que não possuem correspondência",
+      "Sempre o produto cartesiano completo",
+      "As combinações de linhas que satisfazem a condição de junção"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "bancos",
+    "disciplineName": "Banco de Dados",
+    "difficulty": "media",
+    "prompt": "Qual propriedade ACID garante que uma transação seja efetivada integralmente ou tenha seus efeitos desfeitos?",
+    "options": [
+      "Atomicidade",
+      "Durabilidade",
+      "Isolamento",
+      "Consistência"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "redes",
+    "disciplineName": "Redes de Computadores",
+    "difficulty": "media",
+    "prompt": "Quantos endereços IPv4 existem no total em uma sub-rede /24, incluindo rede e broadcast?",
+    "options": [
+      "254",
+      "256",
+      "128",
+      "24"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "redes",
+    "disciplineName": "Redes de Computadores",
+    "difficulty": "media",
+    "prompt": "Qual característica é fornecida pelo TCP à aplicação?",
+    "options": [
+      "Entrega garantida com latência máxima fixa",
+      "Preservação obrigatória dos limites de cada mensagem enviada",
+      "Um fluxo de bytes confiável e ordenado",
+      "Criptografia obrigatória de todos os dados"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "redes",
+    "disciplineName": "Redes de Computadores",
+    "difficulty": "media",
+    "prompt": "Qual é a principal função do DHCP em uma rede IP?",
+    "options": [
+      "Traduzir todo código-fonte em executável",
+      "Assinar digitalmente os pacotes de aplicação",
+      "Substituir o roteamento entre redes",
+      "Fornecer configurações de rede automaticamente aos clientes"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "sistemas",
+    "disciplineName": "Sistemas Operacionais",
+    "difficulty": "media",
+    "prompt": "O que é uma condição de corrida?",
+    "options": [
+      "O resultado depender da ordem de execução de acessos concorrentes a um recurso compartilhado",
+      "Um processo sempre executar mais rápido que os demais",
+      "O processador possuir mais de um núcleo",
+      "Um programa não utilizar arquivos"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "sistemas",
+    "disciplineName": "Sistemas Operacionais",
+    "difficulty": "media",
+    "prompt": "O que acontece em uma falta de página quando a página acessada não está presente na memória física?",
+    "options": [
+      "O processador ignora a instrução e continua sem tratamento",
+      "O sistema operacional precisa tratar a ausência e tornar a página acessível, quando o acesso é válido",
+      "A aplicação recebe automaticamente uma cópia de toda a RAM",
+      "O disco rígido passa a executar as instruções do programa"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "sistemas",
+    "disciplineName": "Sistemas Operacionais",
+    "difficulty": "media",
+    "prompt": "Qual é uma finalidade de um mutex?",
+    "options": [
+      "Aumentar automaticamente a quantidade de núcleos",
+      "Eliminar a necessidade de memória virtual",
+      "Garantir exclusão mútua no acesso a uma seção crítica",
+      "Converter processos em arquivos executáveis"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "arquitetura",
+    "disciplineName": "Arquitetura de Computadores",
+    "difficulty": "media",
+    "prompt": "Qual princípio explica uma cache ser útil quando um programa acessa repetidamente a mesma variável em um curto intervalo?",
+    "options": [
+      "Endereçamento aleatório",
+      "Execução exclusivamente sequencial",
+      "Fragmentação externa",
+      "Localidade temporal"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "arquitetura",
+    "disciplineName": "Arquitetura de Computadores",
+    "difficulty": "media",
+    "prompt": "Qual é o intervalo de inteiros representáveis com 8 bits em complemento de dois?",
+    "options": [
+      "De -128 a 127",
+      "De -127 a 128",
+      "De 0 a 255",
+      "De -255 a 255"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "arquitetura",
+    "disciplineName": "Arquitetura de Computadores",
+    "difficulty": "media",
+    "prompt": "Um processador executa 10 milhões de instruções com CPI médio 2 e frequência de 1 GHz. Qual é o tempo de CPU, ignorando outros custos?",
+    "options": [
+      "0,2 segundo",
+      "0,02 segundo",
+      "2 segundos",
+      "0,002 segundo"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "seguranca",
+    "disciplineName": "Segurança da Informação",
+    "difficulty": "media",
+    "prompt": "Qual prática reduz diretamente o risco de injeção de SQL ao incluir entradas do usuário em consultas?",
+    "options": [
+      "Concatenar a entrada diretamente ao SQL",
+      "Ocultar o nome das tabelas na interface",
+      "Usar consultas parametrizadas",
+      "Armazenar a senha do banco no código HTML"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "seguranca",
+    "disciplineName": "Segurança da Informação",
+    "difficulty": "media",
+    "prompt": "Qual é a finalidade de um salt aleatório no armazenamento de hashes de senhas?",
+    "options": [
+      "Permitir recuperar a senha original a partir do hash",
+      "Substituir a necessidade de um algoritmo próprio para senhas",
+      "Garantir que nenhuma senha possa ser adivinhada",
+      "Dificultar o reaproveitamento de tabelas pré-computadas e diferenciar hashes de senhas iguais"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "seguranca",
+    "disciplineName": "Segurança da Informação",
+    "difficulty": "media",
+    "prompt": "O que estabelece o princípio do menor privilégio?",
+    "options": [
+      "Conceder apenas as permissões necessárias para a atividade",
+      "Conceder acesso administrativo a todos os usuários",
+      "Manter todas as contas com a mesma senha",
+      "Proibir qualquer registro de auditoria"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "engenharia",
+    "disciplineName": "Engenharia de Software",
+    "difficulty": "media",
+    "prompt": "Uma função falhava com listas vazias. Após a correção, um teste específico é mantido para impedir que o defeito reapareça. Que tipo de teste isso exemplifica?",
+    "options": [
+      "Teste de carga exclusivamente",
+      "Teste de regressão",
+      "Teste de usabilidade exclusivamente",
+      "Teste de instalação exclusivamente"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "engenharia",
+    "disciplineName": "Engenharia de Software",
+    "difficulty": "media",
+    "prompt": "No TDD, qual é a sequência característica do ciclo de desenvolvimento?",
+    "options": [
+      "Refatorar, publicar e depois definir os requisitos",
+      "Escrever todo o sistema e testar somente no final",
+      "Escrever um teste que falha, fazê-lo passar e refatorar",
+      "Publicar, corrigir a documentação e eliminar os testes"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "engenharia",
+    "disciplineName": "Engenharia de Software",
+    "difficulty": "media",
+    "prompt": "Qual combinação costuma favorecer a manutenção de módulos de software?",
+    "options": [
+      "Baixa coesão e alto acoplamento",
+      "Alta coesão e dependências globais obrigatórias",
+      "Baixa coesão e ausência de interfaces",
+      "Alta coesão e baixo acoplamento"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "fundamentos",
+    "disciplineName": "Fundamentos da Computação",
+    "difficulty": "media",
+    "prompt": "Qual expressão é equivalente a NÃO (P E Q), pela lei de De Morgan?",
+    "options": [
+      "NÃO P OU NÃO Q",
+      "NÃO P E NÃO Q",
+      "P OU Q",
+      "P E NÃO Q"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "fundamentos",
+    "disciplineName": "Fundamentos da Computação",
+    "difficulty": "media",
+    "prompt": "Um conjunto possui 4 elementos distintos. Quantos subconjuntos ele possui, incluindo o vazio e o próprio conjunto?",
+    "options": [
+      "8",
+      "16",
+      "4",
+      "24"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "fundamentos",
+    "disciplineName": "Fundamentos da Computação",
+    "difficulty": "media",
+    "prompt": "Qual é a negação de: 'Todos os processos terminaram'?",
+    "options": [
+      "Nenhum processo terminou",
+      "Todos os processos ainda estão executando",
+      "Existe pelo menos um processo que não terminou",
+      "Existe exatamente um processo que terminou"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "programacao",
+    "disciplineName": "Programação",
+    "difficulty": "dificil",
+    "prompt": "Considere escopo léxico: x = 10; f() retorna x; g() declara um x local igual a 20 e retorna f(). f foi definida no escopo de x = 10. Quanto retorna g()?",
+    "options": [
+      "20",
+      "30",
+      "10",
+      "O valor é necessariamente indefinido"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "programacao",
+    "disciplineName": "Programação",
+    "difficulty": "dificil",
+    "prompt": "Duas threads executam, cada uma, uma vez x = x + 1 sobre x inicialmente 0. Cada operação se divide em leitura e escrita, sem sincronização e com memória sequencialmente consistente. Quais valores finais são possíveis?",
+    "options": [
+      "Somente 2",
+      "0 ou 2",
+      "Somente 0",
+      "1 ou 2"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "programacao",
+    "disciplineName": "Programação",
+    "difficulty": "dificil",
+    "prompt": "Um programa mantém uma referência forte global para cada objeto criado, mesmo após deixar de usá-lo. Em um ambiente com coleta de lixo por alcançabilidade, o que ocorre?",
+    "options": [
+      "Os objetos continuam alcançáveis e não são coletados enquanto essas referências permanecerem",
+      "Todos os objetos são coletados imediatamente ao sair da função criadora",
+      "A coleta de lixo remove automaticamente todas as referências globais",
+      "O coletor transforma os objetos automaticamente em referências fracas"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "algoritmos",
+    "disciplineName": "Algoritmos",
+    "difficulty": "dificil",
+    "prompt": "Para T(n) = 2T(n/2) + n, com T(1) constante e n potência de dois, qual é a ordem assintótica justa?",
+    "options": [
+      "Θ(n)",
+      "Θ(n log n)",
+      "Θ(log n)",
+      "Θ(n²)"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "algoritmos",
+    "disciplineName": "Algoritmos",
+    "difficulty": "dificil",
+    "prompt": "Um grafo dirigido possui S→A com peso 2, S→B com peso 5 e B→A com peso -4. Qual é a menor distância de S até A?",
+    "options": [
+      "2",
+      "5",
+      "1",
+      "-4"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "algoritmos",
+    "disciplineName": "Algoritmos",
+    "difficulty": "dificil",
+    "prompt": "Em uma mochila 0/1 de capacidade 5, há itens (peso, valor): (3, 5), (2, 3) e (4, 7). Qual é o maior valor possível, sem fracionar ou repetir itens?",
+    "options": [
+      "7",
+      "10",
+      "15",
+      "8"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "estruturas",
+    "disciplineName": "Estruturas de Dados",
+    "difficulty": "dificil",
+    "prompt": "Um vetor dinâmico dobra sua capacidade quando fica cheio. Partindo de capacidade 1, qual é o limite assintótico mais justo para o custo amortizado por inserção ao final ao longo de n inserções, incluindo as cópias?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n log n)"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "estruturas",
+    "disciplineName": "Estruturas de Dados",
+    "difficulty": "dificil",
+    "prompt": "Uma tabela hash de tamanho 7 usa h(k) = k mod 7 e sondagem linear, sem remoções. Inserindo 10, 17 e 24 nessa ordem, quais posições serão ocupadas, respectivamente?",
+    "options": [
+      "3, 3 e 3",
+      "3, 4 e 5",
+      "1, 2 e 3",
+      "3, 5 e 0"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "estruturas",
+    "disciplineName": "Estruturas de Dados",
+    "difficulty": "dificil",
+    "prompt": "Qual é o limite assintótico de tempo mais justo para construir um heap binário a partir de n elementos pelo método bottom-up de Floyd?",
+    "options": [
+      "O(n log n)",
+      "O(log n)",
+      "O(n)",
+      "O(n²)"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "bancos",
+    "disciplineName": "Banco de Dados",
+    "difficulty": "dificil",
+    "prompt": "Em R(A, B, C), as dependências funcionais são A→B e B→C. A é a única chave candidata, e os atributos são atômicos. Qual é a forma normal mais alta satisfeita entre as opções?",
+    "options": [
+      "Primeira forma normal apenas",
+      "Terceira forma normal",
+      "Forma normal de Boyce-Codd",
+      "Segunda forma normal"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "bancos",
+    "disciplineName": "Banco de Dados",
+    "difficulty": "dificil",
+    "prompt": "Duas transações leem saldo 100. T1 calcula 100 - 10 e grava 90; depois T2 grava 100 + 20 = 120 usando sua leitura anterior. Qual anomalia ocorreu?",
+    "options": [
+      "Atualização perdida",
+      "Leitura suja",
+      "Leitura fantasma",
+      "Dependência de chave estrangeira"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "bancos",
+    "disciplineName": "Banco de Dados",
+    "difficulty": "dificil",
+    "prompt": "R(A, B, C) tem a dependência A→B e é decomposta em R1(A, B) e R2(A, C). Por que essa decomposição tem junção sem perda?",
+    "options": [
+      "Toda decomposição em duas tabelas tem junção sem perda",
+      "O atributo comum A determina todos os atributos de R1",
+      "As duas tabelas possuem obrigatoriamente a mesma quantidade de linhas",
+      "Nenhuma das tabelas contém o atributo C em comum"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "redes",
+    "disciplineName": "Redes de Computadores",
+    "difficulty": "dificil",
+    "prompt": "Uma rede IPv4 /24 é dividida em sub-redes /27. Quantas sub-redes são obtidas e quantos hosts utilizáveis há em cada uma, excluindo rede e broadcast?",
+    "options": [
+      "8 sub-redes, com 32 hosts cada",
+      "4 sub-redes, com 62 hosts cada",
+      "8 sub-redes, com 30 hosts cada",
+      "16 sub-redes, com 14 hosts cada"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "redes",
+    "disciplineName": "Redes de Computadores",
+    "difficulty": "dificil",
+    "prompt": "Um roteador possui rotas 10.0.0.0/8 por A, 10.1.0.0/16 por B e 10.1.2.0/24 por C. Pela regra do prefixo mais longo, para onde segue um pacote destinado a 10.1.2.42?",
+    "options": [
+      "Interface A",
+      "Interface B",
+      "Sempre para a rota padrão",
+      "Interface C"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "redes",
+    "disciplineName": "Redes de Computadores",
+    "difficulty": "dificil",
+    "prompt": "Uma conexão tem RTT de 100 ms e janela efetiva de envio de 64.000 bytes. Ignorando perdas e overhead, qual é o limite de vazão imposto pela janela?",
+    "options": [
+      "640.000 bytes por segundo",
+      "64.000 bytes por segundo",
+      "6.400 bytes por segundo",
+      "6.400.000 bytes por segundo"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "sistemas",
+    "disciplineName": "Sistemas Operacionais",
+    "difficulty": "dificil",
+    "prompt": "Dois processos usam recursos exclusivos A e B, com uma instância de cada e sem preempção. P1 mantém A e espera B; P2 mantém B e espera A. Qual é a situação?",
+    "options": [
+      "Somente fragmentação interna",
+      "Deadlock por espera circular",
+      "Escalonamento sem bloqueios",
+      "Ausência de exclusão mútua"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "sistemas",
+    "disciplineName": "Sistemas Operacionais",
+    "difficulty": "dificil",
+    "prompt": "Com 3 quadros inicialmente vazios e substituição LRU, quantas faltas de página ocorrem na sequência 1, 2, 3, 1, 4, 2?",
+    "options": [
+      "4",
+      "3",
+      "5",
+      "6"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "sistemas",
+    "disciplineName": "Sistemas Operacionais",
+    "difficulty": "dificil",
+    "prompt": "Uma máquina tem endereços virtuais de 32 bits, páginas de 4 KiB e tabela de páginas de um nível com uma entrada de 4 bytes por página virtual. Qual é o tamanho da tabela completa?",
+    "options": [
+      "1 MiB",
+      "4 MiB",
+      "4 KiB",
+      "16 MiB"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "arquitetura",
+    "disciplineName": "Arquitetura de Computadores",
+    "difficulty": "dificil",
+    "prompt": "Um programa gasta 80% do tempo em uma parte que passa a executar 4 vezes mais rápido. O restante não muda. Pela lei de Amdahl, qual é a aceleração total?",
+    "options": [
+      "2,5 vezes",
+      "4 vezes",
+      "3,2 vezes",
+      "5 vezes"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "arquitetura",
+    "disciplineName": "Arquitetura de Computadores",
+    "difficulty": "dificil",
+    "prompt": "Uma cache de mapeamento direto tem capacidade de dados de 1 KiB e blocos de 16 bytes. Com endereçamento por byte, quais blocos começam em endereços que mapeiam para a mesma linha?",
+    "options": [
+      "0 e 16",
+      "0 e 1024",
+      "16 e 32",
+      "0 e 512"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "arquitetura",
+    "disciplineName": "Arquitetura de Computadores",
+    "difficulty": "dificil",
+    "prompt": "Uma cache tem tempo de acesso de 2 ns, taxa de faltas de 5% e penalidade adicional de falta de 80 ns. Qual é o tempo médio de acesso?",
+    "options": [
+      "4 ns",
+      "82 ns",
+      "6 ns",
+      "40 ns"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "seguranca",
+    "disciplineName": "Segurança da Informação",
+    "difficulty": "dificil",
+    "prompt": "Em uma assinatura digital assimétrica, qual chave é usada para verificar a assinatura de uma mensagem?",
+    "options": [
+      "A chave privada do destinatário",
+      "A chave privada do signatário, compartilhada com todos",
+      "Qualquer chave pública gerada após o recebimento",
+      "A chave pública do signatário"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "seguranca",
+    "disciplineName": "Segurança da Informação",
+    "difficulty": "dificil",
+    "prompt": "Uma aplicação insere comentários de usuários diretamente no corpo HTML, permitindo scripts persistentes. Qual medida trata diretamente essa falha de XSS nesse contexto?",
+    "options": [
+      "Codificar a saída conforme o contexto HTML antes de exibi-la",
+      "Usar apenas consultas SQL parametrizadas",
+      "Trocar exclusivamente a porta HTTP do servidor",
+      "Aumentar o tamanho máximo dos comentários"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "seguranca",
+    "disciplineName": "Segurança da Informação",
+    "difficulty": "dificil",
+    "prompt": "Uma transferência via POST usa autenticação por cookie enviado automaticamente pelo navegador. Um site malicioso induz a vítima a enviar essa requisição. Qual controle trata diretamente o risco de CSRF?",
+    "options": [
+      "Usar apenas um hash na senha armazenada",
+      "Validar um token anti-CSRF imprevisível vinculado à sessão",
+      "Ocultar o endereço da transferência no menu",
+      "Permitir qualquer origem porque a requisição é POST"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "engenharia",
+    "disciplineName": "Engenharia de Software",
+    "difficulty": "dificil",
+    "prompt": "Uma regra aceita idades inteiras de 18 até 65, inclusive. Qual conjunto testa imediatamente abaixo, no limite e imediatamente acima de ambos os limites?",
+    "options": [
+      "18, 30, 40, 50, 60, 65",
+      "0, 10, 20, 30, 40, 50",
+      "17, 18, 19, 64, 65, 66",
+      "19, 20, 21, 62, 63, 64"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "engenharia",
+    "disciplineName": "Engenharia de Software",
+    "difficulty": "dificil",
+    "prompt": "Um método da classe base aceita qualquer inteiro. Uma subclasse sobrescreve o método, mas rejeita números negativos. Qual princípio é comprometido ao substituir a base pela subclasse?",
+    "options": [
+      "Princípio de localidade temporal",
+      "Regra do prefixo mais longo",
+      "Propriedade de durabilidade",
+      "Princípio da substituição de Liskov"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "discipline": "engenharia",
+    "disciplineName": "Engenharia de Software",
+    "difficulty": "dificil",
+    "prompt": "Um grafo de fluxo de controle conectado tem 8 nós e 10 arestas. Usando M = E - N + 2, qual é sua complexidade ciclomática?",
+    "options": [
+      "4",
+      "2",
+      "8",
+      "10"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "discipline": "fundamentos",
+    "disciplineName": "Fundamentos da Computação",
+    "difficulty": "dificil",
+    "prompt": "Qual linguagem sobre o alfabeto {a, b} não pode ser reconhecida por um autômato finito?",
+    "options": [
+      "Todas as cadeias que terminam em ab",
+      "{aⁿbⁿ: n ≥ 0}",
+      "Todas as cadeias com quantidade par de a",
+      "Todas as cadeias que não contêm bb"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "discipline": "fundamentos",
+    "disciplineName": "Fundamentos da Computação",
+    "difficulty": "dificil",
+    "prompt": "O que significa dizer que o problema geral da parada é indecidível?",
+    "options": [
+      "Nenhum programa pode ter seu término analisado",
+      "Todo programa executa infinitamente",
+      "Não existe algoritmo que decida corretamente, para todo programa e entrada, se a execução termina",
+      "O problema pode sempre ser resolvido usando mais memória"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "discipline": "fundamentos",
+    "disciplineName": "Fundamentos da Computação",
+    "difficulty": "dificil",
+    "prompt": "Um grafo não dirigido simples G tem 6 vértices de graus 3, 3, 2, 2, 1 e 1. Quantas arestas há no grafo complemento de G?",
+    "options": [
+      "6",
+      "12",
+      "9",
+      "15"
+    ],
+    "correctIndex": 2
+  }
+]

@@ -53,6 +53,8 @@ Para produção, configure o *document root* do servidor em `web/public`, use HT
 
 ## Fluxo professor → jogo
 
+Para começar com conteúdo pronto, o projeto inclui [90 perguntas de Ciência da Computação](database/seeds/README.md): 30 fáceis, 30 médias e 30 difíceis, com importação pelo comando `docker compose exec app php scripts/seed_questions.php` após atualizar a imagem da aplicação. A carga cria as disciplinas e publica as perguntas na conta do professor.
+
 1. O professor entra no painel.
 2. Cria ou seleciona uma disciplina, por exemplo `Computação Gráfica`.
 3. Cadastra a questão escolhendo **Fácil**, **Média** ou **Difícil** e seleciona **Publicada**.
