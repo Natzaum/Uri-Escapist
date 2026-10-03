@@ -1212,9 +1212,9 @@ textarea::placeholder {
     --border-strong: #d2cec2;
     --text: #292d28;
     --muted: #77796f;
-    --primary: #38634e;
-    --primary-bright: #2f6048;
-    --cyan: #52786c;
+    --primary: #416b94;
+    --primary-bright: #355f88;
+    --cyan: #5d7d9c;
     --success: #347451;
     --warning: #987029;
     --danger: #a84f47;
@@ -1233,9 +1233,9 @@ textarea::placeholder {
     --border-strong: #535c52;
     --text: #efeee6;
     --muted: #b1b4a9;
-    --primary: #9bbc9e;
-    --primary-bright: #b0d0b2;
-    --cyan: #9bbcb0;
+    --primary: #9dbfe0;
+    --primary-bright: #b2d0eb;
+    --cyan: #a8c5df;
     --success: #91c3a1;
     --warning: #dfbf79;
     --danger: #e19a8f;
@@ -1279,7 +1279,7 @@ h2 {
     border-color: transparent;
     border-radius: 10px;
     color: #fffefa;
-    background: #365c49;
+    background: #3b6388;
     box-shadow: none;
 }
 
@@ -1299,11 +1299,11 @@ h2 {
 .main-nav a.active {
     border-color: transparent;
     color: var(--primary-bright);
-    background: #e9eee8;
+    background: #e8eef4;
 }
 
 :root[data-theme="dark"] .main-nav a.active {
-    background: #39483c;
+    background: #364653;
 }
 
 .nav-icon {
@@ -1326,15 +1326,15 @@ h2 {
 
 .hero-panel {
     min-height: 190px;
-    border-color: #d9dfd4;
+    border-color: #d9e1e9;
     border-radius: 14px;
-    background: #e8ede5;
+    background: #eaf0f5;
     box-shadow: none;
 }
 
 :root[data-theme="dark"] .hero-panel {
-    border-color: #465347;
-    background: #303c32;
+    border-color: #465360;
+    background: #303d49;
 }
 
 .hero-panel::after {
@@ -1384,21 +1384,21 @@ h2 {
 
 .button-primary {
     color: #fffefa;
-    background: #365c49;
+    background: #3b6388;
     box-shadow: none;
 }
 
 .button-primary:hover {
-    background: #294a39;
+    background: #2c4d6d;
 }
 
 :root[data-theme="dark"] .button-primary {
     color: #202720;
-    background: #a9c6aa;
+    background: #a9c7e4;
 }
 
 :root[data-theme="dark"] .button-primary:hover {
-    background: #c0d8be;
+    background: #c1d9ef;
 }
 
 .button-secondary {
@@ -1502,11 +1502,11 @@ textarea::placeholder {
 .login-visual {
     min-height: 630px;
     align-items: flex-end;
-    background: #354e3e;
+    background: #385d7b;
 }
 
 :root[data-theme="dark"] .login-visual {
-    background: #303b31;
+    background: #2e4052;
 }
 
 .login-visual::before {
@@ -1516,7 +1516,8 @@ textarea::placeholder {
     width: 68%;
     height: 54%;
     border: 1px solid rgba(245, 242, 229, 0.2);
-    border-radius: 48% 48% 5px 5px;
+    border-bottom: 0;
+    border-radius: 48% 48% 0 0;
     content: '';
 }
 
