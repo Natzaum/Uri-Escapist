@@ -58,15 +58,6 @@ public class DoorGameEnd : MonoBehaviour
         Debug.Log($"   Status: {(visitedRequiredScene ? "✅ VISITADO" : "❌ NÃO VISITADO")}");
     }
 
-    void Update()
-    {
-        if (gameEnded && Input.anyKeyDown)
-        {
-            Debug.Log("👋 Saindo do jogo...");
-            Application.Quit();
-        }
-    }
-
     void OnTriggerEnter(Collider other)
     {
         bool isPlayer = (player != null && other.gameObject == player) || 
@@ -93,50 +84,7 @@ public class DoorGameEnd : MonoBehaviour
 
     void ShowVictoryMessage()
     {
-        // Criar Canvas
-        GameObject canvasObj = new GameObject("VictoryCanvas");
-        Canvas canvas = canvasObj.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 100;
-
-        canvasObj.AddComponent<CanvasScaler>();
-        canvasObj.AddComponent<GraphicRaycaster>();
-
-        // Background
-        GameObject bgObj = new GameObject("Background");
-        bgObj.transform.SetParent(canvasObj.transform, false);
-        
-        Image bgImage = bgObj.AddComponent<Image>();
-        bgImage.color = new Color(0, 0, 0, 0.9f);
-
-        RectTransform bgRect = bgObj.GetComponent<RectTransform>();
-        bgRect.anchorMin = Vector2.zero;
-        bgRect.anchorMax = Vector2.one;
-        bgRect.offsetMin = Vector2.zero;
-        bgRect.offsetMax = Vector2.zero;
-
-        // Texto
-        GameObject textObj = new GameObject("VictoryText");
-        textObj.transform.SetParent(canvasObj.transform, false);
-
-        TextMeshProUGUI victoryText = textObj.AddComponent<TextMeshProUGUI>();
-        victoryText.text = victoryMessage;
-        victoryText.alignment = TextAlignmentOptions.Center;
-        victoryText.fontSize = fontSize;
-        victoryText.color = messageColor;
-
-        RectTransform textRect = textObj.GetComponent<RectTransform>();
-        textRect.anchorMin = Vector2.zero;
-        textRect.anchorMax = Vector2.one;
-        textRect.offsetMin = new Vector2(20, 20);
-        textRect.offsetMax = new Vector2(-20, -20);
-
-        Outline outline = textObj.AddComponent<Outline>();
-        outline.effectColor = Color.black;
-        outline.effectDistance = new Vector2(4, 4);
-
-        Debug.Log("✅ Mensagem de vitória exibida!");
-        Debug.Log("👆 Clique em qualquer lugar para sair");
+        GameInterface.Instance.ShowResult(true, victoryMessage);
     }
 
     void ShowDeniedMessage()

@@ -34,7 +34,7 @@ public static class RemoteQuestionLoader
     }
 
     public static IEnumerator LoadAndAssign(string apiUrl, string sceneName, string mode,
-        int timeoutSeconds, BookQuiz[] books, Action<string> onCompleted)
+        int timeoutSeconds, BookQuiz[] books, Action<string> onCompleted, Action<float> onProgress = null)
     {
         if (string.IsNullOrWhiteSpace(apiUrl))
         {
@@ -50,7 +50,14 @@ public static class RemoteQuestionLoader
         {
             request.timeout = Mathf.Clamp(timeoutSeconds, 2, 30);
             request.SetRequestHeader("Accept", "application/json");
-            yield return request.SendWebRequest();
+            var operation = request.SendWebRequest();
+            while (!operation.isDone)
+            {
+                // Sem tamanho conhecido não inventamos uma porcentagem.
+                onProgress?.Invoke(request.downloadProgress > 0 ? request.downloadProgress * 0.85f : -1f);
+                yield return null;
+            }
+            onProgress?.Invoke(0.9f);
             ApiResponse response = null;
             try { response = JsonUtility.FromJson<ApiResponse>(request.downloadHandler.text); }
             catch (Exception) { /* Network/proxy failures may return non-JSON bodies. */ }
@@ -101,6 +108,7 @@ public static class RemoteQuestionLoader
                     yield break;
                 }
             }
+            onProgress?.Invoke(1f);
             onCompleted(null);
         }
     }

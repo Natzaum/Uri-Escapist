@@ -57,6 +57,7 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        if (GameInterface.BlocksInput) { horizontalInput = verticalInput = 0; return; }
         // Verificação de chão simplificada e robusta
         float checkDistance = 1.5f; // Distância fixa para evitar problemas de escala
         
@@ -94,22 +95,11 @@ public class PlayerMove : MonoBehaviour
             rb.linearDamping = 0f;
         }
         
-        // Re-lock cursor if it gets unlocked accidentally
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        
-        if (Input.GetMouseButtonDown(0))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
     }
 
     void FixedUpdate()
     {
+        if (GameInterface.BlocksInput) return;
         MovePlayer();
     }
 

@@ -76,52 +76,21 @@ public class BookManager : MonoBehaviour
 
     private IEnumerator LoadQuestions()
     {
+        if (loadingQuestions) yield break;
         loadingQuestions = true;
         QuestionsReady = false;
         questionLoadError = null;
-        Time.timeScale = 0f;
+        GameInterface.Instance.ShowLoading("Buscando as perguntas deste andar…");
         yield return RemoteQuestionLoader.LoadAndAssign(
             questionsApiUrl, SceneManager.GetActiveScene().name, MenuPrincipal.GameMode,
-            questionRequestTimeout, sceneBooks, error => questionLoadError = error);
+            questionRequestTimeout, sceneBooks, error => questionLoadError = error,
+            value => GameInterface.Instance.SetProgress(value));
         loadingQuestions = false;
         QuestionsReady = questionLoadError == null;
         if (QuestionsReady)
-        {
-            Time.timeScale = 1f;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-    }
-
-    private void LateUpdate()
-    {
-        if (QuestionsReady) return;
-        Time.timeScale = 0f;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-
-    private void OnGUI()
-    {
-        if (QuestionsReady) return;
-        float width = Mathf.Min(540f, Screen.width - 32f);
-        GUILayout.BeginArea(new Rect((Screen.width - width) / 2f,
-            (Screen.height - 230f) / 2f, width, 230f), GUI.skin.box);
-        GUILayout.Label("Perguntas — " + MenuPrincipal.GameMode);
-        GUILayout.Space(12f);
-        GUILayout.Label(loadingQuestions ? "Carregando perguntas..." : questionLoadError,
-            new GUIStyle(GUI.skin.label) { wordWrap = true });
-        if (!loadingQuestions)
-        {
-            if (GUILayout.Button("Tentar novamente", GUILayout.Height(36f)))
-                StartCoroutine(LoadQuestions());
-            if (GUILayout.Button("Voltar ao menu", GUILayout.Height(36f)))
-            {
-                Time.timeScale = 1f;
-                SceneManager.LoadScene("UriMenu");
-            }
-        }
-        GUILayout.EndArea();
+            GameInterface.Instance.Hide();
+        else
+            GameInterface.Instance.ShowLoadError(questionLoadError, () => StartCoroutine(LoadQuestions()));
     }
 
     public void OnBookCorrect()
@@ -377,7 +346,7 @@ public class BookManager : MonoBehaviour
         else
         {
             Debug.LogWarning("GameOverManager não encontrado! Recarregando cena...");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            GameInterface.Instance.ShowResult(false);
         }
     }
 

@@ -109,7 +109,7 @@ public class DoorTransition : MonoBehaviour
             Time.timeScale = 1f;
         }
         
-        SceneManager.LoadScene(targetSceneName);
+        GameInterface.Instance.LoadScene(targetSceneName);
     }
 
     void OnDrawGizmos()

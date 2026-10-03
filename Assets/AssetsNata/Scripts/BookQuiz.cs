@@ -87,6 +87,7 @@ public class BookQuiz : MonoBehaviour
 
     public void Answer(int index)
     {
+        if (isAnswered) return;
         isAnswered = true;
         
         Debug.Log($"BookQuiz.Answer chamado - Index: {index}, Correto: {correctIndex}");

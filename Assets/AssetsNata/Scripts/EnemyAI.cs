@@ -82,6 +82,7 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+        if (GameInterface.WorldPaused) return;
         if (player == null)
         {
             player = GameObject.FindWithTag("Player")?.transform;
