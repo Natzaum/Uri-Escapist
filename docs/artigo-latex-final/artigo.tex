@@ -12,7 +12,6 @@
 \usepackage{tabularx}
 \usepackage{fancyhdr}
 \usepackage{article-config/pages-style}
-\usepackage{pdflscape}
 
 \tolerance=1
 \emergencystretch=\maxdimen
@@ -68,9 +67,9 @@
 \begin{abstract}
 \textbf{Introduction:} Digital games can support educational practices by combining challenges, immediate feedback and active participation. In this context, URI Escapist is a three-dimensional game inspired by URI Erechim Campus II, in which the university environment is transformed into a setting for exploration, suspense and academic challenges.
 \textbf{Objective:} This work aims to develop an interactive experience that combines entertainment and learning through multiple-choice questions, exploration and progression mechanics.
-\textbf{Methodology or Steps:} The research has an applied and qualitative approach and adopts an iterative and incremental development process. Its stages include bibliographic research, game planning, implementation in Unity, internal tests and qualitative analysis of the prototype.
-\textbf{Expected Results:} A functional prototype is expected, capable of demonstrating the potential of digital games as a complementary educational resource and providing a dynamic and engaging way to interact with academic content.
-\textbf{Conclusion:} The proposal seeks to contribute a contextualized serious game in which educational content directly affects gameplay, while also providing a practical basis for evaluating engagement and usability in higher education.
+\textbf{Methodology or Steps:} The research has an applied and qualitative approach and adopts an iterative and incremental development process. The prototype was implemented in Unity and integrated with a PHP and MySQL web system through a REST application programming interface.
+\textbf{Results:} The current version provides first-person exploration, quizzes, progression, an enemy with dynamic difficulty and a web panel through which teachers manage disciplines and questions. Published content is selected according to the current game scene and distributed among its interactive books.
+\textbf{Conclusion:} The implemented architecture demonstrates the technical feasibility of separating educational content management from the game while preserving its direct effect on gameplay. User studies are still required to evaluate engagement, usability and learning outcomes.
 \end{abstract}
 
 \keywords{Serious games, Game-based learning, Educational games, Unity, URI Escapist.}
@@ -78,9 +77,9 @@
 \begin{resumo}
 \textbf{Introdução:} Os jogos digitais podem apoiar práticas educacionais ao combinar desafios, feedback imediato e participação ativa. Nesse contexto, o URI Escapist é um jogo tridimensional inspirado na URI Erechim Campus II, no qual o ambiente universitário é transformado em um cenário de exploração, suspense e desafios acadêmicos.
 \textbf{Objetivo:} Este trabalho tem como objetivo desenvolver uma experiência interativa que una entretenimento e aprendizagem por meio de perguntas de múltipla escolha, exploração e mecânicas de progressão.
-\textbf{Metodologia ou Etapas:} A pesquisa possui natureza aplicada e abordagem qualitativa, adotando um processo de desenvolvimento iterativo e incremental. Suas etapas incluem pesquisa bibliográfica, planejamento do jogo, implementação na Unity, testes internos e análise qualitativa do protótipo.
-\textbf{Resultados Esperados:} Espera-se obter um protótipo funcional capaz de demonstrar o potencial dos jogos digitais como recurso educacional complementar e proporcionar uma forma dinâmica e envolvente de interação com conteúdos acadêmicos.
-\textbf{Conclusão:} A proposta busca contribuir com um jogo sério contextualizado, no qual o conteúdo educacional produz efeitos diretos na jogabilidade, além de oferecer uma base prática para avaliar engajamento e usabilidade no ensino superior.
+\textbf{Metodologia ou Etapas:} A pesquisa possui natureza aplicada e abordagem qualitativa, adotando um processo de desenvolvimento iterativo e incremental. O protótipo foi implementado na Unity e integrado a um sistema Web em PHP e MySQL por meio de uma interface de programação de aplicações REST.
+\textbf{Resultados:} A versão atual oferece exploração em primeira pessoa, questionários, progressão, inimigo com dificuldade dinâmica e um painel Web no qual professores administram disciplinas e perguntas. O conteúdo publicado é selecionado de acordo com a cena atual do jogo e distribuído entre seus livros interativos.
+\textbf{Conclusão:} A arquitetura implementada demonstra a viabilidade técnica de separar a gestão do conteúdo educacional do jogo e, simultaneamente, preservar seus efeitos diretos na jogabilidade. Ainda são necessários estudos com usuários para avaliar engajamento, usabilidade e resultados de aprendizagem.
 \end{resumo}
 
 \palavraschave{Jogos sérios, Aprendizagem baseada em jogos, Jogos educacionais, Unity, URI Escapist.}
@@ -97,9 +96,9 @@ A escolha do tema está relacionada ao interesse do autor pela área de jogos di
 
 O objetivo geral deste trabalho é desenvolver um jogo digital inspirado no ambiente universitário que una entretenimento e aprendizagem. De forma específica, pretende-se construir cenários reconhecíveis, implementar mecânicas de exploração e progressão, apresentar conteúdos por meio de perguntas, desenvolver uma ambientação imersiva e demonstrar o potencial dos jogos como apoio ao processo de ensino e aprendizagem.
 
-As principais contribuições previstas são a criação de um jogo sério contextualizado na realidade universitária local, a integração das respostas acadêmicas ao comportamento do inimigo e à progressão da partida, e a construção de uma base que permita organizar perguntas por área ou disciplina. A proposta também contribui como experiência prática de desenvolvimento, reunindo programação, design de jogos, inteligência artificial, interfaces e avaliação com usuários.
+As principais contribuições são a criação de um jogo sério contextualizado na realidade universitária local, a integração das respostas acadêmicas ao comportamento do inimigo e à progressão da partida e a construção de uma infraestrutura que permite a professores organizar e publicar perguntas sem modificar o projeto da Unity. A proposta também contribui como experiência prática de desenvolvimento, reunindo programação, design de jogos, inteligência artificial, interfaces Web, banco de dados e integração entre sistemas.
 
-O restante deste artigo está organizado da seguinte forma: a Seção 2 apresenta os trabalhos relacionados; a Seção 3 reúne os conceitos que fundamentam o projeto; a Seção 4 descreve a metodologia; a Seção 5 detalha o desenvolvimento e as decisões técnicas; a Seção 6 apresenta os resultados esperados e a forma planejada de discussão; e a Seção 7 expõe as conclusões e os trabalhos futuros.
+O restante deste artigo está organizado da seguinte forma: a Seção 2 apresenta os trabalhos relacionados; a Seção 3 reúne os conceitos que fundamentam o projeto; a Seção 4 descreve a metodologia; a Seção 5 detalha o desenvolvimento e as decisões técnicas; a Seção 6 apresenta os resultados parciais e sua discussão; e a Seção 7 expõe as conclusões e os trabalhos futuros.
 
 \section{Trabalhos Relacionados}
 
@@ -165,11 +164,11 @@ Essa abordagem é especialmente adequada ao URI Escapist, uma vez que aspectos c
 
 Este trabalho caracteriza-se como uma pesquisa de natureza aplicada, com abordagem predominantemente qualitativa e caráter exploratório, prático e projetual. Além da discussão teórica sobre jogos digitais na educação, busca-se produzir e analisar um protótipo funcional que represente a proposta.
 
-Inicialmente, será realizada uma pesquisa bibliográfica sobre jogos sérios, aprendizagem baseada em jogos, gamificação e desenvolvimento de jogos digitais. A revisão fornecerá suporte para relacionar as escolhas de design aos conceitos discutidos na literatura, comparar o projeto com abordagens existentes e definir os critérios de avaliação do protótipo.
+Inicialmente, foi realizada uma pesquisa bibliográfica sobre jogos sérios, aprendizagem baseada em jogos, gamificação e desenvolvimento de jogos digitais. A revisão forneceu suporte para relacionar as escolhas de design aos conceitos discutidos na literatura, comparar o projeto com abordagens existentes e definir os critérios de avaliação do protótipo.
 
-Na etapa de planejamento serão organizados o conceito, a narrativa, as mecânicas, a estrutura das fases e o fluxo de interação. O desenvolvimento seguirá uma abordagem iterativa e incremental, na qual as funcionalidades serão implementadas em módulos e avaliadas continuamente. Esse processo permitirá ajustar dificuldade, tempo, velocidade, distribuição dos elementos e clareza da interface.
+Na etapa de planejamento foram organizados o conceito, a narrativa, as mecânicas, a estrutura das fases e o fluxo de interação. O desenvolvimento seguiu uma abordagem iterativa e incremental, na qual as funcionalidades foram implementadas em módulos e verificadas ao longo do processo. Esse método possibilitou incorporar progressivamente a movimentação, o quiz, a inteligência artificial, a progressão entre cenas e, posteriormente, o painel Web, o banco de dados e a API.
 
-Serão realizados testes funcionais para verificar movimentação, colisões, transições, sistema de perguntas, contadores, cronômetro e comportamento do inimigo. Também serão conduzidas sessões de teste com participantes convidados, observando-se a compreensão das regras, as dificuldades encontradas e a percepção sobre a integração entre entretenimento e conteúdo educacional.
+Foram realizadas verificações funcionais durante a implementação para observar movimentação, colisões, transições, sistema de perguntas, contadores, cronômetro, comportamento do inimigo e fluxo de conteúdo entre painel, API e jogo. Em uma etapa posterior, serão conduzidas sessões de teste com participantes convidados, observando-se a compreensão das regras, as dificuldades encontradas e a percepção sobre a integração entre entretenimento e conteúdo educacional.
 
 A coleta de dados ocorrerá por meio de registros das etapas de desenvolvimento, observação das sessões de uso, dados básicos da partida e aplicação de um questionário breve. Serão considerados aspectos como facilidade de interação, clareza das perguntas, nível de desafio, imersão, interesse e percepção de utilidade educacional. Os registros de conclusão da fase, quantidade de acertos, erros e tempo utilizado complementarão a interpretação qualitativa.
 
@@ -211,47 +210,88 @@ A dificuldade é alterada pelo desempenho nas perguntas. Acertos e erros podem a
 {Inimigo responsável pelas mecânicas de patrulha, detecção e perseguição. Fonte: elaborado pelo autor.}
 {fig:inimigo}
 
-Além do modo principal, o projeto prevê modos com variações de dificuldade. Entre eles, o modo pesadelo altera o comportamento do inimigo para manter a perseguição ativa desde o início. Também são previstas a distribuição aleatória dos livros, a expansão do cenário com novos andares e a possibilidade de organizar perguntas por área ou disciplina.
+Além do modo principal, foi implementado o modo pesadelo, selecionável no menu, que mantém a perseguição ativa desde o início da fase. O protótipo também possui cenas correspondentes ao primeiro e ao segundo andar. A variedade das partidas é ampliada pela seleção aleatória de perguntas publicadas, enquanto a associação entre pergunta, disciplina e andar é administrada externamente pelo professor.
 
 \subsection{Arquitetura e organização dos sistemas}
 
-A implementação é organizada em componentes independentes da Unity, cada um responsável por uma parte da experiência. Essa divisão reduz o acoplamento entre as funcionalidades e permite testar e ajustar os sistemas de forma isolada.
+A solução passou a ser formada por dois subsistemas integrados: o jogo desenvolvido na Unity e uma aplicação Web responsável pelo conteúdo educacional. No jogo, componentes C\# independentes controlam movimentação, câmera, resistência, interação com livros, apresentação das alternativas, contagem de acertos e erros, cronômetro, portas e inteligência artificial do inimigo. Essa divisão reduz o acoplamento e permite ajustar cada mecânica pelo editor da Unity.
 
-O módulo de controle do jogador reúne movimentação, câmera e resistência. O módulo de perguntas controla a proximidade dos livros, a abertura da interface, a seleção de alternativas e o retorno visual. Um gerenciador central mantém a quantidade de acertos e erros, verifica as condições de progressão e modifica os parâmetros de dificuldade.
-
-O inimigo possui um componente próprio para patrulha, percepção, perseguição e captura. Esse componente recebe alterações de velocidade ou estado após as respostas. O cronômetro controla o tempo total da fase, enquanto os componentes de porta verificam os requisitos e realizam a transição entre cenas. A Figura~\ref{fig:arquitetura} apresenta uma visão resumida dessa organização.
+Na aplicação Web, páginas PHP processadas no servidor implementam autenticação, painel de indicadores, gestão de disciplinas e operações de criação, consulta, atualização e exclusão de perguntas. Os dados são persistidos no MySQL e disponibilizados ao jogo por uma API REST de leitura. Desse modo, o professor pode alterar o banco de questões sem editar cenas, componentes ou gerar uma nova versão do jogo. A Figura~\ref{fig:arquitetura} apresenta o fluxo entre esses módulos.
 
 \begin{figure}[H]
 \centering
 \fbox{
-\begin{minipage}{0.88\textwidth}
+\begin{minipage}{0.92\textwidth}
 \centering
-\textbf{Jogador e câmera}\\
-$\downarrow$ interação\\
-\textbf{Livro e sistema de quiz}
-$\longrightarrow$
-\textbf{Gerenciador de progresso}
-$\longrightarrow$
-\textbf{Porta e transição de cena}\\[0.25cm]
-\hfill $\downarrow$ acertos, erros e tempo \hfill\\[0.15cm]
-\textbf{Cronômetro}
-$\longrightarrow$
-\textbf{Estado da partida}
-$\longrightarrow$
-\textbf{IA do inimigo}
+\textbf{Professor} $\longrightarrow$ \textbf{Painel Web em PHP}
+$\longrightarrow$ \textbf{Banco MySQL}\\[0.25cm]
+$\downarrow$ publicação \hspace{5.7cm} $\downarrow$ consulta\\[0.25cm]
+\textbf{API REST/JSON} $\longrightarrow$ \textbf{Carregador da Unity}
+$\longrightarrow$ \textbf{Livros da cena}\\[0.25cm]
+$\downarrow$ resposta do jogador\\[0.15cm]
+\textbf{Gerenciador de progresso} $\longrightarrow$
+\{\textbf{interface, portas, cronômetro e IA do inimigo}\}
 \end{minipage}
 }
-\caption{Organização dos principais módulos do URI Escapist. Fonte: elaborado pelo autor.}
+\caption{Arquitetura integrada do URI Escapist. Fonte: elaborado pelo autor.}
 \label{fig:arquitetura}
 \end{figure}
 
+\subsection{Sistema Web de gestão de conteúdo}
+
+O painel administrativo foi desenvolvido para que o conteúdo pedagógico possa ser mantido por professores. O acesso exige uma conta ativa e uma combinação válida de correio eletrônico e senha. As senhas são armazenadas como resumos criptográficos produzidos pela função própria do PHP, e a sessão tem seu identificador renovado após a autenticação. As operações que alteram dados aceitam somente requisições HTTP do tipo \texttt{POST} e utilizam fichas de proteção contra \textit{Cross-Site Request Forgery} (CSRF). A saída inserida nas páginas também é codificada para reduzir a possibilidade de injeção de marcação HTML.
+
+Depois da autenticação, a página inicial apresenta a quantidade total de questões do professor, os totais publicados e em rascunho, o número de disciplinas ativas e as alterações mais recentes. A tela de disciplinas permite cadastrar nome e identificador textual, além de ativar ou desativar cada registro. A desativação preserva os dados já cadastrados, mas impede que suas perguntas sejam entregues ao jogo.
+
+O módulo de questões implementa cadastro, listagem, edição e exclusão. Cada registro contém enunciado, quatro alternativas distintas, índice da resposta correta, dificuldade, situação de publicação, disciplina, andar e autoria. Antes da persistência, o servidor verifica a presença e o tamanho dos textos, a validade da alternativa correta, da dificuldade e do estado de publicação, bem como a existência do andar e da disciplina informados. A edição e a exclusão são limitadas às perguntas pertencentes ao professor autenticado. Na listagem, podem ser combinados filtros por trecho do enunciado, disciplina, andar e situação.
+
+O estado de rascunho permite revisar a questão antes de disponibilizá-la. Somente registros publicados e associados a disciplinas ativas são retornados pela API. Essa separação reduz o risco de uma questão incompleta aparecer durante a partida.
+
+\subsection{Modelo de dados}
+
+O banco relacional utiliza o conjunto de caracteres UTF-8 e está organizado nas entidades apresentadas na Tabela~\ref{tab:modelo-dados}. Chaves estrangeiras preservam as relações entre perguntas, professores, disciplinas e andares, enquanto índices apoiam as consultas por autoria e publicação.
+
+\begin{table}[H]
+\centering
+\caption{Entidades persistidas pelo sistema Web}
+\label{tab:modelo-dados}
+\small
+\begin{tabularx}{\textwidth}{p{2.8cm}X X}
+\toprule
+\textbf{Entidade} & \textbf{Dados principais} & \textbf{Finalidade} \\
+\midrule
+Professor & nome, correio eletrônico, senha protegida e estado & autenticar e identificar o autor do conteúdo \\
+\addlinespace
+Disciplina & nome, identificador textual e estado & classificar perguntas e controlar sua disponibilidade \\
+\addlinespace
+Andar & nome, identificador e nome da cena & relacionar o conteúdo Web às cenas da Unity \\
+\addlinespace
+Pergunta & enunciado, quatro alternativas, resposta correta, dificuldade e publicação & armazenar o conteúdo exibido nos livros do jogo \\
+\addlinespace
+Migração & nome do arquivo e data de aplicação & controlar atualizações incrementais do esquema \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+A associação entre andar e cena evita manter essa regra no código da API. Na configuração atual, \texttt{andar1} e \texttt{andar2} correspondem, respectivamente, ao primeiro e ao segundo andar. Perguntas antigas sem andar associado permanecem compatíveis e podem ser entregues a ambas as cenas até que sejam revisadas.
+
+\subsection{API e integração com a Unity}
+
+A comunicação é iniciada pela Unity quando uma fase é carregada. O \textit{BookManager} identifica todos os livros ativos e solicita à API uma quantidade de perguntas igual ao total encontrado. A requisição informa o nome da cena, um limite entre 1 e 50 itens e a preferência por ordem aleatória. A API valida os parâmetros, localiza o andar ativo correspondente e consulta somente questões publicadas de disciplinas ativas. A resposta utiliza JSON e inclui enunciado, quatro alternativas, índice correto, dificuldade, disciplina e andar.
+
+No cliente, o \textit{RemoteQuestionLoader} realiza a requisição com tempo máximo configurável entre 2 e 30 segundos. Cada item válido é atribuído a um componente \textit{BookQuiz}; antes da substituição, são verificados o enunciado, a quantidade de alternativas e o índice da resposta. Se houver menos questões remotas do que livros, apenas os primeiros recebem o novo conteúdo. Os demais conservam sua configuração local.
+
+Falhas de conexão, respostas inválidas, ausência de conteúdo publicado ou URL não configurada não interrompem a fase. Nessas situações, a Unity registra o ocorrido e mantém as perguntas incluídas previamente na cena. Esse mecanismo de contingência permite jogar sem conexão permanente e impede que uma indisponibilidade do servidor inutilize o protótipo. Uma rota adicional de verificação de saúde testa a comunicação com o banco e retorna o código HTTP 200 quando o serviço está disponível ou 503 quando a persistência está inacessível.
+
 \subsection{Ambiente e recursos de desenvolvimento}
 
-O desenvolvimento utiliza a Unity, na versão 6000.0.58f2, como motor de jogo, e a linguagem C\# para implementar regras e sistemas interativos. O Visual Studio é empregado na edição do código, enquanto o Blender pode ser utilizado para criação ou adaptação de modelos tridimensionais.
+O jogo utiliza a Unity 6000.0.58f2 e a linguagem C\# para implementar regras e sistemas interativos. Também são empregados os recursos de interface da Unity para menus, perguntas e indicadores; o NavMesh para navegação do inimigo; e o gerenciamento de cenas para organizar a progressão. O Visual Studio auxilia a edição do código, enquanto modelos e texturas compõem os ambientes tridimensionais. O Git e o GitHub são utilizados no controle de versão e no histórico das alterações.
 
-Também são utilizados os recursos de interface da Unity para menus, perguntas e indicadores; o NavMesh para navegação do inimigo; e o gerenciamento de cenas para organizar a progressão. Modelos, texturas, materiais e animações podem ser obtidos em bibliotecas como Unity Asset Store e Mixamo, respeitando-se suas licenças. O Git e o GitHub são empregados no controle de versão e no histórico das alterações.
+O sistema de conteúdo utiliza PHP 8.3 no servidor, páginas HTML e folhas de estilo CSS na interface, JavaScript para comportamentos auxiliares e MySQL 8.4 na persistência. O acesso ao banco é realizado por meio da extensão PDO e de consultas preparadas. A integração com o jogo segue o estilo REST sobre HTTP e representa os dados em JSON.
 
-Para executar o protótipo são necessários um computador compatível com aplicações tridimensionais, teclado e mouse. Não são exigidos equipamentos especializados, conexão permanente com a Internet ou dispositivos de realidade virtual.
+Para tornar a instalação reproduzível, foram definidos contêineres para a aplicação PHP com Apache, para o MySQL e para o phpMyAdmin. O Docker Compose configura rede interna, volume persistente, portas, variáveis de ambiente e verificações de saúde. Na primeira execução, o esquema é criado, as migrações pendentes são aplicadas e uma conta inicial pode ser cadastrada a partir das variáveis do ambiente. O painel também pode ser acessado por outro computador na rede local mediante a configuração do endereço da API na Unity.
+
+Para jogar são necessários um computador compatível com aplicações tridimensionais, teclado e mouse. A conexão com o painel é necessária para receber atualizações remotas, mas não é indispensável para a execução da fase, pois as perguntas locais permanecem disponíveis como contingência. Não são exigidos equipamentos especializados nem dispositivos de realidade virtual.
 
 \subsection{Decisões técnicas e desafios}
 
@@ -261,109 +301,69 @@ Um dos principais desafios é equilibrar a velocidade do jogador e do inimigo. C
 
 Outro desafio está na escala dos modelos e dos ambientes importados, que influencia colisores, distâncias de detecção e parâmetros de navegação. A implementação realiza ajustes proporcionais quando necessário e utiliza testes de cena para validar os valores. Também foram adotados controle de resistência, limite de erros e feedback visual do cronômetro para tornar as condições da partida mais compreensíveis.
 
+A separação entre painel e jogo introduziu o desafio de associar conteúdo administrativo a objetos presentes em diferentes cenas. A solução utiliza o nome da cena como chave de integração: a API o relaciona ao andar cadastrado e a Unity calcula o limite da consulta a partir da quantidade real de livros. A manutenção de conteúdo local nos componentes foi uma decisão de tolerância a falhas, pois oferece um estado utilizável mesmo diante de erros de rede ou banco de dados.
+
+No painel, as decisões de segurança incluem consultas preparadas, proteção CSRF, codificação da saída, renovação do identificador de sessão e armazenamento de senhas por resumo criptográfico. O banco do ambiente de desenvolvimento é publicado apenas no endereço local por padrão, enquanto o painel e o phpMyAdmin podem ser disponibilizados na rede interna. Em uma implantação externa, ainda seriam necessários HTTPS, revisão das regras de acesso e credenciais próprias de produção.
+
 As otimizações concentram-se no reaproveitamento de componentes, na configuração de materiais e na limitação dos cálculos de percepção ao necessário para a jogabilidade. Como o projeto é um protótipo acadêmico para computadores, a prioridade atual está na estabilidade, legibilidade da interface e consistência das mecânicas, e não em otimizações destinadas a dispositivos móveis.
 
 \subsection{Delimitação do escopo}
 
-O trabalho contempla a criação do ambiente tridimensional, movimentação em primeira pessoa, interação com livros, perguntas de múltipla escolha, contagem de acertos e erros, dificuldade progressiva, inimigo com perseguição, limite de tempo, transição entre cenas, interface informativa e diferentes configurações de partida. Também faz parte da proposta desenvolver uma forma de organização das perguntas por disciplina e ampliar as áreas exploráveis.
+O trabalho contempla a criação do ambiente tridimensional, movimentação em primeira pessoa, interação com livros, perguntas de múltipla escolha, contagem de acertos e erros, dificuldade progressiva, inimigo com perseguição, limite de tempo, transição entre cenas, interface informativa e diferentes configurações de partida. Também fazem parte do produto a organização de questões por disciplina e andar, o painel autenticado para professores, o banco relacional, a API de leitura e a integração dinâmica desse conteúdo com a Unity.
 
-Não fazem parte do escopo a implementação de modo on-line ou multijogador, a integração direta com sistemas acadêmicos institucionais, o desenvolvimento de aplicativo móvel, o suporte a realidade virtual ou aumentada e a criação de uma inteligência artificial avançada que adapte todo o jogo ao perfil individual de cada estudante. Também não se pretende construir uma plataforma institucional completa de gestão educacional.
+Não fazem parte do escopo a implementação de modo multijogador, a integração direta com sistemas acadêmicos institucionais, o desenvolvimento de aplicativo móvel, o suporte a realidade virtual ou aumentada e a criação de uma inteligência artificial avançada que adapte todo o jogo ao perfil individual de cada estudante. O painel desenvolvido tem finalidade específica de abastecer o protótipo e não pretende substituir uma plataforma institucional completa de gestão educacional.
 
-\clearpage
+\section{Resultados Parciais e Discussão}
 
-\begin{landscape}
+O desenvolvimento resultou em um protótipo integrado composto pelo jogo tridimensional e pelo sistema Web de conteúdo. No jogo, encontram-se funcionais a exploração em primeira pessoa, a corrida limitada por resistência, as interfaces de perguntas e indicadores, o cronômetro, a contagem de acertos e erros, as portas condicionadas ao progresso, a transição entre cenas e as condições de derrota. O inimigo patrulha o ambiente por NavMesh, considera distância e linha de visão, persegue e captura o jogador e tem seus parâmetros modificados pelo desempenho nas questões.
 
-\section{Cronograma}
+No componente educacional, os livros deixaram de depender exclusivamente de textos configurados no editor. O painel permite que professores autenticados cadastrem disciplinas e mantenham perguntas com quatro alternativas, resposta correta, nível de dificuldade, andar e estado de publicação. A API seleciona o conteúdo elegível de forma aleatória e a Unity o distribui automaticamente na abertura da cena. Assim, foi atingido o requisito técnico de atualizar o banco de perguntas sem alterar o código ou reconstruir o executável do jogo.
 
-\begin{center}
-\footnotesize
-\begin{tabular}{|p{6cm}|*{32}{c|}}
-\hline
-\textbf{ETAPAS} & \multicolumn{4}{c|}{MAI} & \multicolumn{4}{c|}{JUN} & \multicolumn{4}{c|}{JUL} & \multicolumn{4}{c|}{AGO} & \multicolumn{4}{c|}{SET} & \multicolumn{4}{c|}{OUT} & \multicolumn{4}{c|}{NOV} & \multicolumn{4}{c|}{DEZ} \\
-\hline
+A Tabela~\ref{tab:resultados-implementados} resume os principais resultados verificáveis na versão atual.
 
-Revisão bibliográfica
-& X & X & & & &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-\hline
+\begin{table}[H]
+\centering
+\caption{Resultados implementados no protótipo}
+\label{tab:resultados-implementados}
+\small
+\begin{tabularx}{\textwidth}{p{3.3cm}X X}
+\toprule
+\textbf{Área} & \textbf{Resultado} & \textbf{Efeito no sistema} \\
+\midrule
+Jogabilidade & exploração, resistência, quiz, tempo, progressão e dois andares & estabelece um ciclo completo de busca, resposta e acesso à área seguinte \\
+\addlinespace
+Inteligência artificial & patrulha, visão, perseguição, captura e dificuldade dinâmica & transforma acertos, erros e tempo em consequências durante a partida \\
+\addlinespace
+Gestão de conteúdo & autenticação, painel, disciplinas e operações sobre perguntas & permite ao professor preparar e publicar conteúdo fora da Unity \\
+\addlinespace
+Integração & API JSON, filtro pela cena e distribuição aleatória & mantém o conteúdo do jogo sincronizado com o banco publicado \\
+\addlinespace
+Confiabilidade & validações, controle de autoria, proteção CSRF, rota de saúde e conteúdo local & reduz entradas inválidas e mantém a fase utilizável diante de indisponibilidade \\
+\addlinespace
+Implantação & contêineres, volume persistente, migrações e configuração por ambiente & torna a instalação do painel reproduzível em diferentes computadores \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-Redação do artigo
-&  & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X &  &  &  &  &  &  \\
-\hline
+Esses resultados mostram que a pergunta não funciona como uma atividade isolada. A resposta atualiza o progresso e a velocidade do inimigo; após erros sucessivos, a perseguição torna-se permanente, e o esgotamento do tempo aciona a condição de derrota. Essa relação aproxima o protótipo do princípio de integração entre conteúdo e mecânica discutido na aprendizagem baseada em jogos. Ao mesmo tempo, o painel amplia a aplicabilidade do projeto, pois separa o trabalho pedagógico da implementação técnica.
 
-Definição das tecnologias a serem usadas
-& & X & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-\hline
+Os testes realizados durante o desenvolvimento tiveram caráter funcional e permitiram verificar os fluxos entre cadastro, publicação, consulta e apresentação das questões. O tratamento de falhas também foi incorporado à arquitetura: respostas incompletas não substituem o conteúdo dos livros e a indisponibilidade do serviço preserva as questões locais. No entanto, esses resultados demonstram funcionamento técnico, e não permitem afirmar, por si só, que houve melhoria da aprendizagem.
 
-Configuração do ambiente de testes 
-&  &  &  &  & X & X & X & & & &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
-\hline
+A etapa de avaliação com participantes permanece necessária. Os dados deverão ser organizados em funcionamento técnico, desempenho na partida, percepção dos participantes e limitações observadas. Serão considerados conclusão da fase, tempo, acertos, erros, clareza, dificuldade, diversão, imersão e utilidade educacional. A discussão poderá então verificar se o quiz conserva os benefícios de feedback e participação descritos por Wang e Tahir \cite{wang2020} e se a integração alcançada evita uma aplicação superficial dos elementos lúdicos, preocupação destacada por Dichev e Dicheva \cite{dichev2017}.
 
-Documentação da arquitetura do jogo 
-&  &  &  &  &  &  &  &  &  &  &  & X & X & X & X & X & X & X & X & X &  &  &  &  &  &  &  &  &  &  &  &  \\
-\hline
-
-Simulação de falhas 
-&  &  &  &  &  &  &  &  &  &  &  &  &  &  & X & X & X & X & X & X & X & X &  &  &  &  &  &  &  &  &  &  \\
-\hline
-
-Implementação e melhorias
-&  &  &  &  &  &  &  &  &  &  & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X &  &  &  &  &  &  &  \\
-\hline
-
-Entrega do artigo
-&  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  \\
-\hline
-
-Defesa
-&  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  \\
-\hline
-
-Ajustes e entrega final do artigo 
-&  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X & X \\
-\hline
-
-\end{tabular}
-\end{center}
-
-\end{landscape}
-
-\clearpage
-
-\section{Resultados Esperados e Discussão Proposta}
-
-Espera-se que o desenvolvimento do URI Escapist resulte em um protótipo funcional capaz de unir entretenimento e aprendizagem em uma experiência inspirada no ambiente universitário. O jogo deverá demonstrar, de forma prática, como perguntas acadêmicas podem ser integradas a mecânicas de exploração, progressão e suspense, oferecendo aos estudantes uma forma diferente de interagir com conteúdos educacionais.
-
-Como resultados específicos, espera-se:
-
-\begin{itemize}[leftmargin=1.2cm]
-    \item desenvolver um jogo digital 3D funcional, com cenários inspirados na universidade;
-    \item implementar mecânicas de exploração, corrida, resistência, interação e transição entre ambientes;
-    \item disponibilizar um sistema de perguntas de múltipla escolha integrado ao progresso da partida;
-    \item implementar um inimigo com patrulha, detecção, perseguição e dificuldade progressiva;
-    \item oferecer diferentes configurações de desafio e ampliar a variedade entre as partidas;
-    \item possibilitar a organização de perguntas por área ou disciplina, favorecendo diferentes usos educacionais;
-    \item avaliar a compreensão, o engajamento e a percepção dos participantes durante os testes;
-    \item demonstrar a viabilidade dos jogos digitais como recurso complementar ao ensino; e
-    \item obter um produto que represente a aplicação dos conhecimentos adquiridos durante a graduação.
-\end{itemize}
-
-Não se espera que o protótipo substitua as metodologias tradicionais de ensino. Sua contribuição está em apresentar uma possibilidade complementar, capaz de aproximar conteúdos acadêmicos de uma linguagem interativa e familiar aos estudantes.
-
-Após as sessões de teste, os resultados serão organizados em quatro grupos: funcionamento técnico, desempenho nas partidas, percepção dos participantes e limitações observadas. O funcionamento técnico considerará falhas, estabilidade e conclusão das mecânicas. O desempenho reunirá tempo, acertos, erros e conclusão da fase. A percepção qualitativa abrangerá clareza, dificuldade, diversão, imersão e utilidade educacional.
-
-A discussão comparará esses dados com as conclusões dos trabalhos relacionados. Será observado, por exemplo, se o quiz mantém os benefícios de feedback e participação descritos por Wang e Tahir \cite{wang2020}, e se a integração entre conteúdo e jogo evita uma aplicação superficial dos elementos lúdicos, preocupação destacada por Dichev e Dicheva \cite{dichev2017}.
-
-Entre as limitações previstas estão a quantidade restrita de participantes, a realização dos testes em uma única instituição, o número inicial de perguntas e disciplinas e a ausência de um grupo de controle. Por isso, os resultados deverão ser interpretados como evidências exploratórias sobre o protótipo, e não como comprovação definitiva de melhoria da aprendizagem.
+Entre as limitações atuais estão a ausência de uma avaliação controlada com usuários, o número inicial de disciplinas e questões, a dependência de uma rede local para atualização remota e o fato de o painel não possuir integração com sistemas acadêmicos institucionais. Portanto, as evidências apresentadas devem ser interpretadas como validação técnica e exploratória do protótipo, não como comprovação definitiva de ganho educacional.
 
 \section{Conclusão e Trabalhos Futuros}
 
-O URI Escapist propõe uma releitura da experiência universitária por meio de um jogo digital que combina exploração, perguntas e suspense. Ao integrar o conteúdo acadêmico às regras da partida, o projeto procura evitar que a aprendizagem seja tratada como um elemento separado da jogabilidade.
+O URI Escapist apresenta uma releitura da experiência universitária por meio de um jogo digital que combina exploração, perguntas e suspense. Ao integrar o conteúdo acadêmico às regras da partida, o projeto evita que a aprendizagem seja tratada apenas como um elemento sobreposto à jogabilidade.
 
-A pesquisa busca cumprir o objetivo de produzir uma experiência funcional que associe entretenimento e conteúdo educacional. As contribuições previstas incluem a representação de um ambiente universitário reconhecível, a integração de perguntas ao sistema de progressão, a dificuldade influenciada pelo desempenho e uma arquitetura modular que possibilite expansões.
+A versão desenvolvida cumpre o objetivo técnico de produzir uma experiência funcional que associe entretenimento e conteúdo educacional. Suas contribuições incluem a representação de um ambiente universitário reconhecível, a integração de perguntas ao sistema de progressão, a dificuldade influenciada pelo desempenho e uma arquitetura modular que possibilita expansões.
 
-O trabalho também permitirá aplicar conceitos de jogos sérios e aprendizagem baseada em jogos em um produto concreto, envolvendo conhecimentos de programação, inteligência artificial para jogos, modelagem de ambientes, interfaces e testes de software. O desenvolvimento iterativo possibilitará aperfeiçoar as mecânicas de acordo com os problemas observados e com o retorno dos participantes.
+O painel Web e a API ampliaram a proposta inicial ao permitir que professores administrem disciplinas e questões de maneira independente do projeto da Unity. A associação de cada pergunta a um andar, o controle entre rascunho e publicação e o carregamento automático pela cena formam um fluxo completo entre autoria e uso no jogo. A contingência local, as validações, o controle de autoria e a implantação em contêineres contribuem para a confiabilidade e a reprodução do ambiente.
 
-Como trabalhos futuros, propõe-se ampliar o número de disciplinas e perguntas, adicionar novos andares e áreas do campus, randomizar a posição dos livros, criar novos modos de jogo e desenvolver uma interface simplificada para que professores organizem conteúdos. Estudos posteriores também poderão empregar amostras maiores, grupos de comparação e avaliações anteriores e posteriores à utilização do jogo.
+O trabalho também aplicou conceitos de jogos sérios e aprendizagem baseada em jogos em um produto concreto, envolvendo programação, inteligência artificial para jogos, modelagem de ambientes, interfaces, banco de dados, desenvolvimento Web e integração de software. A principal limitação desta etapa é a ausência de evidências empíricas suficientes para medir aprendizagem e engajamento, razão pela qual as conclusões educacionais permanecem abertas à avaliação com participantes.
+
+Como trabalhos futuros, propõe-se ampliar o número de disciplinas, perguntas, andares e áreas do campus; randomizar a posição dos livros; registrar dados anonimizados das partidas; aprimorar os perfis e permissões do painel; e publicar a integração por HTTPS. Estudos posteriores poderão empregar amostras maiores, grupos de comparação e avaliações anteriores e posteriores à utilização do jogo.
 
 \bibliographystyle{article-config/sbc}
 \bibliography{Referencias/referencias}
