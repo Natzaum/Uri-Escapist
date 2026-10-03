@@ -1,13 +1,10 @@
 <section class="login-card">
     <div class="login-visual" aria-hidden="true">
-        <div class="visual-grid"></div>
-        <div class="visual-orb orb-one"></div>
-        <div class="visual-orb orb-two"></div>
         <div class="visual-content">
             <span class="brand-mark brand-mark-large">UE</span>
             <p class="eyebrow">URI Escapist</p>
-            <h2>Conhecimento que muda o jogo.</h2>
-            <p>Organize questões acadêmicas e publique conteúdo diretamente nos livros encontrados pelos jogadores.</p>
+            <h2>Ideias boas merecem uma boa pergunta.</h2>
+            <p>Um espaço para preparar e organizar as questões que dão vida às partidas.</p>
         </div>
     </div>
 

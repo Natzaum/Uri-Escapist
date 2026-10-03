@@ -13,7 +13,15 @@ $flashes = consume_flashes();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="light dark">
+    <script>
+        (() => {
+            try {
+                const theme = localStorage.getItem('uri-escapist-theme');
+                if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+            } catch (_) {}
+        })();
+    </script>
     <title><?= e($pageTitle) ?> · <?= e(config('app.name')) ?></title>
     <link rel="stylesheet" href="<?= e(url('/assets/css/app.css')) ?>">
     <script src="<?= e(url('/assets/js/app.js')) ?>" defer></script>
@@ -55,10 +63,14 @@ $flashes = consume_flashes();
             <header class="topbar">
                 <button class="menu-toggle" type="button" data-menu-toggle aria-label="Abrir menu">☰</button>
                 <div>
-                    <span class="eyebrow">Painel do professor</span>
+                    <span class="eyebrow">URI Escapist</span>
                     <h1><?= e($pageTitle) ?></h1>
                 </div>
                 <div class="teacher-menu">
+                    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Alternar para tema escuro" aria-pressed="false">
+                        <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+                        <span class="theme-toggle-label">Tema escuro</span>
+                    </button>
                     <span class="avatar"><?= e(mb_strtoupper(mb_substr($teacher['name'], 0, 1))) ?></span>
                     <span class="teacher-copy">
                         <strong><?= e($teacher['name']) ?></strong>
@@ -73,6 +85,10 @@ $flashes = consume_flashes();
 
             <main class="content">
 <?php else: ?>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Alternar para tema escuro" aria-pressed="false">
+        <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+        <span class="theme-toggle-label">Tema escuro</span>
+    </button>
     <main class="guest-shell">
 <?php endif; ?>
 
