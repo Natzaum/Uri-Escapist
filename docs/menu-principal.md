@@ -29,8 +29,8 @@ Todas as telas são criadas automaticamente por `GameInterface`. Não é necess�
 - **Pausa:** Esc abre a pausa, com continuar, configurações, reiniciar o andar e voltar ao menu. Reinício e retorno pedem confirmação porque descartam o progresso do andar. Esc cancela a confirmação ou retoma a partida.
 - **Configurações:** disponíveis no menu principal e na pausa. Volume de 0 a 100% e sensibilidade de 0,2× a 3×, aplicados imediatamente. As preferências são salvas ao voltar ou trocar de cena e reutilizadas nas próximas sessões. O multiplicador respeita a sensibilidade base configurada no Inspector.
 - **Livros:** enunciado e quatro alternativas, com navegação por mouse ou teclado. O resultado mostra se houve acerto ou erro e a resposta correta, até selecionar Continuar. O tempo e o inimigo continuam ativos durante pergunta e resultado, como no fluxo anterior. Esc permite pausar e depois retornar à mesma tela.
-- **Derrota:** abre ao ser capturado, esgotar o tempo conforme a sequência existente ou exceder o limite de erros. Permite tentar novamente no mesmo andar e dificuldade ou voltar ao menu.
-- **Vitória:** usa a porta final e os requisitos existentes, com jogar novamente desde `MainScene` ou voltar ao menu. Uma nova partida limpa o registro de visita ao segundo andar.
+- **Derrota:** abre ao ser capturado, esgotar o tempo conforme a sequência existente ou atingir o limite de erros. Permite tentar novamente no mesmo andar e dificuldade ou voltar ao menu.
+- **Vitória:** usa a porta final e os requisitos existentes, com jogar novamente desde `MainScene` ou voltar ao menu. Uma nova partida limpa o registro de conclusão dos andares.
 - **Carregamento:** aparece nas trocas de cena e ao buscar perguntas. Mostra progresso quando disponível e um indicador animado quando o tamanho da resposta ainda é desconhecido. Falhas da API exibem a mensagem e permitem tentar novamente ou voltar ao menu. Não há perguntas locais de outra dificuldade como substitutas.
 
 Pausa, configurações, confirmação, carregamento e fim de partida congelam o mundo. Um único controlador mantém o cursor liberado nessas telas, evitando que um clique seja capturado pelo movimento do jogador.
@@ -44,3 +44,20 @@ Pausa, configurações, confirmação, carregamento e fim de partida congelam o 
 - `BookManager.cs` e `RemoteQuestionLoader.cs`: carregamento e falhas das perguntas.
 
 Validação realizada: compilação dos scripts do projeto; execução isolada na Unity com pontuação, bloqueio de resposta duplicada, pausa e retorno ao resultado, aplicação das configurações, falha e nova tentativa, telas de fim de partida, troca assíncrona de cena e textos no limite de 500/255 caracteres. A IA foi substituída por um componente mínimo nessa execução isolada; a perseguição deve ser conferida nas cenas completas.
+
+
+## HUD e progressão
+
+`GameHud.cs` cria cartões em azul URI para livros, erros e fôlego, além do tempo. A barra de fôlego substitui os textos de debug de stamina/sprint/exaustão. A apresentação antiga é ocultada automaticamente.
+
+| Dificuldade | Acertos por andar | Erro que causa derrota |
+| --- | --- | --- |
+| Fácil | 5 | 5º |
+| Normal | 7 | 3º |
+| Difícil | 9 | 1º |
+
+Os limites vêm de `GameDifficulty.cs` e substituem os valores antigos do Inspector. Acertos e erros reiniciam a cada carregamento do andar. A distribuição de dificuldade das perguntas continua como antes.
+
+O HUD é compacto e não exibe objetivo fixo na parte inferior. Após cada acerto ou erro que não encerre a partida, um aviso de progresso aparece por 4 segundos ao voltar ao jogo. Ao atingir a meta, esse aviso indica a porta para o próximo andar. Após concluir o segundo, a passagem retorna ao primeiro e a porta principal permite vencer. Apenas visitar o segundo andar não libera a vitória. O terceiro andar não é necessário neste fluxo.
+
+Para testar, abra `UriMenu`, escolha uma dificuldade e inicie uma nova partida. Confira a porta antes e depois da meta, a derrota exatamente no limite e o retorno à saída após concluir o segundo andar. O HUD é criado automaticamente, sem configuração manual de Canvas.

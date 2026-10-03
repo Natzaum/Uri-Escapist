@@ -62,6 +62,7 @@ public class TimerManager : MonoBehaviour
 
     void Start()
     {
+        if (timerDisplay != null) timerDisplay.enabled = false;
         timeRemaining = timeLimit;
         isRunning = startActive;
 
@@ -185,6 +186,7 @@ public class TimerManager : MonoBehaviour
 
     public void ResetTimer()
     {
+        if (timerDisplay != null) timerDisplay.enabled = false;
         timeRemaining = timeLimit;
         hasEnded = false;
         isRunning = startActive;

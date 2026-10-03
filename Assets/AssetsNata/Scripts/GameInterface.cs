@@ -70,6 +70,7 @@ public class GameInterface : MonoBehaviour
         root.anchorMin = Vector2.zero; root.anchorMax = Vector2.one;
         root.gameObject.AddComponent<Image>().color = new Color(0.006f, 0.010f, 0.022f, 0.97f);
         root.gameObject.SetActive(false);
+        gameObject.AddComponent<GameHud>().Build(body, serif);
         SceneManager.sceneLoaded += SceneLoaded;
     }
 
@@ -277,8 +278,8 @@ public class GameInterface : MonoBehaviour
         if (State==ScreenState.Result || transitioning || State==ScreenState.Loading || State==ScreenState.Error) return;
         renderCurrent=null;
         if (QuizManager.Instance!=null) QuizManager.Instance.ForceCloseQuiz();
-        Begin(ScreenState.Result,victory ? "Você encontrou a saída" : "Sua jornada terminou",
-            detail ?? (victory ? "O conhecimento abriu o caminho." : "Ainda há uma chance de escapar."));
+        Begin(ScreenState.Result,victory ? "Você escapou" : "A jornada chegou ao fim",
+            detail ?? (victory ? "Os desafios foram vencidos. O conhecimento abriu sua saída." : "Ainda há uma chance de escapar."));
         if(BookManager.Instance!=null)
             Text("Acertos: "+BookManager.Instance.GetBooksCollected()+"    Erros: "+BookManager.Instance.GetErrors(),50,23);
         Button(victory ? "Jogar novamente" : "Tentar novamente",-50,()=>{

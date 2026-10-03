@@ -10,7 +10,7 @@ public class BookManager : MonoBehaviour
     [Header("Configurações")]
     public int totalBooks = 10;
     public int minBooksToWin = 7;
-    public int maxErrors = 3; // 4º erro = game over instantâneo
+    public int maxErrors = 3; // Derrota ao atingir este número de erros.
 
     [Header("Perguntas online")]
     public string questionsApiUrl = "http://127.0.0.1:8000/api/v1/questions.php";
@@ -43,6 +43,8 @@ public class BookManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            minBooksToWin = GameDifficulty.BooksRequired(MenuPrincipal.GameMode);
+            maxErrors = GameDifficulty.ErrorLimit(MenuPrincipal.GameMode);
         }
         else
         {
@@ -95,6 +97,7 @@ public class BookManager : MonoBehaviour
 
     public void OnBookCorrect()
     {
+        if (gameOverShown) return;
         booksCollected++;
         
         Debug.Log($"✓ Livro correto! Total: {booksCollected}/{totalBooks}");
@@ -127,14 +130,15 @@ public class BookManager : MonoBehaviour
         }
         
         UpdateUI();
-        CheckWinCondition();
+        NotifyBookProgress(true);
     }
 
     public void OnBookWrong()
     {
+        if (gameOverShown) return;
         errors++;
         
-        Debug.Log($"✗ Livro errado! Total de erros: {errors}/{maxErrors + 1}");
+        Debug.Log($"✗ Livro errado! Total de erros: {errors}/{maxErrors}");
         
         // Aumentar velocidade do inimigo por erro (CHASE e PATROL)
         if (enemy != null)
@@ -168,73 +172,45 @@ public class BookManager : MonoBehaviour
         
         UpdateUI();
         
-        // 4º erro = game over com velocidade visível
-        if (errors > maxErrors)
+        // O erro que atinge o limite encerra a partida.
+        if (errors >= maxErrors)
         {
             Debug.Log("💀 MUITOS ERROS! Game Over imediato.");
             DirectGameOver();
+        }
+        else
+        {
+            NotifyBookProgress(false);
         }
     }
 
     void UpdateUI()
     {
-        if (booksCounterText != null)
-        {
-            booksCounterText.text = $"Livros: {booksCollected}/{minBooksToWin}";
-            
-            // Cor verde se já atingiu o mínimo
-            if (booksCollected >= minBooksToWin)
-            {
-                booksCounterText.color = Color.green;
-            }
-        }
-
-        if (errorsCounterText != null)
-        {
-            errorsCounterText.text = $"Erros: {errors}/{maxErrors + 1}";
-            
-            // Cor vermelha conforme se aproxima do limite
-            if (errors >= maxErrors)
-            {
-                errorsCounterText.color = Color.red;
-            }
-            else if (errors >= maxErrors - 1)
-            {
-                errorsCounterText.color = Color.yellow;
-            }
-        }
+        // O HUD gerado por código substitui os textos das cenas antigas.
+        if (booksCounterText != null) booksCounterText.enabled = false;
+        if (errorsCounterText != null) errorsCounterText.enabled = false;
     }
 
-    void CheckWinCondition()
+    void NotifyBookProgress(bool correct)
     {
-        // Verificar se coletou todos os livros OU atingiu o mínimo
-        if (booksCollected >= minBooksToWin)
+        string title = correct ? "Resposta correta" : "Resposta incorreta";
+        string detail;
+        if (DoorGameEnd.HasCompletedFloor("andar2") && SceneManager.GetActiveScene().name != "andar2")
+            detail = "Saída liberada. Alcance a porta principal e escape.";
+        else if (booksCollected >= minBooksToWin)
         {
-            int remainingBooks = totalBooks - booksCollected - errors;
-            
-            if (remainingBooks <= 0)
-            {
-                // Não há mais livros para coletar
-                Debug.Log("🎉 VITÓRIA! Acertou o mínimo de livros!");
-                WinLevel();
-            }
-            else
-            {
-                Debug.Log($"✓ Já atingiu o mínimo! Pode continuar ou sair. ({remainingBooks} livros restantes)");
-            }
+            title = "Passagem liberada";
+            detail = SceneManager.GetActiveScene().name == "andar2"
+                ? "Retorne ao primeiro andar e alcance a saída principal."
+                : "Encontre a porta para o próximo andar.";
         }
-    }
-
-    void WinLevel()
-    {
-        Debug.Log("🏆 NÍVEL COMPLETO!");
-        // Aqui você pode:
-        // - Carregar próxima cena
-        // - Mostrar tela de vitória
-        // - Etc
-        
-        // Exemplo:
-        // SceneManager.LoadScene("NextLevel");
+        else
+        {
+            int missing = minBooksToWin - booksCollected;
+            detail = missing == 1 ? "Falta acertar 1 livro para liberar a passagem."
+                : $"Falta acertar {missing} livros para liberar a passagem.";
+        }
+        GameHud.Instance?.Notify(title, detail, 4);
     }
 
     public void InstantGameOver()
@@ -352,7 +328,7 @@ public class BookManager : MonoBehaviour
 
     public bool CanProgress()
     {
-        return QuestionsReady && booksCollected >= minBooksToWin;
+        return !gameOverShown && QuestionsReady && booksCollected >= minBooksToWin;
     }
 
     public void OnTimeUp()

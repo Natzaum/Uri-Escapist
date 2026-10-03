@@ -59,11 +59,6 @@ public class PlayerStaminaSimple : MonoBehaviour
             currentStamina = Mathf.Max(0f, currentStamina);
             timeSinceLastDrain = 0f;
 
-            // Mostrar barra enquanto gasta stamina
-            if (staminaBarObject != null)
-                staminaBarObject.SetActive(true);
-
-            Debug.Log($"🏃 Sprinting - Stamina: {currentStamina:F1}/{maxStamina}");
         }
         else
         {
@@ -77,32 +72,19 @@ public class PlayerStaminaSimple : MonoBehaviour
                 currentStamina = Mathf.Min(maxStamina, currentStamina);
             }
 
-            // Esconder barra quando cheia
-            if (staminaBarObject != null && currentStamina >= maxStamina)
-                staminaBarObject.SetActive(false);
-            else if (staminaBarObject != null && currentStamina < maxStamina)
-                staminaBarObject.SetActive(true);
         }
     }
 
-    void UpdateStaminaBar()
+    void UpdateStaminaBar() => HideLegacyBar();
+
+    void HideLegacyBar()
     {
-        if (staminaBar == null)
-            return;
-
-        // Atualizar preenchimento
-        staminaBar.fillAmount = currentStamina / maxStamina;
-
-        // Mudar cor conforme stamina
-        if (currentStamina > 50f)
-            staminaBar.color = Color.green; // Verde: OK
-        else if (currentStamina > 25f)
-            staminaBar.color = Color.yellow; // Amarelo: Cansado
-        else
-            staminaBar.color = Color.red; // Vermelho: Muito cansado
+        if (staminaBar != null) staminaBar.enabled = false;
+        if (staminaBarObject != null && staminaBarObject.GetComponent<RectTransform>() != null)
+            staminaBarObject.SetActive(false);
     }
 
     // Métodos públicos para consultar estado
     public bool IsSprinting() => isSprinting;
-    public float GetStaminaPercent() => currentStamina / maxStamina;
+    public float GetStaminaPercent() => maxStamina > 0 ? currentStamina / maxStamina : 0;
 }

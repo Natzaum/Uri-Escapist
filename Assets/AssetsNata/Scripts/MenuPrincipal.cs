@@ -235,7 +235,7 @@ public class MenuPrincipal : MonoBehaviour
                 () => { GameMode = mode; ShowMain(); });
         }
         Option("Voltar", -72, ShowMain);
-        description.text = "Fácil: questões fáceis, depois fáceis e médias.\nNormal: fáceis, depois médias.  Difícil: somente difíceis.";
+        description.text = "Fácil · 5 acertos para avançar · derrota no 5º erro\nNormal · 7 acertos para avançar · derrota no 3º erro\nDifícil · 9 acertos para avançar · derrota no 1º erro";
         FinishPage(System.Array.IndexOf(modes, GameMode));
     }
 

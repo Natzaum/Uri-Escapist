@@ -33,10 +33,11 @@ public class DoorWithBookRequirement : MonoBehaviour
     private bool isTransitioning = false;
     private Collider doorCollider;
     private GameObject player;
-    private float messageTimer = 0f;
 
     void Start()
     {
+        booksRequired = GameDifficulty.BooksRequired(MenuPrincipal.GameMode);
+        if (feedbackText != null) feedbackText.enabled = false;
         doorCollider = GetComponent<Collider>();
         
         if (doorCollider == null)
@@ -76,19 +77,6 @@ public class DoorWithBookRequirement : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        // Gerenciar duração da mensagem
-        if (messageTimer > 0)
-        {
-            messageTimer -= Time.deltaTime;
-            if (messageTimer <= 0 && feedbackText != null)
-            {
-                feedbackText.gameObject.SetActive(false);
-            }
-        }
-    }
-
     void OnTriggerEnter(Collider other)
     {
         // Verificar se é o player
@@ -102,73 +90,42 @@ public class DoorWithBookRequirement : MonoBehaviour
         if (isTransitioning)
             return;
 
-        // Verificar se tem livros suficientes
-        int booksCollected = GetBooksCollected();
-
-        if (booksCollected >= booksRequired)
+        var manager = BookManager.Instance;
+        booksRequired = manager != null ? manager.minBooksToWin : GameDifficulty.BooksRequired(MenuPrincipal.GameMode);
+        if (manager == null || !manager.QuestionsReady)
         {
-            // ✅ Pode passar!
-            Debug.Log($"✓ Player tem {booksCollected} livros! (Requisito: {booksRequired})");
-            Debug.Log($"🌀 Carregando cena: {targetSceneName}");
-            
-            ShowMessage($"✓ Parabéns! Você completou o desafio!", 2f);
-            
-            isTransitioning = true;
-            Invoke(nameof(LoadScene), 1f);
-        }
-        else
-        {
-            // ❌ Não pode passar
-            int livrosFaltando = booksRequired - booksCollected;
-            Debug.Log($"❌ Player tem apenas {booksCollected} livros! Faltam {livrosFaltando}");
-            
-            string message = $"❌ Você precisa de {booksRequired} livros!\nTem: {booksCollected}/{booksRequired}\nFaltam: {livrosFaltando}";
-            ShowMessage(message, messageDuration);
-        }
-    }
-
-    int GetBooksCollected()
-    {
-        // Tentar pegar do BookManager
-        if (BookManager.Instance != null)
-        {
-            int collected = BookManager.Instance.GetBooksCollected();
-            if (showDebugInfo)
-                Debug.Log($"📖 Livros coletados (BookManager): {collected}");
-            return collected;
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ BookManager não encontrado! Retornando 0");
-            return 0;
-        }
-    }
-
-    void ShowMessage(string message, float duration)
-    {
-        if (feedbackText == null)
-        {
-            Debug.Log(message);
+            GameHud.Instance?.Notify("Aguarde", "As perguntas deste andar ainda estão sendo preparadas.");
             return;
         }
-
-        feedbackText.text = message;
-        feedbackText.gameObject.SetActive(true);
-        messageTimer = duration;
+        if (manager.CanProgress())
+        {
+            if (!Application.CanStreamedLevelBeLoaded(targetSceneName))
+            {
+                GameHud.Instance?.Notify("Passagem indisponível", "Não foi possível encontrar o próximo andar. Verifique as cenas do jogo.");
+                return;
+            }
+            isTransitioning = true;
+            GameHud.Instance?.Notify("Andar superado", targetSceneName == "andar2"
+                ? "O próximo desafio espera por você. Avançando ao segundo andar…"
+                : "O caminho de volta está aberto. Retornando para a saída principal…", 3);
+            Invoke(nameof(LoadScene), 2f);
+        }
+        else
+        {
+            int missing = Mathf.Max(0, booksRequired - manager.GetBooksCollected());
+            GameHud.Instance?.Notify("Passagem selada", $"Acerte mais {missing} livro(s) para avançar. Progresso: {manager.GetBooksCollected()}/{booksRequired}.", messageDuration);
+        }
     }
 
     void LoadScene()
     {
-        Debug.Log($"🌀 Carregando cena: {targetSceneName}");
-        
-        // Garantir que o tempo está normal
-        if (Time.timeScale != 1f)
+        if (!GameInterface.Instance.IsTerminal)
         {
-            Debug.Log($"⏱️ Resetando Time.timeScale de {Time.timeScale} para 1f");
-            Time.timeScale = 1f;
+            DoorGameEnd.MarkFloorCompleted(SceneManager.GetActiveScene().name);
+            GameInterface.Instance.LoadScene(targetSceneName);
         }
-        
-        GameInterface.Instance.LoadScene(targetSceneName);
+        else
+            isTransitioning = false;
     }
 
     void OnDrawGizmos()

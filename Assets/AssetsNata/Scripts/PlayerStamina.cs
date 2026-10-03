@@ -35,12 +35,8 @@ public class PlayerStamina : MonoBehaviour
         // NÃO pegar velocidade do PlayerMove - usar os valores do Inspector!
         // Os valores walkSpeed e sprintSpeed são definidos aqui no Inspector
 
-        // Esconder barra se estiver cheia (a menos que alwaysShowBar esteja ativo)
-        if (staminaBarObject != null && !alwaysShowBar)
-            staminaBarObject.SetActive(false);
-        else if (staminaBarObject != null && alwaysShowBar)
-            staminaBarObject.SetActive(true);
-            
+        HideLegacyBar();
+
         Debug.Log("✓ PlayerStamina iniciado");
         Debug.Log($"  Walk Speed: {walkSpeed} | Sprint Speed: {sprintSpeed}");
         Debug.Log("  💡 Ajuste walkSpeed e sprintSpeed no Inspector!");
@@ -74,13 +70,6 @@ public class PlayerStamina : MonoBehaviour
             if (playerMove != null)
             {
                 playerMove.moveSpeed = sprintSpeed;
-            }
-
-            // Mostrar barra de stamina
-            if (staminaBarObject != null && !staminaBarObject.activeSelf)
-            {
-                staminaBarObject.SetActive(true);
-                Debug.Log("Barra de stamina ativada!");
             }
 
             // Se stamina acabar, ficar exausto
@@ -118,38 +107,18 @@ public class PlayerStamina : MonoBehaviour
                 currentStamina = maxStamina;
                 isExhausted = false;
 
-                // Esconder barra quando cheia (a menos que alwaysShowBar esteja ativo)
-                if (staminaBarObject != null && currentStamina >= maxStamina && !alwaysShowBar)
-                    staminaBarObject.SetActive(false);
+
             }
         }
     }
 
-    void UpdateUI()
-    {
-        if (staminaBar != null)
-        {
-            float fillValue = currentStamina / maxStamina;
-            staminaBar.fillAmount = fillValue;
+    void UpdateUI() => HideLegacyBar();
 
-            // Mudar cor baseado na stamina
-            if (currentStamina <= 20f)
-            {
-                staminaBar.color = Color.red; // Crítico
-            }
-            else if (currentStamina <= 50f)
-            {
-                staminaBar.color = Color.yellow; // Baixo
-            }
-            else
-            {
-                staminaBar.color = Color.green; // OK
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Stamina Bar (Image) não está atribuído!");
-        }
+    void HideLegacyBar()
+    {
+        if (staminaBar != null) staminaBar.enabled = false;
+        if (staminaBarObject != null && staminaBarObject.GetComponent<RectTransform>() != null)
+            staminaBarObject.SetActive(false);
     }
 
     // Método público para verificar se está correndo
@@ -161,16 +130,7 @@ public class PlayerStamina : MonoBehaviour
     // Método público para verificar stamina
     public float GetStaminaPercent()
     {
-        return currentStamina / maxStamina;
+        return maxStamina > 0 ? currentStamina / maxStamina : 0;
     }
 
-    // Debug visual
-    void OnGUI()
-    {
-        if (Debug.isDebugBuild)
-        {
-            GUI.Label(new Rect(10, 100, 300, 20), $"Stamina: {currentStamina:F1}/{maxStamina}");
-            GUI.Label(new Rect(10, 120, 300, 20), $"Sprint: {isSprinting} | Exausto: {isExhausted}");
-        }
-    }
 }

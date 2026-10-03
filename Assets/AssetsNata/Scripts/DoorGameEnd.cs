@@ -1,10 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+using System.Collections.Generic;
 
 /// <summary>
 /// Porta de conclusão que mostra mensagem de parabéns
-/// Somente funciona se o player já visitou o andar2
+/// Somente funciona após completar o andar obrigatório
 /// </summary>
 public class DoorGameEnd : MonoBehaviour
 {
@@ -12,7 +11,7 @@ public class DoorGameEnd : MonoBehaviour
     public GameObject playerObject;
 
     [Header("Requisitos")]
-    [Tooltip("Nome da cena que deve ser visitada antes")]
+    [Tooltip("Nome da cena que deve ser concluída antes")]
     public string requiredSceneName = "andar2";
 
     [Header("Mensagem")]
@@ -31,7 +30,9 @@ public class DoorGameEnd : MonoBehaviour
 
     private bool gameEnded = false;
     private GameObject player;
-    private static bool visitedRequiredScene = false; // Flag persistente entre cenas
+    private static readonly HashSet<string> completedFloors = new HashSet<string>();
+    public static bool HasCompletedFloor(string scene) => completedFloors.Contains(scene);
+    public static void MarkFloorCompleted(string scene) => completedFloors.Add(scene);
 
     void Start()
     {
@@ -54,8 +55,8 @@ public class DoorGameEnd : MonoBehaviour
             player = GameObject.FindGameObjectWithTag("Player");
 
         Debug.Log($"🎓 Porta de conclusão ativada!");
-        Debug.Log($"   Requer visita a: 2");
-        Debug.Log($"   Status: {(visitedRequiredScene ? "✅ VISITADO" : "❌ NÃO VISITADO")}");
+        Debug.Log($"   Requer conclusão de: {requiredSceneName}");
+        Debug.Log($"   Status: {(HasCompletedFloor(requiredSceneName) ? "✅ CONCLUÍDO" : "❌ PENDENTE")}");
     }
 
     void OnTriggerEnter(Collider other)
@@ -64,13 +65,13 @@ public class DoorGameEnd : MonoBehaviour
                        other.CompareTag("Player") || 
                        other.name == "Player";
 
-        if (!isPlayer || gameEnded)
+        if (!isPlayer || gameEnded || GameInterface.Instance.IsTerminal)
             return;
 
-        // Verificar se visitou a cena obrigatória
-        if (!visitedRequiredScene)
+        // Verificar se concluiu a cena obrigatória
+        if (!HasCompletedFloor(requiredSceneName))
         {
-            Debug.LogWarning($"❌ Acesso negado! Você precisa visitar o 2 andar primeiro!");
+            Debug.LogWarning($"❌ Acesso negado! Você precisa concluir o segundo andar primeiro!");
             ShowDeniedMessage();
             return;
         }
@@ -84,79 +85,25 @@ public class DoorGameEnd : MonoBehaviour
 
     void ShowVictoryMessage()
     {
-        GameInterface.Instance.ShowResult(true, victoryMessage);
+        GameInterface.Instance.ShowResult(true, "Você superou os dois andares e conquistou sua saída.\nO conhecimento foi sua chave para a liberdade.");
     }
 
     void ShowDeniedMessage()
     {
-        // Criar Canvas
-        GameObject canvasObj = new GameObject("DeniedCanvas");
-        Canvas canvas = canvasObj.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 100;
-
-        canvasObj.AddComponent<CanvasScaler>();
-        canvasObj.AddComponent<GraphicRaycaster>();
-
-        // Background
-        GameObject bgObj = new GameObject("Background");
-        bgObj.transform.SetParent(canvasObj.transform, false);
-        
-        Image bgImage = bgObj.AddComponent<Image>();
-        bgImage.color = new Color(0, 0, 0, 0.7f);
-
-        RectTransform bgRect = bgObj.GetComponent<RectTransform>();
-        bgRect.anchorMin = Vector2.zero;
-        bgRect.anchorMax = Vector2.one;
-        bgRect.offsetMin = Vector2.zero;
-        bgRect.offsetMax = Vector2.zero;
-
-        // Texto
-        GameObject textObj = new GameObject("DeniedText");
-        textObj.transform.SetParent(canvasObj.transform, false);
-
-        TextMeshProUGUI deniedText = textObj.AddComponent<TextMeshProUGUI>();
-        deniedText.text = deniedMessage;
-        deniedText.alignment = TextAlignmentOptions.Center;
-        deniedText.fontSize = fontSize;
-        deniedText.color = deniedColor;
-
-        RectTransform textRect = textObj.GetComponent<RectTransform>();
-        textRect.anchorMin = Vector2.zero;
-        textRect.anchorMax = Vector2.one;
-        textRect.offsetMin = new Vector2(20, 20);
-        textRect.offsetMax = new Vector2(-20, -20);
-
-        Outline outline = textObj.AddComponent<Outline>();
-        outline.effectColor = Color.black;
-        outline.effectDistance = new Vector2(4, 4);
-
-        // Remover mensagem após 3 segundos
-        Destroy(canvasObj, 3f);
-
-        Debug.Log("❌ Acesso negado! Mensagem exibida por 3 segundos");
+        GameHud.Instance?.Notify("A saída ainda está selada", "Conclua o segundo andar e retorne pela passagem para liberar a porta principal.", 6);
     }
 
-    // Método estático para registrar que visitou a cena obrigatória
-    public static void SetVisitedRequiredScene()
-    {
-        visitedRequiredScene = true;
-        Debug.Log("✅ Cena obrigatória visitada! Porta de conclusão agora está acessível!");
-    }
+    // Compatibilidade com SceneVisitMarker: visitar não equivale a concluir.
+    public static void SetVisitedRequiredScene() { }
 
-    // Reset quando voltar à cena inicial (opcional)
-    public static void ResetRequirement()
-    {
-        visitedRequiredScene = false;
-        Debug.Log("🔄 Requisito resetado");
-    }
+    public static void ResetRequirement() => completedFloors.Clear();
 
     void OnDrawGizmos()
     {
         Collider col = GetComponent<Collider>();
         if (col != null)
         {
-            Gizmos.color = visitedRequiredScene ? Color.green : Color.red;
+            Gizmos.color = HasCompletedFloor(requiredSceneName) ? Color.green : Color.red;
             Gizmos.DrawWireCube(transform.position, Vector3.one * 2f);
         }
     }
