@@ -33,9 +33,27 @@ public static class RemoteQuestionLoader
         public ApiMeta meta;
     }
 
+    private static readonly HashSet<int> usedQuestionIds = new HashSet<int>();
+    private static readonly Dictionary<string, ApiResponse> floorQuestions = new Dictionary<string, ApiResponse>();
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    public static void ResetSession()
+    {
+        usedQuestionIds.Clear();
+        floorQuestions.Clear();
+    }
+
     public static IEnumerator LoadAndAssign(string apiUrl, string sceneName, string mode,
         int timeoutSeconds, BookQuiz[] books, Action<string> onCompleted, Action<float> onProgress = null)
     {
+        string cacheKey = mode + ":" + sceneName;
+        if (floorQuestions.TryGetValue(cacheKey, out var cached))
+        {
+            string error = Assign(cached, books);
+            if (error == null) onProgress?.Invoke(1f);
+            onCompleted(error);
+            yield break;
+        }
         if (string.IsNullOrWhiteSpace(apiUrl))
         {
             onCompleted("Configure a URL da API de perguntas no BookManager.");
@@ -44,7 +62,8 @@ public static class RemoteQuestionLoader
         string requestUrl = apiUrl + (apiUrl.Contains("?") ? "&" : "?")
             + "scene=" + UnityWebRequest.EscapeURL(sceneName)
             + "&mode=" + UnityWebRequest.EscapeURL(mode)
-            + "&limit=" + books.Length + "&random=1";
+            + "&limit=" + books.Length + "&random=1"
+            + "&exclude=" + UnityWebRequest.EscapeURL(string.Join(",", usedQuestionIds));
 
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
@@ -79,37 +98,42 @@ public static class RemoteQuestionLoader
             var ids = new HashSet<int>();
             foreach (ApiQuestion question in response.data)
             {
-                if (question == null || question.id <= 0 || !ids.Add(question.id)
+                if (question == null || question.id <= 0 || !ids.Add(question.id) || usedQuestionIds.Contains(question.id)
                     || string.IsNullOrWhiteSpace(question.prompt) || question.options == null
                     || question.options.Length != 4 || Array.Exists(question.options, string.IsNullOrWhiteSpace)
                     || question.correctIndex < 0 || question.correctIndex > 3
                     || Array.IndexOf(response.meta.difficulties, question.difficulty) < 0)
                 {
-                    onCompleted("A API retornou perguntas inválidas. Revise o conteúdo publicado.");
+                    onCompleted("A API retornou perguntas inválidas ou já usadas nesta partida. Atualize o servidor e confira o banco de perguntas.");
                     yield break;
                 }
             }
-            // Shuffle physical books as well as the server's random selection.
-            BookQuiz[] shuffledBooks = (BookQuiz[])books.Clone();
-            for (int i = shuffledBooks.Length - 1; i > 0; i--)
-            {
-                int j = UnityEngine.Random.Range(0, i + 1);
-                BookQuiz temp = shuffledBooks[i];
-                shuffledBooks[i] = shuffledBooks[j];
-                shuffledBooks[j] = temp;
-            }
-            for (int i = 0; i < shuffledBooks.Length; i++)
-            {
-                ApiQuestion question = response.data[i];
-                if (shuffledBooks[i] == null || !shuffledBooks[i].SetQuestionData(
-                    question.id, question.prompt, question.options, question.correctIndex))
-                {
-                    onCompleted("Não foi possível preencher todos os livros. Tente novamente.");
-                    yield break;
-                }
-            }
+            string assignmentError = Assign(response, books);
+            if (assignmentError != null) { onCompleted(assignmentError); yield break; }
+            // Reserve todos os livros do andar, inclusive os que não foram respondidos.
+            foreach (int id in ids) usedQuestionIds.Add(id);
+            floorQuestions[cacheKey] = response;
             onProgress?.Invoke(1f);
             onCompleted(null);
         }
+    }
+
+    private static string Assign(ApiResponse response, BookQuiz[] books)
+    {
+        if (response.data.Length != books.Length || Array.Exists(books, book => book == null))
+            return "A quantidade de livros deste andar mudou. Inicie uma nova partida.";
+        BookQuiz[] shuffledBooks = (BookQuiz[])books.Clone();
+        for (int i = shuffledBooks.Length - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+            BookQuiz temp = shuffledBooks[i]; shuffledBooks[i] = shuffledBooks[j]; shuffledBooks[j] = temp;
+        }
+        for (int i = 0; i < shuffledBooks.Length; i++)
+        {
+            ApiQuestion question = response.data[i];
+            if (!shuffledBooks[i].SetQuestionData(question.id, question.prompt, question.options, question.correctIndex))
+                return "Não foi possível preencher todos os livros. Tente novamente.";
+        }
+        return null;
     }
 }

@@ -102,33 +102,8 @@ public class BookManager : MonoBehaviour
         
         Debug.Log($"✓ Livro correto! Total: {booksCollected}/{totalBooks}");
         
-        // Aumentar velocidade do inimigo (CHASE e PATROL)
-        if (enemy != null)
-        {
-            // Base: +0.5 por acerto
-            float speedIncrease = booksCollected * speedIncreasePerCorrect;
-            
-            // Bônus a cada 2 acertos: +1 adicional (+0.5 do bônus)
-            int bonusCount = booksCollected / 2; // Divisão inteira (2 acertos = 1 bônus, 4 acertos = 2 bônus, etc)
-            float bonusSpeed = bonusCount * bonusSpeedEveryTwoCorrects;
-            
-            // Atualizar CHASE SPEED
-            float newChaseSpeed = baseChaseSpeed + speedIncrease + bonusSpeed;
-            enemy.chaseSpeed = newChaseSpeed;
-            
-            // Atualizar PATROL SPEED (mesma proporção)
-            float newPatrolSpeed = basePatrolSpeed + speedIncrease + bonusSpeed;
-            enemy.patrolSpeed = newPatrolSpeed;
-            
-            if (bonusCount > 0 && booksCollected % 2 == 0)
-            {
-                Debug.Log($"🎉 BÔNUS! A cada 2 acertos: +{bonusSpeedEveryTwoCorrects} velocidade extra!");
-            }
-            
-            Debug.Log($"🏃 Chase Speed: {newChaseSpeed} | 🚶 Patrol Speed: {newPatrolSpeed}");
-            Debug.Log($"   (Base Chase: {baseChaseSpeed}, Base Patrol: {basePatrolSpeed} + Acertos: {speedIncrease} + Bônus: {bonusSpeed})");
-        }
-        
+        UpdateEnemySpeed();
+
         UpdateUI();
         NotifyBookProgress(true);
     }
@@ -140,36 +115,8 @@ public class BookManager : MonoBehaviour
         
         Debug.Log($"✗ Livro errado! Total de erros: {errors}/{maxErrors}");
         
-        // Aumentar velocidade do inimigo por erro (CHASE e PATROL)
-        if (enemy != null)
-        {
-            float errorSpeedIncrease = errors * speedIncreasePerError;
-            
-            // Recalcular velocidade total (acertos + erros + bônus)
-            float correctSpeedIncrease = booksCollected * speedIncreasePerCorrect;
-            int bonusCount = booksCollected / 2;
-            float bonusSpeed = bonusCount * bonusSpeedEveryTwoCorrects;
-            
-            // Atualizar CHASE SPEED
-            float newChaseSpeed = baseChaseSpeed + correctSpeedIncrease + bonusSpeed + errorSpeedIncrease;
-            enemy.chaseSpeed = newChaseSpeed;
-            
-            // Atualizar PATROL SPEED (mesma proporção)
-            float newPatrolSpeed = basePatrolSpeed + correctSpeedIncrease + bonusSpeed + errorSpeedIncrease;
-            enemy.patrolSpeed = newPatrolSpeed;
-            
-            Debug.Log($"⚠️ Velocidade aumentada por ERRO!");
-            Debug.Log($"   🏃 Chase Speed: {newChaseSpeed} | 🚶 Patrol Speed: {newPatrolSpeed}");
-            Debug.Log($"   (+{speedIncreasePerError} por erro)");
-            
-            // NOVO: Ativar always chase após 2 erros (opcional)
-            if (errors >= 2)
-            {
-                enemy.SetAlwaysChase(true);
-                Debug.Log("🚨 2+ erros! Inimigo agora persegue SEMPRE!");
-            }
-        }
-        
+        UpdateEnemySpeed();
+
         UpdateUI();
         
         // O erro que atinge o limite encerra a partida.
@@ -182,6 +129,14 @@ public class BookManager : MonoBehaviour
         {
             NotifyBookProgress(false);
         }
+    }
+
+    void UpdateEnemySpeed()
+    {
+        if (enemy == null) enemy = FindFirstObjectByType<EnemyAI>();
+        if (enemy != null)
+            enemy.ApplyScore(booksCollected, errors, speedIncreasePerCorrect,
+                speedIncreasePerError, bonusSpeedEveryTwoCorrects);
     }
 
     void UpdateUI()

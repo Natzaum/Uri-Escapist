@@ -196,3 +196,12 @@ web/
 ├── src/          autenticação, banco e funções compartilhadas
 └── views/        telas do painel
 ```
+
+
+### Perguntas sem repetição entre andares
+
+A requisição aceita `exclude=1,2,3`: IDs já distribuídos na partida. A exclusão ocorre antes do sorteio e do limite, respeitando as dificuldades elegíveis. Se faltarem perguntas inéditas, a API retorna HTTP 409; nunca completa o lote repetindo perguntas. Em andares mistos, uma categoria esgotada pode ser completada pela outra categoria permitida.
+
+O jogo reserva todos os IDs distribuídos, inclusive livros não respondidos. Reiniciar ou revisitar um andar reutiliza seu conjunto em memória; começar uma nova partida limpa o histórico. O terceiro andar seguirá a mesma exclusão quando estiver implementado e cadastrado como ativo.
+
+Atualize também a API no servidor Docker para que o filtro `exclude` seja aplicado. Clientes novos rejeitam perguntas repetidas retornadas por servidores antigos.

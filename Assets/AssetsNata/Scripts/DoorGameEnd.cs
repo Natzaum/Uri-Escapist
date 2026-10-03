@@ -96,7 +96,11 @@ public class DoorGameEnd : MonoBehaviour
     // Compatibilidade com SceneVisitMarker: visitar não equivale a concluir.
     public static void SetVisitedRequiredScene() { }
 
-    public static void ResetRequirement() => completedFloors.Clear();
+    public static void ResetRequirement()
+    {
+        completedFloors.Clear();
+        RemoteQuestionLoader.ResetSession();
+    }
 
     void OnDrawGizmos()
     {

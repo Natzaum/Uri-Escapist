@@ -85,6 +85,12 @@ public class BookQuiz : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (playerInRange && !isAnswered && !GameInterface.BlocksInput && Input.GetKeyDown(interactKey))
+            QuizManager.Instance?.OpenQuiz(this);
+    }
+
     public void Answer(int index)
     {
         if (isAnswered) return;

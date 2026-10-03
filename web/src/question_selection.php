@@ -45,3 +45,22 @@ function select_questions(array $pools, int $limit, bool $random): array
     }
     return $selected;
 }
+
+/** Strict, bounded IDs for a parameterized exclusion query. */
+function excluded_question_ids(mixed $value): array
+{
+    if (!is_string($value) || strlen($value) > 22000) {
+        throw new InvalidArgumentException('Lista de perguntas anteriores inválida.');
+    }
+    if ($value === '') return [];
+    $parts = explode(',', $value);
+    if (count($parts) > 2000) {
+        throw new InvalidArgumentException('Lista de perguntas anteriores muito longa.');
+    }
+    foreach ($parts as $id) {
+        if (!preg_match('/^[1-9][0-9]{0,9}$/D', $id) || (int) $id > 2147483647) {
+            throw new InvalidArgumentException('ID de pergunta anterior inválido.');
+        }
+    }
+    return array_values(array_unique(array_map('intval', $parts)));
+}

@@ -64,6 +64,26 @@ try {
     }
     [$status, $body] = request(['discipline' => 'geral', 'random' => 0, 'limit' => 10]);
     check($status === 200 && array_column($body['data'], 'id') === range(1, 10), 'Discipline compatibility');
+    foreach (['facil', 'normal', 'dificil'] as $mode) {
+        $used = [];
+        foreach ([1, 2, 3] as $floor) {
+            [$status, $body] = request(['scene' => "andar$floor", 'mode' => $mode,
+                'limit' => 4, 'exclude' => implode(',', $used), 'fixture' => 'third-floor']);
+            check($status === 200, "Fresh questions missing for $mode floor $floor");
+            $ids = array_column($body['data'], 'id');
+            check(array_intersect($used, $ids) === [], 'Question repeated across floors');
+            $used = array_merge($used, $ids);
+        }
+        check(count(array_unique($used)) === 12, 'Three floors must have distinct questions');
+    }
+    foreach (['1 OR 1=1', '0', '-1', '1,,2', '2147483648', ['1']] as $invalid) {
+        [$status] = request(['scene' => 'andar1', 'exclude' => $invalid]);
+        check($status === 422, 'Invalid exclusion accepted');
+    }
+    [$status] = request(['scene' => 'andar1', 'exclude' => implode(',', range(1, 12))]);
+    check($status === 409, 'Exhaustion must fail without repeating questions');
+    [$status, $body] = request(['scene' => 'andar2', 'mode' => 'facil', 'exclude' => implode(',', range(1, 12))]);
+    check($status === 200 && array_unique(array_column($body['data'], 'difficulty')) === ['media'], 'Use remaining eligible category');
     echo "PASS: endpoint SQL/JSON against SQLite fixtures, six playable combinations, errors and compatibility.\n";
 } finally {
     foreach (['public/api/v1/questions.php', 'src/question_selection.php', 'src/bootstrap.php'] as $file) {

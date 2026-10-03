@@ -7,7 +7,10 @@ function db(): PDO
 {
     static $connection;
     if ($connection instanceof PDO) {
-        return $connection;
+        if (($_GET['fixture'] ?? '') === 'third-floor') {
+        $connection->exec("UPDATE floors SET active = 1 WHERE id = 3");
+    }
+    return $connection;
     }
     $connection = new PDO('sqlite::memory:', null, null, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -34,6 +37,9 @@ function db(): PDO
     }
     if (($_GET['fixture'] ?? '') === 'missing-medium') {
         $connection->exec("DELETE FROM questions WHERE difficulty = 'media'");
+    }
+    if (($_GET['fixture'] ?? '') === 'third-floor') {
+        $connection->exec("UPDATE floors SET active = 1 WHERE id = 3");
     }
     return $connection;
 }

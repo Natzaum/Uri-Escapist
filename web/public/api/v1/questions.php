@@ -40,6 +40,12 @@ if ($scene === '' && !preg_match('/^[a-z0-9-]{1,120}$/', $discipline)) {
 }
 
 try {
+    $excludedIds = excluded_question_ids($_GET['exclude'] ?? '');
+} catch (InvalidArgumentException $exception) {
+    json_response(['success' => false, 'message' => $exception->getMessage()], 422);
+}
+
+try {
     $floor = null;
     $parameters = [];
     $difficulties = ['facil', 'media', 'dificil'];
@@ -66,6 +72,17 @@ try {
         $parameters['discipline'] = $discipline;
     }
 
+    $exclusionFilter = '1 = 1';
+    if ($excludedIds !== []) {
+        $placeholders = [];
+        foreach ($excludedIds as $index => $id) {
+            $key = 'excluded_' . $index;
+            $placeholders[] = ':' . $key;
+            $parameters[$key] = $id;
+        }
+        $exclusionFilter = 'q.id NOT IN (' . implode(',', $placeholders) . ')';
+    }
+
     $orderBy = $randomOrder ? 'RAND()' : 'q.id ASC';
     $statement = db()->prepare(
         "SELECT q.id, q.prompt, q.option_a, q.option_b, q.option_c, q.option_d,
@@ -76,6 +93,7 @@ try {
          WHERE q.status = 'published'
            AND d.active = 1
            AND {$contentFilter}
+           AND {$exclusionFilter}
            AND q.difficulty = :difficulty
          ORDER BY {$orderBy}
          LIMIT {$limit}"
@@ -93,12 +111,12 @@ try {
         usort($selected, static fn (array $a, array $b): int => (int) $a['id'] <=> (int) $b['id']);
         $selected = array_slice($selected, 0, $limit);
     }
-    if ($scene !== '' && (count($selected) < $limit || in_array([], $pools, true))) {
+    if ($scene !== '' && (count($selected) < $limit || ($excludedIds === [] && in_array([], $pools, true)))) {
         json_response([
             'success' => false,
-            'message' => 'Perguntas insuficientes. Publique pelo menos ' . $limit
-                . ' questões elegíveis (' . implode(' + ', $difficulties)
-                . '), com pelo menos uma de cada dificuldade indicada.',
+            'message' => 'Perguntas inéditas insuficientes para este andar. Publique pelo menos ' . $limit
+                . ' questões elegíveis ainda não usadas nesta partida (' . implode(' + ', $difficulties)
+                . '). As perguntas anteriores não serão repetidas.',
             'meta' => ['gameMode' => $mode, 'difficulties' => $difficulties,
                 'available' => count($selected), 'required' => $limit],
         ], 409);

@@ -219,7 +219,9 @@ public class MenuPrincipal : MonoBehaviour
         Option("Configurações", -18, () => GameInterface.Instance.ShowSettings(ShowMain));
         Option("Créditos", -72, ShowCredits);
         exitButton = Option("Sair", -126, ShowExit);
-        description.text = "Entre. Explore. Encontre a saída.";
+        description.text = GameMode == "facil" ? "Inimigo lento em patrulha. A leitura pausa o mundo; você pode fechar o livro."
+            : GameMode == "dificil" ? "Perseguição rápida constante. O mundo não pausa nos livros; responda para sair."
+            : "Perseguição lenta fora de vista e rápida ao detectar você. É possível fechar os livros.";
         FinishPage();
     }
 

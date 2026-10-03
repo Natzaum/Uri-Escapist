@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -36,377 +35,175 @@ public class EnemyAI : MonoBehaviour
     public float eyeHeight = 1.5f;
 
     private NavMeshAgent agent;
-    private int currentPatrolIndex = 0;
-    private bool isWaiting = false;
+    private int currentPatrolIndex = -1;
+    private float waitRemaining;
+    private bool pursuing;
+    private bool caught;
+    private bool initialized;
+    private float initialPatrolSpeed, initialChaseSpeed;
+    private float speedScale = 1;
 
-    private enum State
+    private void Awake() => InitializeDifficulty();
+
+    private void InitializeDifficulty()
     {
-        Patrol,
-        Chase,
-        Catch,
-    }
-
-    private State currentState = State.Patrol;
-
-    void Start()
-    {
+        if (initialized) return;
+        initialized = true;
         agent = GetComponent<NavMeshAgent>();
-        
-        // Ajustar configurações baseado na escala
         float scale = Mathf.Max(transform.localScale.x, transform.localScale.z);
-        
-        if (autoScaleDistances && scale > 1f)
-        {
-            // Escalar todas as distâncias
-            patrolSpeed *= scale;
-            chaseSpeed *= scale;
-            chaseRange *= scale;
-            catchRange *= scale;
-            waypointReachThreshold *= scale;
-            
-            Debug.Log($"Enemy AI escalado! Scale: {scale}, ChaseRange: {chaseRange}, CatchRange: {catchRange}");
-        }
-        
-        agent.speed = patrolSpeed;
-        agent.stoppingDistance = 0.5f * scale;
-        agent.radius = 0.5f * scale;
+        speedScale = autoScaleDistances && scale > 1 ? scale : 1;
+        chaseRange *= speedScale;
+        extendedDetectionRange *= speedScale;
+        catchRange *= speedScale;
+        waypointReachThreshold *= speedScale;
+        initialPatrolSpeed = patrolSpeed * speedScale * GameDifficulty.EnemySpeedMultiplier;
+        initialChaseSpeed = chaseSpeed * speedScale * GameDifficulty.EnemySpeedMultiplier;
+        patrolSpeed = initialPatrolSpeed;
+        chaseSpeed = initialChaseSpeed;
+        alwaysFollowPlayer = MenuPrincipal.GameMode == "normal";
+        alwaysChasePlayer = MenuPrincipal.GameMode == "dificil";
+    }
+
+    private void Start()
+    {
+        if (agent == null) { Debug.LogError("EnemyAI precisa de NavMeshAgent.", this); enabled = false; return; }
+        float scale = Mathf.Max(transform.localScale.x, transform.localScale.z);
+        agent.stoppingDistance = .5f * scale;
+        agent.radius = .5f * scale;
         agent.height = 2f * scale;
-
-        if (patrolPoints.Length > 0)
-        {
-            GoToNextPoint();
-            if (animator != null)
-                animator.SetBool("isWalking", true);
-        }
-    }
-
-    void Update()
-    {
-        if (GameInterface.WorldPaused) return;
-        if (player == null)
-        {
-            player = GameObject.FindWithTag("Player")?.transform;
-            if (player == null)
-            {
-                Debug.LogWarning("Player não encontrado! Certifique-se que o Player tem a tag 'Player'");
-                return;
-            }
-        }
-
-        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
-        
-        // Usar alcance de detecção aumentado
-        float effectiveChaseRange = (alwaysChasePlayer || alwaysFollowPlayer) ? extendedDetectionRange : chaseRange;
-        
-        // Verificar se tem linha de visão (não vê através de paredes)
-        bool canSeePlayer = !hasLineOfSight || CanSeePlayer();
-        
-        // Debug visual (vermelho = perseguindo, amarelo = seguindo, azul = patrulhando, cinza = bloqueado)
-        Color debugColor = Color.blue;
-        if (!canSeePlayer) 
-            debugColor = Color.gray; // Cinza: visão bloqueada
-        else if (alwaysChasePlayer) 
-            debugColor = Color.red;
-        else if (alwaysFollowPlayer) 
-            debugColor = Color.yellow;
-        else if (distanceToPlayer < effectiveChaseRange) 
-            debugColor = Color.red;
-        
-        Debug.DrawLine(transform.position, player.position, debugColor);
-
-        // MODO 1: Always Chase Player (sempre em chase speed) - MAS SÓ SE VEJO
-        if (alwaysChasePlayer && currentState != State.Catch && canSeePlayer)
-        {
-            if (currentState != State.Chase)
-            {
-                Debug.Log("🎯 Modo Always Chase ativo - perseguindo em alta velocidade!");
-                currentState = State.Chase;
-                agent.speed = chaseSpeed;
-            }
-        }
-        
-        // MODO 2: Always Follow Player (patrol speed até chegar perto, depois chase) - MAS SÓ SE VEJO
-        if (alwaysFollowPlayer && !alwaysChasePlayer && currentState != State.Catch && canSeePlayer)
-        {
-            if (distanceToPlayer < chaseRange)
-            {
-                // Chegou perto, mudar para Chase
-                if (currentState != State.Chase)
-                {
-                    Debug.Log($"🏃 Player perto ({distanceToPlayer:F1}m)! Mudando para Chase Speed!");
-                    currentState = State.Chase;
-                    agent.speed = chaseSpeed;
-                }
-            }
-            else
-            {
-                // Longe, manter em Patrol (mas indo para o player)
-                if (currentState != State.Patrol)
-                {
-                    Debug.Log("🚶 Player longe, seguindo em Patrol Speed");
-                    currentState = State.Patrol;
-                    agent.speed = patrolSpeed;
-                }
-            }
-        }
-
-        switch (currentState)
-        {
-            case State.Patrol:
-                if (!isWaiting)
-                    Patrol();
-
-                // Detecção com alcance configurável
-                if (distanceToPlayer < effectiveChaseRange)
-                {
-                    Debug.Log($"Player detectado! Distância: {distanceToPlayer:F1} < Range: {effectiveChaseRange:F1}");
-                    StopAllCoroutines();
-                    agent.isStopped = false;
-                    isWaiting = false;
-                    if (animator != null)
-                        animator.SetBool("isWalking", true);
-                    currentState = State.Chase;
-                }
-                break;
-
-            case State.Chase:
-                ChasePlayer();
-
-                if (distanceToPlayer < catchRange)
-                    currentState = State.Catch;
-                else if (distanceToPlayer > effectiveChaseRange * 1.5f && !alwaysChasePlayer)
-                {
-                    // Só voltar para patrulha se NÃO estiver em always chase
-                    Debug.Log("Player muito longe, voltando para patrulha");
-                    currentState = State.Patrol;
-                    agent.speed = patrolSpeed;
-                    GoToNextPoint();
-                }
-                break;
-
-            case State.Catch:
-                CatchPlayer();
-                break;
-        }
-    }
-
-    void Patrol()
-    {
         agent.speed = patrolSpeed;
+    }
 
-        if (isWaiting)
-            return;
+    public void ApplyScore(int correct, int errors, float perCorrect, float perError, float bonusEveryTwo)
+    {
+        InitializeDifficulty();
+        // Recalcula a partir da base: acertar depois de errar não apaga aumentos anteriores.
+        float increase = (correct * perCorrect + errors * perError + (correct / 2) * bonusEveryTwo)
+            * GameDifficulty.EnemyGrowthMultiplier * speedScale;
+        patrolSpeed = initialPatrolSpeed + increase;
+        chaseSpeed = initialChaseSpeed + increase;
+    }
 
-        if (animator != null)
-            animator.SetBool("isWalking", true);
+    private void Update()
+    {
+        if (GameInterface.WorldPaused || caught || agent == null || !agent.enabled || !agent.isOnNavMesh) return;
+        if (player == null) player = GameObject.FindWithTag("Player")?.transform;
+        if (player == null) return;
+        float distance = Vector3.Distance(transform.position, player.position);
+        bool visible = CanSeePlayer();
+        bool detected = distance <= chaseRange && visible;
+        if (distance <= catchRange && visible) { CatchPlayer(); return; }
 
-        // MODO 1: Always Chase Player - vai direto em alta velocidade
-        if (alwaysChasePlayer && player != null)
+        // Destinos sempre passam pelo NavMesh: a perseguição respeita os corredores.
+        bool chase = alwaysChasePlayer || detected;
+        if (chase || alwaysFollowPlayer)
         {
+            pursuing = true;
+            waitRemaining = 0;
+            agent.isStopped = false;
+            agent.speed = chase ? chaseSpeed : patrolSpeed;
             agent.SetDestination(player.position);
-            return;
-        }
-        
-        // MODO 2: Always Follow Player - vai direto em baixa velocidade (patrol speed)
-        if (alwaysFollowPlayer && player != null)
-        {
-            agent.SetDestination(player.position);
-            return;
-        }
-
-        // Patrulha normal com waypoints
-        if (patrolPoints.Length == 0)
-            return;
-
-        // Verificação melhorada para waypoint alcançado
-        if (patrolPoints[currentPatrolIndex] != null)
-        {
-            float distanceToWaypoint = Vector3.Distance(transform.position, patrolPoints[currentPatrolIndex].position);
-            
-            if (distanceToWaypoint <= waypointReachThreshold)
-            {
-                if (!agent.pathPending && agent.hasPath)
-                {
-                    StartCoroutine(WaitAtWaypoint());
-                }
-            }
-        }
-    }
-
-    IEnumerator WaitAtWaypoint()
-    {
-        isWaiting = true;
-
-        Vector3 holdPos = transform.position;
-        agent.isStopped = true;
-        agent.velocity = Vector3.zero;
-        animator.SetBool("isWalking", false);
-
-        float elapsed = 0f;
-        while (elapsed < waitTimeAtWaypoint)
-        {
-            transform.position = holdPos;
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        agent.isStopped = false;
-        animator.SetBool("isWalking", true);
-        GoToNextPoint();
-
-        isWaiting = false;
-    }
-
-    void GoToNextPoint()
-    {
-        if (patrolPoints.Length == 0)
-            return;
-
-        currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
-
-        Vector3 target = patrolPoints[currentPatrolIndex].position;
-
-        // Sempre definir o destino, o NavMesh vai lidar com isso
-        agent.SetDestination(target);
-    }
-
-    public void ForceChasePlayer(float duration)
-    {
-        StopAllCoroutines();
-        StartCoroutine(ForceChase(duration));
-    }
-
-    private IEnumerator ForceChase(float duration)
-    {
-        Debug.Log($"🚨 INIMIGO ALERTADO POR ERRO! Perseguindo em velocidade de Chase por {duration}s!");
-        
-        // Parar patrulha
-        StopAllCoroutines();
-        isWaiting = false;
-        
-        // FORÇAR estado de Chase
-        currentState = State.Chase;
-        agent.isStopped = false;
-        
-        // USAR velocidade de CHASE (não patrulha!)
-        agent.speed = chaseSpeed;
-        Debug.Log($"⚡ Velocidade definida para Chase Speed: {chaseSpeed}");
-        
-        if (animator != null)
-            animator.SetBool("isWalking", true);
-        
-        float timer = 0f;
-
-        while (timer < duration)
-        {
-            if (player == null)
-                player = GameObject.FindWithTag("Player")?.transform;
-                
-            if (player != null)
-            {
-                agent.SetDestination(player.position);
-            }
-            
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        Debug.Log("⏱️ Tempo de alerta acabou. Voltando para patrulha.");
-        currentState = State.Patrol;
-        agent.speed = patrolSpeed;
-        GoToNextPoint();
-    }
-
-    void ChasePlayer()
-    {
-        agent.speed = chaseSpeed;
-        animator.SetBool("isWalking", true);
-        agent.SetDestination(player.position);
-    }
-
-    void CatchPlayer()
-    {
-        agent.isStopped = true;
-        if (animator != null)
-            animator.SetBool("isWalking", false);
-
-        Debug.Log("Game Over! Player capturado!");
-        GameOverManager gom = FindObjectOfType<GameOverManager>();
-        if (gom != null)
-            gom.ShowGameOver();
-    }
-    
-    // Método público para ativar/desativar perseguição constante
-    public void SetAlwaysChase(bool value)
-    {
-        alwaysChasePlayer = value;
-        
-        if (value)
-        {
-            Debug.Log("🎯 Modo Always Chase ATIVADO - Inimigo perseguirá sempre!");
-            currentState = State.Chase;
-            agent.speed = chaseSpeed;
+            SetWalking(true);
         }
         else
         {
-            Debug.Log("🎯 Modo Always Chase DESATIVADO - Inimigo voltará a patrulhar");
+            if (pursuing) { pursuing = false; agent.ResetPath(); currentPatrolIndex = -1; }
+            Patrol();
         }
     }
-    
-    void OnDrawGizmosSelected()
+
+    private void Patrol()
     {
-        // Visualizar chase range normal
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, chaseRange);
-        
-        // Visualizar extended detection range (se always chase ativo)
-        if (alwaysChasePlayer)
+        agent.speed = patrolSpeed;
+        if (waitRemaining > 0)
         {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(transform.position, extendedDetectionRange);
+            waitRemaining -= Time.deltaTime;
+            if (waitRemaining <= 0) GoToNextPoint();
+            return;
         }
-        
-        // Visualizar catch range
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, catchRange);
-        
-        // Linha para o player
-        if (player != null)
+        if (currentPatrolIndex < 0) { GoToNextPoint(); return; }
+        if (!agent.pathPending && agent.remainingDistance <= Mathf.Max(agent.stoppingDistance, waypointReachThreshold))
         {
-            Gizmos.color = alwaysChasePlayer ? Color.red : Color.blue;
-            Gizmos.DrawLine(transform.position, player.position);
+            agent.isStopped = true;
+            SetWalking(false);
+            waitRemaining = waitTimeAtWaypoint;
+            if (waitRemaining <= 0) GoToNextPoint();
         }
     }
+
+    private void GoToNextPoint()
+    {
+        if (patrolPoints == null || patrolPoints.Length == 0) { ChoosePatrolDestination(); return; }
+        for (int i = 0; i < patrolPoints.Length; i++)
+        {
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+            if (patrolPoints[currentPatrolIndex] == null) continue;
+            agent.isStopped = false;
+            agent.SetDestination(patrolPoints[currentPatrolIndex].position);
+            SetWalking(true);
+            return;
+        }
+        SetWalking(false);
+    }
+
+    private void ChoosePatrolDestination()
+    {
+        // Cenas sem waypoints continuam patrulhando, sem usar a posição do jogador.
+        float radius = Mathf.Max(12f, waypointReachThreshold * 4f);
+        var path = new NavMeshPath();
+        for (int i = 0; i < 20; i++)
+        {
+            Vector2 offset = Random.insideUnitCircle * radius;
+            Vector3 candidate = transform.position + new Vector3(offset.x, 0, offset.y);
+            if (!NavMesh.SamplePosition(candidate, out var hit, 3f, agent.areaMask) ||
+                Vector3.Distance(transform.position, hit.position) <= waypointReachThreshold * 1.5f) continue;
+            if (!agent.CalculatePath(hit.position, path) || path.status != NavMeshPathStatus.PathComplete) continue;
+            currentPatrolIndex = 0;
+            agent.isStopped = false;
+            agent.SetPath(path);
+            SetWalking(true);
+            return;
+        }
+        agent.isStopped = true;
+        waitRemaining = 1f;
+        SetWalking(false);
+    }
+
+    private void SetWalking(bool walking) { if (animator != null) animator.SetBool("isWalking", walking); }
+    private void CatchPlayer()
+    {
+        caught = true;
+        agent.isStopped = true;
+        SetWalking(false);
+        GameInterface.Instance.ShowResult(false);
+    }
+
+    // Compatibilidade: scripts antigos não podem substituir as regras da dificuldade.
+    public void ForceChasePlayer(float duration) { }
+    public void SetAlwaysChase(bool value) { alwaysChasePlayer = MenuPrincipal.GameMode == "dificil"; }
 
     private bool CanSeePlayer()
     {
-        // If player is not found, cannot see
         if (player == null) return false;
-        
-        // Get eye position (slightly above ground)
-        Vector3 eyePosition = transform.position + transform.up * eyeHeight;
-        
-        // Direction from enemy to player
-        Vector3 directionToPlayer = player.position - eyePosition;
-        float distanceToPlayer = directionToPlayer.magnitude;
-        
-        // Perform raycast from eye position to player
-        RaycastHit hit;
-        bool hitSomething = Physics.Raycast(eyePosition, directionToPlayer.normalized, out hit, distanceToPlayer, obstacleLayer);
-        
-        // Debug visualization
-        if (hitSomething)
+        Vector3 origin = transform.position + Vector3.up * eyeHeight;
+        Vector3 target = player.position + Vector3.up * eyeHeight;
+        Vector3 delta = target - origin;
+        // Uma máscara antiga vazia não deve permitir detecção através de paredes.
+        int mask = obstacleLayer.value == 0 ? Physics.DefaultRaycastLayers : obstacleLayer.value;
+        foreach (var hit in Physics.RaycastAll(origin, delta.normalized, delta.magnitude, mask, QueryTriggerInteraction.Ignore))
         {
-            // Vision is blocked
-            Debug.DrawLine(eyePosition, hit.point, Color.red);
-            Debug.DrawLine(hit.point, player.position, Color.gray);
+            if (hit.transform == transform || hit.transform.IsChildOf(transform) ||
+                hit.transform == player || hit.transform.IsChildOf(player)) continue;
             return false;
         }
-        else
-        {
-            // Vision is clear
-            Debug.DrawLine(eyePosition, player.position, Color.green);
-            return true;
-        }
+        return true;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, chaseRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, catchRange);
     }
 }

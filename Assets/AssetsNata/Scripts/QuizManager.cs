@@ -54,11 +54,6 @@ public class QuizManager : MonoBehaviour
     {
         if (BookManager.Instance != null) BookManager.Instance.OnBookWrong();
         RemoveBook(book);
-        if (!GameInterface.Instance.IsTerminal)
-        {
-            EnemyAI enemy = FindFirstObjectByType<EnemyAI>();
-            if (enemy != null) enemy.ForceChasePlayer(30f);
-        }
     }
 
     private void RemoveBook(BookQuiz book)
@@ -66,6 +61,15 @@ public class QuizManager : MonoBehaviour
         if (book == null) return;
         book.gameObject.SetActive(false);
         Destroy(book.gameObject);
+    }
+
+    public void CloseBook()
+    {
+        if (!GameDifficulty.CanLeaveBook || currentBook == null || answered ||
+            GameInterface.Instance.State != GameInterface.ScreenState.Quiz) return;
+        // A pergunta pertence ao BookQuiz e só é consumida ao responder.
+        ForceCloseQuiz();
+        GameInterface.Instance.Hide();
     }
 
     public void ForceCloseQuiz()

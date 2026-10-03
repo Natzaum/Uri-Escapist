@@ -82,7 +82,7 @@ public class GameInterface : MonoBehaviour
     }
 
     private bool IsMenu => SceneManager.GetActiveScene().name == "UriMenu";
-    private bool Pauses => State != ScreenState.None && State != ScreenState.Quiz && State != ScreenState.Feedback;
+    private bool Pauses => State != ScreenState.None && ((State != ScreenState.Quiz && State != ScreenState.Feedback) || GameDifficulty.PausesReading);
     private void LateUpdate()
     {
         if (State == ScreenState.None) return;
@@ -99,7 +99,8 @@ public class GameInterface : MonoBehaviour
             else if (State == ScreenState.Settings) CloseSettings();
             else if (State == ScreenState.Pause) resumePause?.Invoke();
             else if (State == ScreenState.None && !IsMenu) ShowPause();
-            else if (State == ScreenState.Quiz || State == ScreenState.Feedback) ShowPause();
+            else if (State == ScreenState.Quiz) QuizManager.Instance?.CloseBook();
+            else if (State == ScreenState.Feedback) Hide();
         }
         if (State == ScreenState.Loading && progressFill != null)
         {
@@ -157,7 +158,7 @@ public class GameInterface : MonoBehaviour
         var line = MakeRect("Ornamento", root, new Vector2(380,1),new Vector2(0,295)).gameObject.AddComponent<Image>();
         line.color = new Color(uriBlue.r,uriBlue.g,uriBlue.b,0.35f); line.raycastTarget = false;
         message = Text(subtitle, 205, 23, 1300, 100);
-        Text(state == ScreenState.Quiz ? "ESC  PAUSAR  •  O TEMPO E O INIMIGO CONTINUAM ATIVOS" : "URI ESCAPIST  /  CIÊNCIA DA COMPUTAÇÃO",
+        Text(state == ScreenState.Quiz ? (GameDifficulty.PausesReading ? "LEITURA EM PAUSA  •  ESC FECHA O LIVRO" : GameDifficulty.CanLeaveBook ? "O MUNDO CONTINUA ATIVO  •  ESC FECHA O LIVRO" : "O MUNDO CONTINUA ATIVO  •  RESPONDA PARA SAIR") : "URI ESCAPIST  /  CIÊNCIA DA COMPUTAÇÃO",
             -465, 15, 1300, 40);
         Time.timeScale = Pauses ? 0 : 1;
         Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
@@ -200,7 +201,8 @@ public class GameInterface : MonoBehaviour
 
     public void ShowPause()
     {
-        if (IsTerminal || State == ScreenState.Loading || State == ScreenState.Error) return;
+        if (IsTerminal || State == ScreenState.Loading || State == ScreenState.Error ||
+            (State == ScreenState.Quiz && !GameDifficulty.CanLeaveBook)) return;
         resumePause = renderCurrent ?? Hide;
         RenderPause();
     }
@@ -258,6 +260,10 @@ public class GameInterface : MonoBehaviour
             int index=i;
             Button(((char)('A'+i))+"   "+book.options[i],65-i*105,()=>answer(index),1360,94,true);
         }
+        if (GameDifficulty.CanLeaveBook)
+            Button("Fechar livro · Esc",-355,()=>QuizManager.Instance?.CloseBook(),650,54);
+        Text(GameDifficulty.CanLeaveBook ? "A pergunta fica guardada neste livro. Pressione E perto dele para retomar."
+            : "Responda para sair. O mundo continua em movimento.",-418,17,1400,40);
         Focus();
     }
 
@@ -266,7 +272,7 @@ public class GameInterface : MonoBehaviour
         if (IsTerminal) return;
         renderCurrent=()=>ShowFeedback(correct,answer,onContinue);
         Begin(ScreenState.Feedback,correct ? "Conhecimento adquirido" : "Resposta incorreta",
-            correct ? "Você encontrou a resposta." : "O inimigo foi alertado.");
+            correct ? "Você encontrou a resposta." : "Seu limite de erros diminuiu. Mantenha a atenção.");
         Text("RESPOSTA CORRETA",60,18,heading:true);
         Text(answer,-35,30,1320,140);
         Button("Continuar",-220,onContinue);
