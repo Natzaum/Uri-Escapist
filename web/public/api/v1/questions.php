@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 define('API_REQUEST', true);
 require dirname(__DIR__, 3) . '/src/bootstrap.php';
+require dirname(__DIR__, 3) . '/src/question_selection.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
@@ -18,6 +19,11 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'GET') {
     json_response(['success' => false, 'message' => 'Método não permitido.'], 405);
+}
+
+$mode = (string) ($_GET['mode'] ?? 'normal');
+if (!in_array($mode, ['facil', 'normal', 'dificil'], true)) {
+    json_response(['success' => false, 'message' => 'Modo inválido. Use facil, normal ou dificil.'], 422);
 }
 
 $scene = trim((string) ($_GET['scene'] ?? ''));
@@ -36,6 +42,7 @@ if ($scene === '' && !preg_match('/^[a-z0-9-]{1,120}$/', $discipline)) {
 try {
     $floor = null;
     $parameters = [];
+    $difficulties = ['facil', 'media', 'dificil'];
     $contentFilter = 'd.slug = :discipline';
 
     if ($scene !== '') {
@@ -46,22 +53,15 @@ try {
         $floor = $floorStatement->fetch();
 
         if (!$floor) {
-            json_response([
-                'success' => true,
-                'data' => [],
-                'message' => 'Nenhum andar ativo está associado a esta cena.',
-                'meta' => [
-                    'mode' => 'scene',
-                    'scene' => $scene,
-                    'floor' => null,
-                    'count' => 0,
-                    'generatedAt' => date(DATE_ATOM),
-                ],
-            ]);
+            json_response(['success' => false, 'message' => 'Cena sem andar ativo cadastrado.'], 422);
         }
-
-        $contentFilter = '(q.floor_id = :floor_id OR q.floor_id IS NULL)';
-        $parameters['floor_id'] = (int) $floor['id'];
+        try {
+            $difficulties = question_difficulties($mode, (string) $floor['slug']);
+        } catch (InvalidArgumentException $exception) {
+            json_response(['success' => false, 'message' => $exception->getMessage()], 422);
+        }
+        // Legacy floor assignments no longer constrain the shared question bank.
+        $contentFilter = '1 = 1';
     } else {
         $parameters['discipline'] = $discipline;
     }
@@ -70,26 +70,47 @@ try {
     $statement = db()->prepare(
         "SELECT q.id, q.prompt, q.option_a, q.option_b, q.option_c, q.option_d,
                 q.correct_index, q.difficulty,
-                d.name AS discipline_name, d.slug AS discipline_slug,
-                f.name AS floor_name, f.slug AS floor_slug
+                d.name AS discipline_name, d.slug AS discipline_slug
          FROM questions q
          INNER JOIN disciplines d ON d.id = q.discipline_id
-         LEFT JOIN floors f ON f.id = q.floor_id
          WHERE q.status = 'published'
            AND d.active = 1
            AND {$contentFilter}
+           AND q.difficulty = :difficulty
          ORDER BY {$orderBy}
          LIMIT {$limit}"
     );
-    $statement->execute($parameters);
+    $pools = [];
+    foreach ($difficulties as $difficulty) {
+        $statement->execute($parameters + ['difficulty' => $difficulty]);
+        $pools[] = $statement->fetchAll();
+    }
+    $selected = select_questions($pools, $limit, $randomOrder);
+    if (!$randomOrder) {
+        if ($scene === '') {
+            $selected = array_merge(...$pools);
+        }
+        usort($selected, static fn (array $a, array $b): int => (int) $a['id'] <=> (int) $b['id']);
+        $selected = array_slice($selected, 0, $limit);
+    }
+    if ($scene !== '' && (count($selected) < $limit || in_array([], $pools, true))) {
+        json_response([
+            'success' => false,
+            'message' => 'Perguntas insuficientes. Publique pelo menos ' . $limit
+                . ' questões elegíveis (' . implode(' + ', $difficulties)
+                . '), com pelo menos uma de cada dificuldade indicada.',
+            'meta' => ['gameMode' => $mode, 'difficulties' => $difficulties,
+                'available' => count($selected), 'required' => $limit],
+        ], 409);
+    }
 
     $questions = array_map(
         static fn (array $row): array => [
             'id' => (int) $row['id'],
             'discipline' => (string) $row['discipline_slug'],
             'disciplineName' => (string) $row['discipline_name'],
-            'floor' => $row['floor_slug'] !== null ? (string) $row['floor_slug'] : 'todos',
-            'floorName' => $row['floor_name'] !== null ? (string) $row['floor_name'] : 'Todos os andares',
+            'floor' => 'todos',
+            'floorName' => 'Conforme a dificuldade da partida',
             'prompt' => (string) $row['prompt'],
             'options' => [
                 (string) $row['option_a'],
@@ -100,13 +121,15 @@ try {
             'correctIndex' => (int) $row['correct_index'],
             'difficulty' => (string) $row['difficulty'],
         ],
-        $statement->fetchAll()
+        $selected
     );
 
     json_response([
         'success' => true,
         'data' => $questions,
         'meta' => [
+            'gameMode' => $mode,
+            'difficulties' => $difficulties,
             'mode' => $scene !== '' ? 'scene' : 'discipline',
             'scene' => $scene !== '' ? $scene : null,
             'floor' => $floor ? (string) $floor['slug'] : null,

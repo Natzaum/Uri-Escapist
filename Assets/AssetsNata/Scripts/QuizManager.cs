@@ -40,6 +40,7 @@ public class QuizManager : MonoBehaviour
 
     public void OpenQuiz(BookQuiz book)
     {
+        if (BookManager.Instance == null || !BookManager.Instance.QuestionsReady) return;
         currentBook = book;
         quizPanel.SetActive(true);
         

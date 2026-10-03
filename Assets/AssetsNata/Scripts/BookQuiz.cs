@@ -57,7 +57,8 @@ public class BookQuiz : MonoBehaviour
     {
         Debug.Log($"Book {name} - Trigger Enter com: {other.name} (Tag: {other.tag})");
         
-        if (other.CompareTag("Player") && !isAnswered)
+        if (other.CompareTag("Player") && !isAnswered &&
+            BookManager.Instance != null && BookManager.Instance.QuestionsReady)
         {
             playerInRange = true;
             playerTransform = other.transform;

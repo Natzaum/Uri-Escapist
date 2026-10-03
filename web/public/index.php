@@ -23,10 +23,9 @@ $disciplinesCount = (int) db()->query('SELECT COUNT(*) FROM disciplines WHERE ac
 
 $recentStatement = db()->prepare(
     "SELECT q.id, q.prompt, q.status, q.difficulty, q.updated_at,
-            d.name AS discipline, COALESCE(f.name, 'Todos os andares') AS floor
+            d.name AS discipline
      FROM questions q
      INNER JOIN disciplines d ON d.id = q.discipline_id
-     LEFT JOIN floors f ON f.id = q.floor_id
      WHERE q.teacher_id = :teacher_id
      ORDER BY q.updated_at DESC
      LIMIT 6"

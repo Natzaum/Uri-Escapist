@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -12,6 +13,15 @@ public static class RemoteQuestionLoader
         public string prompt;
         public string[] options;
         public int correctIndex;
+        public string difficulty;
+    }
+
+    [Serializable]
+    private class ApiMeta
+    {
+        public string gameMode;
+        public string scene;
+        public string[] difficulties;
     }
 
     [Serializable]
@@ -20,92 +30,78 @@ public static class RemoteQuestionLoader
         public bool success;
         public ApiQuestion[] data;
         public string message;
+        public ApiMeta meta;
     }
 
-    public static IEnumerator LoadAndAssign(
-        string apiUrl,
-        string sceneName,
-        int timeoutSeconds,
-        BookQuiz[] books,
-        Action<int> onCompleted = null)
+    public static IEnumerator LoadAndAssign(string apiUrl, string sceneName, string mode,
+        int timeoutSeconds, BookQuiz[] books, Action<string> onCompleted)
     {
-        if (books == null || books.Length == 0)
-        {
-            onCompleted?.Invoke(0);
-            yield break;
-        }
-
         if (string.IsNullOrWhiteSpace(apiUrl))
         {
-            Debug.LogWarning("URL da API de perguntas nao configurada. Usando perguntas locais.");
-            onCompleted?.Invoke(0);
+            onCompleted("Configure a URL da API de perguntas no BookManager.");
             yield break;
         }
-
-        string scene = string.IsNullOrWhiteSpace(sceneName) ? "unknown" : sceneName.Trim();
-        string separator = apiUrl.Contains("?") ? "&" : "?";
-        string requestUrl = apiUrl
-            + separator
-            + "scene=" + UnityWebRequest.EscapeURL(scene)
-            + "&limit=" + books.Length
-            + "&random=1";
+        string requestUrl = apiUrl + (apiUrl.Contains("?") ? "&" : "?")
+            + "scene=" + UnityWebRequest.EscapeURL(sceneName)
+            + "&mode=" + UnityWebRequest.EscapeURL(mode)
+            + "&limit=" + books.Length + "&random=1";
 
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             request.timeout = Mathf.Clamp(timeoutSeconds, 2, 30);
             request.SetRequestHeader("Accept", "application/json");
-
             yield return request.SendWebRequest();
+            ApiResponse response = null;
+            try { response = JsonUtility.FromJson<ApiResponse>(request.downloadHandler.text); }
+            catch (Exception) { /* Network/proxy failures may return non-JSON bodies. */ }
 
-            if (request.result != UnityWebRequest.Result.Success)
+            if (request.result != UnityWebRequest.Result.Success || response == null || !response.success)
             {
-                Debug.LogWarning(
-                    $"Nao foi possivel buscar perguntas online ({request.responseCode}: {request.error}). "
-                    + "Os livros continuarao usando as perguntas locais."
-                );
-                onCompleted?.Invoke(0);
+                onCompleted(response != null && !string.IsNullOrWhiteSpace(response.message)
+                    ? response.message : "Não foi possível carregar as perguntas. Verifique a conexão com o servidor.");
                 yield break;
             }
-
-            ApiResponse response;
-
-            try
+            // Reject old servers and partial batches before touching any book.
+            if (response.meta == null || response.meta.gameMode != mode || response.meta.scene != sceneName
+                || response.meta.difficulties == null || response.meta.difficulties.Length == 0
+                || response.data == null || response.data.Length != books.Length)
             {
-                response = JsonUtility.FromJson<ApiResponse>(request.downloadHandler.text);
-            }
-            catch (Exception exception)
-            {
-                Debug.LogWarning($"Resposta invalida da API de perguntas: {exception.Message}. Usando perguntas locais.");
-                onCompleted?.Invoke(0);
+                onCompleted("A API não retornou uma partida completa para este modo. Atualize o servidor e confira as perguntas publicadas.");
                 yield break;
             }
-
-            if (response == null || !response.success || response.data == null || response.data.Length == 0)
+            var ids = new HashSet<int>();
+            foreach (ApiQuestion question in response.data)
             {
-                string detail = response != null && !string.IsNullOrWhiteSpace(response.message)
-                    ? " Detalhe: " + response.message
-                    : string.Empty;
-                Debug.LogWarning($"A API nao retornou perguntas publicadas para a cena '{scene}'.{detail} Usando perguntas locais.");
-                onCompleted?.Invoke(0);
-                yield break;
-            }
-
-            int assignedCount = 0;
-            int assignmentLimit = Mathf.Min(books.Length, response.data.Length);
-
-            for (int index = 0; index < assignmentLimit; index++)
-            {
-                BookQuiz book = books[index];
-                ApiQuestion question = response.data[index];
-
-                if (book != null && question != null &&
-                    book.SetQuestionData(question.id, question.prompt, question.options, question.correctIndex))
+                if (question == null || question.id <= 0 || !ids.Add(question.id)
+                    || string.IsNullOrWhiteSpace(question.prompt) || question.options == null
+                    || question.options.Length != 4 || Array.Exists(question.options, string.IsNullOrWhiteSpace)
+                    || question.correctIndex < 0 || question.correctIndex > 3
+                    || Array.IndexOf(response.meta.difficulties, question.difficulty) < 0)
                 {
-                    assignedCount++;
+                    onCompleted("A API retornou perguntas inválidas. Revise o conteúdo publicado.");
+                    yield break;
                 }
             }
-
-            onCompleted?.Invoke(assignedCount);
+            // Shuffle physical books as well as the server's random selection.
+            BookQuiz[] shuffledBooks = (BookQuiz[])books.Clone();
+            for (int i = shuffledBooks.Length - 1; i > 0; i--)
+            {
+                int j = UnityEngine.Random.Range(0, i + 1);
+                BookQuiz temp = shuffledBooks[i];
+                shuffledBooks[i] = shuffledBooks[j];
+                shuffledBooks[j] = temp;
+            }
+            for (int i = 0; i < shuffledBooks.Length; i++)
+            {
+                ApiQuestion question = response.data[i];
+                if (shuffledBooks[i] == null || !shuffledBooks[i].SetQuestionData(
+                    question.id, question.prompt, question.options, question.correctIndex))
+                {
+                    onCompleted("Não foi possível preencher todos os livros. Tente novamente.");
+                    yield break;
+                }
+            }
+            onCompleted(null);
         }
     }
 }

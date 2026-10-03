@@ -50,7 +50,7 @@ O comando também permite redefinir a senha caso seja executado novamente com o 
 |---|---|---|
 | Painel do professor | `http://127.0.0.1:8000/login.php` | `INITIAL_TEACHER_EMAIL` e `INITIAL_TEACHER_PASSWORD` do `.env` |
 | phpMyAdmin | `http://127.0.0.1:8081` | Usuário e senha do `.env` |
-| API para Unity | `http://127.0.0.1:8000/api/v1/questions.php?scene=andar1&limit=10` | Leitura pública |
+| API para Unity | `http://127.0.0.1:8000/api/v1/questions.php?scene=andar1&mode=normal&limit=10` | Leitura pública |
 | Saúde da API | `http://127.0.0.1:8000/api/v1/health.php` | — |
 
 No phpMyAdmin, use o valor de `MYSQL_USER` como usuário e `MYSQL_PASSWORD` como senha. O servidor já está definido internamente como `db`.
@@ -159,3 +159,11 @@ docker compose up -d --build app
 ```
 
 O container executa automaticamente as migrações pendentes antes de iniciar o Apache. Atualizações de estrutura preservam as perguntas e os professores já cadastrados.
+
+
+## Atualizar as dificuldades do jogo
+
+Após copiar esta versão para a máquina do Docker, execute `docker compose up -d --build app` na raiz.
+O banco existente é preservado e esta alteração não exige migração. No painel, classifique e publique perguntas fáceis, médias e difíceis; a seleção de andar foi substituída pela progressão automática do modo escolhido no jogo.
+Atualize também o cliente Unity. Confira a URL da API no `BookManager` dos dois andares: ela deve apontar para o IP da máquina do Docker.
+Consulte a [matriz e os requisitos de conteúdo](web/README.md#fluxo-professor--jogo).

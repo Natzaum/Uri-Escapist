@@ -9,9 +9,9 @@ $selectedCorrect = (int) old('correct_index', $question['correct_index']);
     </div>
 </section>
 
-<?php if ($disciplines === [] || $floors === []): ?>
+<?php if ($disciplines === []): ?>
     <div class="alert alert-warning">
-        <span>É necessário ter pelo menos uma disciplina e um andar ativos antes de criar perguntas.</span>
+        <span>É necessário ter pelo menos uma disciplina antes de criar perguntas.</span>
     </div>
 <?php endif; ?>
 
@@ -53,20 +53,6 @@ $selectedCorrect = (int) old('correct_index', $question['correct_index']);
         </div>
 
         <div class="field-group">
-            <label for="floor_id">Andar do jogo</label>
-            <select id="floor_id" name="floor_id" required>
-                <option value="">Selecione...</option>
-                <?php foreach ($floors as $floor): ?>
-                    <?php $selectedFloor = (int) old('floor_id', $question['floor_id']); ?>
-                    <option value="<?= (int) $floor['id'] ?>" <?= $selectedFloor === (int) $floor['id'] ? 'selected' : '' ?>>
-                        <?= e($floor['name']) ?> — cena <?= e($floor['scene_name']) ?><?= (int) $floor['active'] === 0 ? ' (inativo)' : '' ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <small>A Unity identifica este andar automaticamente pelo nome da cena.</small>
-        </div>
-
-        <div class="field-group">
             <label for="discipline_id">Disciplina</label>
             <select id="discipline_id" name="discipline_id" required>
                 <option value="">Selecione...</option>
@@ -80,6 +66,7 @@ $selectedCorrect = (int) old('correct_index', $question['correct_index']);
         </div>
 
         <div class="field-group">
+            <p class="muted">O jogo sorteia as questões conforme a dificuldade e o andar da partida.</p>
             <label for="difficulty">Dificuldade</label>
             <?php $selectedDifficulty = (string) old('difficulty', $question['difficulty']); ?>
             <select id="difficulty" name="difficulty" required>

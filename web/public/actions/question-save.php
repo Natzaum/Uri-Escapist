@@ -16,7 +16,7 @@ $teacherId = (int) current_teacher()['id'];
 $questionId = max(0, (int) ($_POST['id'] ?? 0));
 $input = [
     'discipline_id' => max(0, (int) ($_POST['discipline_id'] ?? 0)),
-    'floor_id' => max(0, (int) ($_POST['floor_id'] ?? 0)),
+    'floor_id' => null,
     'prompt' => trim((string) ($_POST['prompt'] ?? '')),
     'option_a' => trim((string) ($_POST['option_a'] ?? '')),
     'option_b' => trim((string) ($_POST['option_b'] ?? '')),
@@ -32,10 +32,6 @@ $errors = [];
 
 if ($input['discipline_id'] < 1) {
     $errors[] = 'Selecione uma disciplina.';
-}
-
-if ($input['floor_id'] < 1) {
-    $errors[] = 'Selecione o andar em que a pergunta deve aparecer.';
 }
 
 if ($input['prompt'] === '' || mb_strlen($input['prompt']) > 500) {
@@ -75,13 +71,6 @@ $disciplineStatement->execute(['id' => $input['discipline_id']]);
 
 if ((int) $disciplineStatement->fetchColumn() !== 1) {
     $errors[] = 'A disciplina selecionada não existe.';
-}
-
-$floorStatement = db()->prepare('SELECT COUNT(*) FROM floors WHERE id = :id');
-$floorStatement->execute(['id' => $input['floor_id']]);
-
-if ((int) $floorStatement->fetchColumn() !== 1) {
-    $errors[] = 'O andar selecionado não existe.';
 }
 
 if ($questionId > 0) {

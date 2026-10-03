@@ -13,7 +13,6 @@ public class BookManager : MonoBehaviour
     public int maxErrors = 3; // 4º erro = game over instantâneo
 
     [Header("Perguntas online")]
-    public bool loadQuestionsFromWeb = true;
     public string questionsApiUrl = "http://127.0.0.1:8000/api/v1/questions.php";
     [Range(2, 30)] public int questionRequestTimeout = 10;
 
@@ -29,6 +28,11 @@ public class BookManager : MonoBehaviour
     public float speedIncreasePerError = 0.12f;
     public float bonusSpeedEveryTwoCorrects = 0.04f;
     public float finalChaseSpeed = 1.2f; // Velocidade no 4º erro (mais lenta, visível)
+
+    public bool QuestionsReady { get; private set; }
+    private bool loadingQuestions;
+    private string questionLoadError;
+    private BookQuiz[] sceneBooks;
 
     private int booksCollected = 0;
     private int errors = 0;
@@ -63,22 +67,61 @@ public class BookManager : MonoBehaviour
         
         UpdateUI();
 
-        if (loadQuestionsFromWeb && books.Length > 0)
+        sceneBooks = books;
+        if (books.Length > 0)
+            yield return LoadQuestions();
+        else
+            QuestionsReady = true;
+    }
+
+    private IEnumerator LoadQuestions()
+    {
+        loadingQuestions = true;
+        QuestionsReady = false;
+        questionLoadError = null;
+        Time.timeScale = 0f;
+        yield return RemoteQuestionLoader.LoadAndAssign(
+            questionsApiUrl, SceneManager.GetActiveScene().name, MenuPrincipal.GameMode,
+            questionRequestTimeout, sceneBooks, error => questionLoadError = error);
+        loadingQuestions = false;
+        QuestionsReady = questionLoadError == null;
+        if (QuestionsReady)
         {
-            yield return RemoteQuestionLoader.LoadAndAssign(
-                questionsApiUrl,
-                SceneManager.GetActiveScene().name,
-                questionRequestTimeout,
-                books,
-                loadedCount =>
-                {
-                    if (loadedCount > 0)
-                    {
-                        Debug.Log($"Perguntas online aplicadas em {loadedCount}/{books.Length} livros.");
-                    }
-                }
-            );
+            Time.timeScale = 1f;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (QuestionsReady) return;
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void OnGUI()
+    {
+        if (QuestionsReady) return;
+        float width = Mathf.Min(540f, Screen.width - 32f);
+        GUILayout.BeginArea(new Rect((Screen.width - width) / 2f,
+            (Screen.height - 230f) / 2f, width, 230f), GUI.skin.box);
+        GUILayout.Label("Perguntas — " + MenuPrincipal.GameMode);
+        GUILayout.Space(12f);
+        GUILayout.Label(loadingQuestions ? "Carregando perguntas..." : questionLoadError,
+            new GUIStyle(GUI.skin.label) { wordWrap = true });
+        if (!loadingQuestions)
+        {
+            if (GUILayout.Button("Tentar novamente", GUILayout.Height(36f)))
+                StartCoroutine(LoadQuestions());
+            if (GUILayout.Button("Voltar ao menu", GUILayout.Height(36f)))
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene("UriMenu");
+            }
+        }
+        GUILayout.EndArea();
     }
 
     public void OnBookCorrect()
@@ -340,7 +383,7 @@ public class BookManager : MonoBehaviour
 
     public bool CanProgress()
     {
-        return booksCollected >= minBooksToWin;
+        return QuestionsReady && booksCollected >= minBooksToWin;
     }
 
     public void OnTimeUp()

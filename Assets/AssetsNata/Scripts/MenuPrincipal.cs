@@ -25,6 +25,66 @@ public class MenuPrincipal : MonoBehaviour
 
     private static bool isNightmareMode = false;
     private bool isStartingGame;
+    public static string GameMode { get; private set; } = "normal";
+    private readonly string[] difficultyModes = { "facil", "normal", "dificil" };
+    private readonly string[] difficultyLabels = { "Fácil", "Normal", "Difícil" };
+    private Button[] difficultyButtons;
+
+    private void CreateDifficultySelector()
+    {
+        if (playButton == null) return;
+        difficultyButtons = new Button[3];
+        for (int i = 0; i < difficultyButtons.Length; i++)
+        {
+            int index = i;
+            Button button = Instantiate(playButton, playButton.transform.parent);
+            button.name = "Dificuldade_" + difficultyModes[i];
+            // Replace the event as cloned buttons can contain persistent Inspector listeners.
+            button.onClick = new Button.ButtonClickedEvent();
+            button.onClick.AddListener(() => {
+                if (isStartingGame) return;
+                GameMode = difficultyModes[index];
+                RefreshDifficultySelector();
+            });
+            RectTransform rect = (RectTransform)button.transform;
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = new Vector2((i - 1) * 170f, -110f);
+            rect.sizeDelta = new Vector2(160f, 44f);
+            TMP_Text label = button.GetComponentInChildren<TMP_Text>();
+            if (label != null) {
+                label.enableAutoSizing = true;
+                label.fontSizeMin = 14;
+                label.fontSizeMax = 24;
+            }
+            difficultyButtons[i] = button;
+        }
+        TMP_Text source = playButton.GetComponentInChildren<TMP_Text>();
+        if (source != null)
+        {
+            TMP_Text heading = Instantiate(source, playButton.transform.parent);
+            heading.name = "DificuldadeTitulo";
+            heading.text = "Dificuldade das perguntas";
+            heading.fontSize = 20;
+            heading.raycastTarget = false;
+            RectTransform rect = heading.rectTransform;
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = new Vector2(0f, -65f);
+            rect.sizeDelta = new Vector2(520f, 35f);
+        }
+        RefreshDifficultySelector();
+    }
+
+    private void RefreshDifficultySelector()
+    {
+        for (int i = 0; i < difficultyButtons.Length; i++)
+        {
+            TMP_Text label = difficultyButtons[i].GetComponentInChildren<TMP_Text>();
+            if (label != null)
+                label.text = (GameMode == difficultyModes[i] ? "• " : "") + difficultyLabels[i];
+        }
+    }
 
     void Start()
     {
@@ -47,6 +107,8 @@ public class MenuPrincipal : MonoBehaviour
         if (titleText == null)
             titleText = FindObjectOfType<TextMeshProUGUI>();
 
+        CreateDifficultySelector();
+
         // Configurar listeners
         if (playButton != null)
             playButton.onClick.AddListener(OnPlayButtonClicked);
@@ -60,6 +122,8 @@ public class MenuPrincipal : MonoBehaviour
             nightmareToggle.onValueChanged.AddListener(OnNightmareToggleChanged);
         }
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Time.timeScale = 1f; // Garantir que o jogo não está pausado
 
         Debug.Log("✅ Menu Principal carregado!");
@@ -77,6 +141,8 @@ public class MenuPrincipal : MonoBehaviour
     private IEnumerator StartGame()
     {
         isStartingGame = true;
+        if (difficultyButtons != null)
+            foreach (Button button in difficultyButtons) button.interactable = false;
         if (playButton != null)
             playButton.interactable = false;
 
