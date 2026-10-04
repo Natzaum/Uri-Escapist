@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1791038418.24465 "d:/Main/Projetos/Uri-Escapist/docs/artigo-latex-final/artigo.tex" "artigo.pdf" "artigo" 1791038446.93695 2
+["pdflatex"] 1791077146.51562 "d:/Main/Projetos/Uri-Escapist/docs/artigo-latex-final/artigo.tex" "artigo.pdf" "artigo" 1791077158.79391 2
   "C:/Users/natac/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1782172724 13367096 d94ac865db8914734c0e8d3445550e3b ""
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/fonts/tfm/adobe/times/ptmr8t.tfm" 1136783054 6672 e3ab9e37e925f3045c9005e6d1473d56 ""
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmr12.tfm" 1136765053 1288 655e228510b4c2a1abe905c368440826 ""
@@ -15,6 +15,7 @@
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/base/fontenc.sty" 1780057299 5275 529cdf4584f147773f12d4c9bf2b6cc3 ""
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/base/inputenc.sty" 1780057299 5048 d19270c31bb8731a546f4e34e34d62fc ""
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/base/size12.clo" 1780057299 8449 664757d1408d8170a2006aafc5658e1b ""
+  "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/booktabs/booktabs.sty" 1579093635 6253 f1cb470c9199e7110a27851508ed7a5c ""
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/caption/caption.sty" 1696169587 56128 c2ccf1a29d78c33bc553880402e4fb9a ""
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/caption/caption3.sty" 1696169587 72619 ee90b6612147680fd73c3b1406a74245 ""
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/enumitem/enumitem.sty" 1738917170 52272 63d293bc0d496619edb57585740861a2 ""
@@ -31,12 +32,14 @@
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/t1ptm.fd" 1585253778 817 61d7da1e9f9e74989b196d147e623736 ""
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/times.sty" 1585926771 888 8e0e5c8cca7b18e0400f97f5a2b90a99 ""
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/titlesec/titlesec.sty" 1736608268 48766 87a17a4ef312a39cd43896e34a679a56 ""
+  "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/tools/array.sty" 1780057721 17611 1fdd60d12fed6aebd140f4d060571642 ""
+  "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/tools/tabularx.sty" 1780057721 7243 98a9e0737a56460d15d6b41be1ecc3b8 ""
   "C:/Users/natac/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "article-config/sbc-template.sty" 1788300691 7300 5167a22a5b389d47dacd461d94f1e416 ""
-  "artigo.aux" 1791038410 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
-  "artigo.tex" 1788301433 40896 f9f5570932e5ba9b9fbd26e2889468d6 ""
-  "booktabs.sty" 0 -1 0 ""
-  "d:/Main/Projetos/Uri-Escapist/docs/artigo-latex-final/artigo.tex" 1788301433 40896 f9f5570932e5ba9b9fbd26e2889468d6 ""
+  "artigo.aux" 1791077063 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "artigo.tex" 1791077125 53958 42d07f8fdadb49da6c9fe61ed13220a6 ""
+  "d:/Main/Projetos/Uri-Escapist/docs/artigo-latex-final/artigo.tex" 1791077125 53958 42d07f8fdadb49da6c9fe61ed13220a6 ""
+  "fancyhdr.sty" 0 -1 0 ""
   (generated)
   "artigo.aux"
   "artigo.log"

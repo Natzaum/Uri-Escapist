@@ -1,10 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.6.22)  3 OCT 2026 11:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.6.22)  3 OCT 2026 22:26
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
-**d:/Main/Projetos/Uri-Escapist/docs/artigo-latex-final/artigo.tex
-(d:/Main/Projetos/Uri-Escapist/docs/artigo-latex-final/artigo.tex
+**./artigo.tex
+(artigo.tex
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-05-26>
 (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
@@ -23,16 +22,21 @@ File: size12.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 \abovecaptionskip=\skip49
 \belowcaptionskip=\skip50
 \bibindent=\dimen150
-) (article-config/sbc-template.sty
+)
+(article-config/sbc-template.sty
 Package: article-config/sbc-template 2001/06/09
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
 Package: geometry 2026/03/07 v6.0 Page Geometry
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
 Package: keyval 2026-05-17 v1.15 key=value parser (DPC)
 \KV@toks@=\toks17
-) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
 Package: iftex 2024/12/12 v1.0g TeX engine tests
 ))
 \Gm@cnth=\count284
@@ -47,9 +51,12 @@ Package: iftex 2024/12/12 v1.0g TeX engine tests
 \Gm@layouthoffset=\dimen157
 \Gm@layoutvoffset=\dimen158
 \Gm@dimlist=\toks18
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg)) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
 Package: caption 2023/08/05 v3.6o Customizing captions (AR)
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
 Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
 \caption@tempdima=\dimen159
 \captionmargin=\dimen160
@@ -63,11 +70,13 @@ Package caption Info: Standard document class detected.
 )
 \c@caption@flags=\count287
 \c@continuedfloat=\count288
-) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\times.sty
+)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\times.sty
 Package: times 2020/03/25 PSNFSS-v9.3 (SPQR) 
 )
 \c@instn=\count289
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/titlesec\titlesec.sty
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/titlesec\titlesec.sty
 Package: titlesec 2025/01/04 v2.17 Sectioning titles
 \ttl@box=\box53
 \beforetitleunit=\skip51
@@ -78,22 +87,32 @@ Package: titlesec 2025/01/04 v2.17 Sectioning titles
 \titlewidth=\dimen169
 \titlewidthlast=\dimen170
 \titlewidthfirst=\dimen171
-) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
 Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count290
 )) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
-Package: babel 2026/05/20 v26.8 The multilingual framework for LuaLaTeX, pdfLaTeX and XeLaTeX
+Package: babel 2026/05/20 v26.8 The multilingual framework for LuaLaTeX, pdfLaT
+eX and XeLaTeX
 \babel@savecnt=\count291
-LaTeX Encoding Info:    Redeclaring text command \ij (encoding OT1) on input line 2084.
-LaTeX Encoding Info:    Redeclaring text command \IJ (encoding OT1) on input line 2086.
-LaTeX Encoding Info:    Redeclaring text command \ij (encoding T1) on input line 2088.
-LaTeX Encoding Info:    Redeclaring text command \IJ (encoding T1) on input line 2089.
-LaTeX Encoding Info:    Ignoring declaration for text command \ij (encoding ?) on input line 2090.
-LaTeX Encoding Info:    Ignoring declaration for text command \IJ (encoding ?) on input line 2092.
-LaTeX Encoding Info:    Ignoring declaration for text command \SS (encoding ?) on input line 2117.
+LaTeX Encoding Info:    Redeclaring text command \ij (encoding OT1) on input li
+ne 2084.
+LaTeX Encoding Info:    Redeclaring text command \IJ (encoding OT1) on input li
+ne 2086.
+LaTeX Encoding Info:    Redeclaring text command \ij (encoding T1) on input lin
+e 2088.
+LaTeX Encoding Info:    Redeclaring text command \IJ (encoding T1) on input lin
+e 2089.
+LaTeX Encoding Info:    Ignoring declaration for text command \ij (encoding ?) 
+on input line 2090.
+LaTeX Encoding Info:    Ignoring declaration for text command \IJ (encoding ?) 
+on input line 2092.
+LaTeX Encoding Info:    Ignoring declaration for text command \SS (encoding ?) 
+on input line 2117.
 \U@D=\dimen172
 \l@unhyphenated=\language79
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def)
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def)
 \bbl@readstream=\read2
 \bbl@dirlevel=\count292
 Package babel Info: Configuration files are deprecated, as
@@ -104,35 +123,50 @@ Package babel Info: Configuration files are deprecated, as
 * Local config file bblopts.cfg used
 *
 (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/arabi\bblopts.cfg
-File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of babel
-) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/pt\babel-brazilian.tex)
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
+ babel
+)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/pt\babel
+-brazilian.tex)
 Package babel Info: Importing font and identification data for brazilian
 (babel)             from babel-pt-BR.ini. Reported on input line 4356.
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/babel-portuges\brazilian.ldf
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/babel-portuges\brazilia
+n.ldf
 Language: portuges 2026/01/24 v1.2u Portuguese support from the babel system
 Package babel Info: Hyphen rules for 'brazilian' set to \l@portuguese
 (babel)             (\language56). Reported on input line 100.
 Package babel Info: Making " an active character on input line 132.
-)) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+))
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
 Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
-LaTeX Font Info:    Trying to load font information for T1+ptm on input line 116.
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1ptm.fd
+LaTeX Font Info:    Trying to load font information for T1+ptm on input line 11
+6.
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
-)) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
+))
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
 Package: inputenc 2024/02/08 v1.3d Input encoding file
 \inpenc@prehook=\toks20
 \inpenc@posthook=\toks21
-) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
 Package: graphicx 2026-05-17 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
 Package: graphics 2026-05-17 v1.4h Standard LaTeX Graphics (DPC,SPQR)
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
 Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
-) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.c
+fg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 106.
- (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
 File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen173
@@ -140,7 +174,8 @@ File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 ) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/enumitem\enumitem.sty
+)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/enumitem\enumitem.sty
 Package: enumitem 2025/02/06 v3.11 Customized lists
 \labelindent=\skip53
 \enit@outerparindent=\dimen175
@@ -148,7 +183,8 @@ Package: enumitem 2025/02/06 v3.11 Customized lists
 \enit@inbox=\box54
 \enit@count@id=\count293
 \enitdp@description=\count294
-) (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count295
 \float@exts=\toks23
@@ -156,27 +192,373 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \@float@everytoks=\toks24
 \@floatcapt=\box56
 )
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen176
+\lightrulewidth=\dimen177
+\cmidrulewidth=\dimen178
+\belowrulesep=\dimen179
+\belowbottomsep=\dimen180
+\aboverulesep=\dimen181
+\abovetopsep=\dimen182
+\cmidrulesep=\dimen183
+\cmidrulekern=\dimen184
+\defaultaddspace=\dimen185
+\@cmidla=\count296
+\@cmidlb=\count297
+\@aboverulesep=\dimen186
+\@belowrulesep=\dimen187
+\@thisruleclass=\count298
+\@lastruleclass=\count299
+\@thisrulewidth=\dimen188
+)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/tools\tabularx.sty
+Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
 
-! LaTeX Error: File `booktabs.sty' not found.
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+Package: array 2026/02/24 v2.7b Tabular extension package (FMi)
+\col@sep=\dimen189
+\ar@mcellbox=\box57
+\extrarowheight=\dimen190
+\NC@list=\toks25
+\extratabsurround=\skip54
+\backup@length=\skip55
+\ar@cellbox=\box58
+)
+\TX@col@width=\dimen191
+\TX@old@table=\dimen192
+\TX@old@col=\dimen193
+\TX@target=\dimen194
+\TX@delta=\dimen195
+\TX@cols=\count300
+\TX@ftn=\toks26
+)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/fancyhdr\fancyhdr.sty
+Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 
-Type X to quit or <RETURN> to proceed,
-or enter new name. (Default extension: sty)
+\f@nch@headwidth=\skip56
+\f@nch@offset@elh=\skip57
+\f@nch@offset@erh=\skip58
+\f@nch@offset@olh=\skip59
+\f@nch@offset@orh=\skip60
+\f@nch@offset@elf=\skip61
+\f@nch@offset@erf=\skip62
+\f@nch@offset@olf=\skip63
+\f@nch@offset@orf=\skip64
+\f@nch@height=\skip65
+\f@nch@footalignment=\skip66
+\f@nch@widthL=\skip67
+\f@nch@widthC=\skip68
+\f@nch@widthR=\skip69
+\@temptokenb=\toks27
+)
+(article-config/pages-style.sty
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
 
-Enter file name: 
-d:/Main/Projetos/Uri-Escapist/docs/artigo-latex-final/artigo.tex:12: Emergency stop.
-<read *> 
-         
-l.12 \usepackage
-                {tabularx}^^M
-*** (cannot \read from terminal in nonstop modes)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+)) (article-config/event-info.tex)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
+tex.def
+File: l3backend-pdftex.def 2026-02-18 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count301
+) (artigo.aux)
+\openout1 = `artigo.aux'.
 
- 
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(71.13188pt, 469.47049pt, 56.9055pt)
+* v-part:(T,H,B)=(42.67912pt, 717.00946pt, 85.35826pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=469.47049pt
+* \textheight=717.00946pt
+* \oddsidemargin=-1.1381pt
+* \evensidemargin=-1.1381pt
+* \topmargin=-66.59087pt
+* \headheight=50.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=44.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
+Package caption Info: End \AtBeginDocument code.
+Package babel Info: 'brazilian' activates 'portuges' shorthands.
+(babel)             Reported on input line 61.
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
+ii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count302
+\scratchdimen=\dimen196
+\scratchbox=\box59
+\nofMPsegments=\count303
+\nofMParguments=\count304
+\everyMPshowfont=\toks28
+\MPscratchCnt=\count305
+\MPscratchDim=\dimen197
+\MPnumerator=\count306
+\makeMPintoPDFobject=\count307
+\everyMPtoPDFconversion=\toks29
+)
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
+ase.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.c
+fg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 62.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 62.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 62.
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 62
+.
+ (C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
+<article-config/logo.png, id=1, 370.0224pt x 64.8021pt>
+File: article-config/logo.png Graphic file (type png)
+<use article-config/logo.png>
+Package pdftex.def Info: article-config/logo.png  used on input line 83.
+(pdftex.def)             Requested size: 441.03787pt x 71.13715pt.
+
+
+Package fancyhdr Warning: \headheight is too small (50.0pt): 
+(fancyhdr)                Make it at least 75.48718pt, for example:
+(fancyhdr)                \setlength{\headheight}{75.48718pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-25.48718pt}.
+
+[1
+
+{C:/Users/natac/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/nata
+c/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <./article-config/
+logo.png>]
+
+LaTeX Warning: Citation `abt1970' on page 2 undefined on input line 89.
+
+
+LaTeX Warning: Citation `michael2006' on page 2 undefined on input line 89.
+
+
+LaTeX Warning: Citation `prensky2001' on page 2 undefined on input line 91.
+
+
+LaTeX Warning: Citation `gee2003' on page 2 undefined on input line 91.
+
+
+LaTeX Warning: Citation `vlachopoulos2017' on page 2 undefined on input line 10
+5.
+
+
+Underfull \vbox (badness 4859) has occurred while \output is active []
+
+ [2]
+
+LaTeX Warning: Citation `dichev2017' on page 3 undefined on input line 107.
+
+
+LaTeX Warning: Citation `wang2020' on page 3 undefined on input line 109.
+
+
+LaTeX Warning: Citation `din2023' on page 3 undefined on input line 111.
+
+
+LaTeX Warning: Reference `tab:comparacao' on page 3 undefined on input line 113
+.
+
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 11
+7.
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1phv.fd
+File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
+)
+[3]
+
+LaTeX Warning: Citation `abt1970' on page 4 undefined on input line 143.
+
+
+LaTeX Warning: Citation `michael2006' on page 4 undefined on input line 145.
+
+
+LaTeX Warning: Citation `zyda2005' on page 4 undefined on input line 145.
+
+
+LaTeX Warning: Citation `prensky2001' on page 4 undefined on input line 151.
+
+
+LaTeX Warning: Citation `gee2003' on page 4 undefined on input line 153.
+
+
+LaTeX Warning: Citation `gros2007' on page 4 undefined on input line 153.
+
+
+LaTeX Warning: Citation `fullerton2018' on page 4 undefined on input line 159.
+
+
+LaTeX Warning: Citation `salen2004' on page 4 undefined on input line 159.
+
+[4]
+<Figuras/cenario-campus.png, id=24, 1169.87062pt x 473.51906pt>
+File: Figuras/cenario-campus.png Graphic file (type png)
+<use Figuras/cenario-campus.png>
+Package pdftex.def Info: Figuras/cenario-campus.png  used on input line 185.
+(pdftex.def)             Requested size: 384.96924pt x 155.82101pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [5]
+[6 <./Figuras/cenario-campus.png>]
+(C:\Users\natac\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd)
+
+LaTeX Warning: Reference `tab:dificuldades' on page 7 undefined on input line 2
+42.
+
+[7]
+
+LaTeX Warning: Reference `tab:inimigo-modos' on page 8 undefined on input line 
+276.
+
+<Figuras/inimigo.png, id=37, 1443.89438pt x 661.72218pt>
+File: Figuras/inimigo.png Graphic file (type png)
+<use Figuras/inimigo.png>
+Package pdftex.def Info: Figuras/inimigo.png  used on input line 280.
+(pdftex.def)             Requested size: 384.96924pt x 176.42583pt.
+[8 <./Figuras/inimigo.png>]
+<Figuras/sistema-quiz.png, id=47, 1444.64719pt x 659.46375pt>
+File: Figuras/sistema-quiz.png Graphic file (type png)
+<use Figuras/sistema-quiz.png>
+Package pdftex.def Info: Figuras/sistema-quiz.png  used on input line 292.
+(pdftex.def)             Requested size: 384.96924pt x 175.73312pt.
+
+
+LaTeX Warning: Reference `tab:perguntas-modos' on page 9 undefined on input lin
+e 296.
+
+[9 <./Figuras/sistema-quiz.png>]
+<Figuras/interface-jogo.png, id=52, 1168.365pt x 444.15938pt>
+File: Figuras/interface-jogo.png Graphic file (type png)
+<use Figuras/interface-jogo.png>
+Package pdftex.def Info: Figuras/interface-jogo.png  used on input line 338.
+(pdftex.def)             Requested size: 384.96924pt x 146.34938pt.
+ [10]
+Overfull \hbox (0.517pt too wide) in paragraph at lines 375--375
+[]|\T1/pcr/m/n/10.95 som_ambiente_entrada| 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [11 <./Figuras/interface-jogo.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [12]
+
+LaTeX Warning: Reference `tab:tecnologias' on page 13 undefined on input line 4
+22.
+
+
+Underfull \vbox (badness 6188) has occurred while \output is active []
+
+ [13]
+[14] [15]
+
+LaTeX Warning: Citation `wang2020' on page 16 undefined on input line 508.
+
+
+LaTeX Warning: Citation `dichev2017' on page 16 undefined on input line 508.
+
+No file artigo.bbl.
+[16] (artigo.aux)
+ ***********
+LaTeX2e <2026-06-01>
+L3 programming layer <2026-05-26>
+ ***********
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 5115 strings out of 467509
- 85223 string characters out of 5408780
- 508033 words of memory out of 5000000
- 34346 multiletter control sequences out of 15000+600000
- 629663 words of font info for 42 fonts, out of 8000000 for 9000
+ 7088 strings out of 467509
+ 119436 string characters out of 5408780
+ 561160 words of memory out of 5000000
+ 36230 multiletter control sequences out of 15000+600000
+ 672446 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 72i,0n,79p,337b,89s stack positions out of 10000i,1000n,20000p,200000b,200000s
-d:/Main/Projetos/Uri-Escapist/docs/artigo-latex-final/artigo.tex:12:  ==> Fatal error occurred, no output PDF file produced!
+ 72i,17n,79p,587b,542s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/natac/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmmi10.pfb><C:/Users/natac/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmmi12.pfb><C:/Users/natac/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmmi8.pfb><C:/Users/natac/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/natac/AppData/Local/Programs/MiKT
+eX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/natac/AppData/Local/Progr
+ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/natac/AppData/Loca
+l/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/natac/App
+Data/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/natac/A
+ppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/nata
+c/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/nata
+c/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/nat
+ac/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/nat
+ac/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on artigo.pdf (16 pages, 7030947 bytes).
+PDF statistics:
+ 131 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+

@@ -68,7 +68,7 @@
 \textbf{Introduction:} Digital games can support educational practices by combining challenges, immediate feedback and active participation. In this context, URI Escapist is a three-dimensional game inspired by URI Erechim Campus II, in which the university environment is transformed into a setting for exploration, suspense and academic challenges.
 \textbf{Objective:} This work aims to develop an interactive experience that combines entertainment and learning through multiple-choice questions, exploration and progression mechanics.
 \textbf{Methodology or Steps:} The research has an applied and qualitative approach and adopts an iterative and incremental development process. The prototype was implemented in Unity and integrated with a PHP and MySQL web system through a REST application programming interface.
-\textbf{Results:} The current version provides first-person exploration, quizzes, progression, an enemy with dynamic difficulty and a web panel through which teachers manage disciplines and questions. Published content is selected according to the current game scene and distributed among its interactive books.
+\textbf{Results:} The current version includes two playable floors, three difficulty profiles, first-person exploration, stamina and exhaustion effects, contextual audio, runtime-generated interfaces and a teacher content-management panel. Questions are randomly selected by difficulty and floor, without repeated identifiers across different floors in the same session. Functional checks cover progression, navigation, question loading and audiovisual state management.
 \textbf{Conclusion:} The implemented architecture demonstrates the technical feasibility of separating educational content management from the game while preserving its direct effect on gameplay. User studies are still required to evaluate engagement, usability and learning outcomes.
 \end{abstract}
 
@@ -78,7 +78,7 @@
 \textbf{Introdução:} Os jogos digitais podem apoiar práticas educacionais ao combinar desafios, feedback imediato e participação ativa. Nesse contexto, o URI Escapist é um jogo tridimensional inspirado na URI Erechim Campus II, no qual o ambiente universitário é transformado em um cenário de exploração, suspense e desafios acadêmicos.
 \textbf{Objetivo:} Este trabalho tem como objetivo desenvolver uma experiência interativa que una entretenimento e aprendizagem por meio de perguntas de múltipla escolha, exploração e mecânicas de progressão.
 \textbf{Metodologia ou Etapas:} A pesquisa possui natureza aplicada e abordagem qualitativa, adotando um processo de desenvolvimento iterativo e incremental. O protótipo foi implementado na Unity e integrado a um sistema Web em PHP e MySQL por meio de uma interface de programação de aplicações REST.
-\textbf{Resultados:} A versão atual oferece exploração em primeira pessoa, questionários, progressão, inimigo com dificuldade dinâmica e um painel Web no qual professores administram disciplinas e perguntas. O conteúdo publicado é selecionado de acordo com a cena atual do jogo e distribuído entre seus livros interativos.
+\textbf{Resultados:} A versão atual inclui dois andares jogáveis, três perfis de dificuldade, exploração em primeira pessoa, resistência e efeitos de exaustão, áudio contextual, interfaces geradas por código e um painel de conteúdo para professores. As perguntas são sorteadas conforme a dificuldade e o andar, sem repetição de identificadores entre andares distintos da mesma partida. Verificações funcionais abrangem progressão, navegação, carregamento de perguntas e controle dos estados audiovisuais.
 \textbf{Conclusão:} A arquitetura implementada demonstra a viabilidade técnica de separar a gestão do conteúdo educacional do jogo e, simultaneamente, preservar seus efeitos diretos na jogabilidade. Ainda são necessários estudos com usuários para avaliar engajamento, usabilidade e resultados de aprendizagem.
 \end{resumo}
 
@@ -174,196 +174,348 @@ A coleta de dados ocorrerá por meio de registros das etapas de desenvolvimento,
 
 \section{Desenvolvimento do URI Escapist}
 
-\subsection{Conceito e ambientação}
+\subsection{Conceito, ambientação e estado do protótipo}
 
-O URI Escapist representa o ambiente universitário sob uma perspectiva lúdica e simbólica. Os espaços do campus deixam de funcionar apenas como cenário e passam a representar desafios, cobranças e etapas da trajetória acadêmica. A escolha de um local familiar busca favorecer a identificação dos estudantes e tornar a narrativa mais próxima de sua realidade.
+O URI Escapist transforma o ambiente universitário em um espaço de exploração, suspense e desafios acadêmicos. Seus cenários são inspirados no início do Campus II da URI Erechim, na entrada do Prédio 8 e em seus andares. A identificação com um espaço conhecido é uma intenção de design, cuja efetividade ainda precisa ser investigada com participantes.
 
-Os cenários são inspirados no início do Campus II, na entrada do Prédio 8 e em seus andares. A direção visual utiliza modelos tridimensionais, texturas e efeitos inspirados na estética de jogos do período do primeiro PlayStation. A presença de neblina, baixa precisão de cores e efeitos visuais de imagem contribui para uma atmosfera de suspense e para a identidade retrô do projeto.
+A direção visual combina modelos tridimensionais, texturas e efeitos inspirados na estética do primeiro PlayStation. Neblina, pixelização e processamento de imagem contribuem para a aparência retrô. Um filtro VHS acrescenta ruído, linhas de varredura, instabilidade horizontal e separação cromática. Esses elementos são recursos de apresentação, não indicadores de eficácia educacional.
 
 \gamefigure{Figuras/cenario-campus.png}
 {Cenário do URI Escapist inspirado na URI Erechim Campus II. Fonte: elaborado pelo autor.}
 {fig:cenario}
 
-\subsection{Jogabilidade e progressão}
+A versão documentada contém o menu principal, a entrada e dois andares jogáveis. O terceiro andar ainda não foi implementado como fase disponível, embora sua regra de seleção de perguntas esteja prevista no servidor. Não há seleção livre de andar no menu atual: a progressão depende do cumprimento dos objetivos da partida.
 
-O jogador controla o personagem em primeira pessoa e pode caminhar ou correr pelo mapa. A corrida utiliza um sistema de resistência, exigindo que o recurso seja administrado durante as perseguições. A exploração tem como finalidade localizar livros, responder às perguntas e alcançar a quantidade mínima de acertos necessária para acessar a próxima área.
+\subsection{Arquitetura e separação de responsabilidades}
 
-Cada livro inicia uma questão com alternativas de resposta. Ao abrir a interface, o movimento e a câmera são temporariamente interrompidos para permitir a escolha. Após a resposta, o sistema apresenta o resultado, atualiza os contadores e remove o livro do cenário. A porta de saída verifica o progresso obtido e somente permite a transição quando o requisito da fase é atendido.
-
-\gamefigure{Figuras/sistema-quiz.png}
-{Interface de pergunta e respostas apresentada durante a interação com um livro. Fonte: elaborado pelo autor.}
-{fig:quiz}
-
-A partida também possui limite de tempo. A interface informa o tempo restante, a quantidade de livros respondidos corretamente e o número de erros. Quando o cronômetro se aproxima do fim, alterações visuais alertam o jogador. Se o tempo for esgotado ou o limite de erros for ultrapassado, a condição de derrota é acionada.
-
-\gamefigure{Figuras/interface-jogo.png}
-{Interface do jogo com informações de tempo, progresso e erros. Fonte: elaborado pelo autor.}
-{fig:interface}
-
-\subsection{Inimigo e dificuldade}
-
-O inimigo utiliza um sistema de navegação para patrulhar pontos definidos no cenário, detectar o jogador e persegui-lo. A percepção considera distância e linha de visão, impedindo, em condições normais, que o personagem detecte o jogador através de obstáculos. Quando ocorre a captura, a partida é encerrada e o jogador pode reiniciar a fase.
-
-A dificuldade é alterada pelo desempenho nas perguntas. Acertos e erros podem aumentar gradualmente a velocidade de patrulha e perseguição. Respostas incorretas também deixam o inimigo em estado de alerta por determinado período e, após vários erros, a perseguição torna-se constante. Essa relação faz com que as decisões educacionais produzam efeitos diretos na jogabilidade.
-
-\gamefigure{Figuras/inimigo.png}
-{Inimigo responsável pelas mecânicas de patrulha, detecção e perseguição. Fonte: elaborado pelo autor.}
-{fig:inimigo}
-
-Além do modo principal, foi implementado o modo pesadelo, selecionável no menu, que mantém a perseguição ativa desde o início da fase. O protótipo também possui cenas correspondentes ao primeiro e ao segundo andar. A variedade das partidas é ampliada pela seleção aleatória de perguntas publicadas, enquanto a associação entre pergunta, disciplina e andar é administrada externamente pelo professor.
-
-\subsection{Arquitetura e organização dos sistemas}
-
-A solução passou a ser formada por dois subsistemas integrados: o jogo desenvolvido na Unity e uma aplicação Web responsável pelo conteúdo educacional. No jogo, componentes C\# independentes controlam movimentação, câmera, resistência, interação com livros, apresentação das alternativas, contagem de acertos e erros, cronômetro, portas e inteligência artificial do inimigo. Essa divisão reduz o acoplamento e permite ajustar cada mecânica pelo editor da Unity.
-
-Na aplicação Web, páginas PHP processadas no servidor implementam autenticação, painel de indicadores, gestão de disciplinas e operações de criação, consulta, atualização e exclusão de perguntas. Os dados são persistidos no MySQL e disponibilizados ao jogo por uma API REST de leitura. Desse modo, o professor pode alterar o banco de questões sem editar cenas, componentes ou gerar uma nova versão do jogo. A Figura~\ref{fig:arquitetura} apresenta o fluxo entre esses módulos.
+A solução é composta por um cliente tridimensional desenvolvido na Unity e um sistema Web responsável pela autoria e publicação do conteúdo. No cliente, componentes C\# separam movimentação, câmera, resistência, perguntas, pontuação, navegação do inimigo, portas, interfaces e áudio. No servidor, PHP processa a autenticação e as operações administrativas, enquanto o MySQL persiste os registros. A API de leitura estabelece a comunicação por HTTP e JSON.
 
 \begin{figure}[H]
 \centering
-\fbox{
-\begin{minipage}{0.92\textwidth}
+\fbox{\begin{minipage}{0.90\textwidth}
 \centering
-\textbf{Professor} $\longrightarrow$ \textbf{Painel Web em PHP}
-$\longrightarrow$ \textbf{Banco MySQL}\\[0.25cm]
-$\downarrow$ publicação \hspace{5.7cm} $\downarrow$ consulta\\[0.25cm]
-\textbf{API REST/JSON} $\longrightarrow$ \textbf{Carregador da Unity}
-$\longrightarrow$ \textbf{Livros da cena}\\[0.25cm]
-$\downarrow$ resposta do jogador\\[0.15cm]
-\textbf{Gerenciador de progresso} $\longrightarrow$
-\{\textbf{interface, portas, cronômetro e IA do inimigo}\}
-\end{minipage}
-}
-\caption{Arquitetura integrada do URI Escapist. Fonte: elaborado pelo autor.}
+\textbf{Professor} $\longrightarrow$ \textbf{Painel PHP} $\longrightarrow$ \textbf{MySQL}\\[0.3cm]
+\textbf{Unity}: cena, modo, quantidade e IDs anteriores\\
+$\downarrow$ requisição HTTP\\
+\textbf{API}: validação, filtros, exclusão e sorteio\\
+$\downarrow$ resposta JSON\\
+\textbf{Carregador}: validação completa e reserva das perguntas\\
+$\downarrow$ distribuição entre livros\\
+\textbf{Resposta do jogador} $\longrightarrow$ \textbf{pontuação, IA, interface e áudio}
+\end{minipage}}
+\caption{Fluxo integrado entre autoria, seleção de perguntas e execução do jogo. Fonte: elaborado pelo autor.}
 \label{fig:arquitetura}
 \end{figure}
 
-\subsection{Sistema Web de gestão de conteúdo}
+O componente \texttt{BookManager} controla os contadores e a disponibilidade das perguntas; \texttt{RemoteQuestionLoader} realiza a comunicação e mantém o histórico da sessão; \texttt{BookQuiz} conserva o conteúdo de cada livro; e \texttt{QuizManager} coordena abertura, fechamento e resposta. A classe \texttt{GameDifficulty} centraliza limites e multiplicadores dos três modos, evitando regras diferentes entre portas, contadores e comportamento do inimigo.
 
-O painel administrativo foi desenvolvido para que o conteúdo pedagógico possa ser mantido por professores. O acesso exige uma conta ativa e uma combinação válida de correio eletrônico e senha. As senhas são armazenadas como resumos criptográficos produzidos pela função própria do PHP, e a sessão tem seu identificador renovado após a autenticação. As operações que alteram dados aceitam somente requisições HTTP do tipo \texttt{POST} e utilizam fichas de proteção contra \textit{Cross-Site Request Forgery} (CSRF). A saída inserida nas páginas também é codificada para reduzir a possibilidade de injeção de marcação HTML.
+A apresentação é dividida entre \texttt{MenuPrincipal}, \texttt{GameInterface} e \texttt{GameHud}. O controlador de interface concentra estados modais, controle do cursor e suspensão do tempo. O áudio utiliza \texttt{GameAudio} e uma biblioteca de referências do tipo \textit{ScriptableObject}. Os serviços de interface e áudio persistem entre cenas, enquanto os componentes da fase são novamente associados no carregamento. A sessão de perguntas é mantida em memória; não corresponde a um sistema de salvamento permanente.
 
-Depois da autenticação, a página inicial apresenta a quantidade total de questões do professor, os totais publicados e em rascunho, o número de disciplinas ativas e as alterações mais recentes. A tela de disciplinas permite cadastrar nome e identificador textual, além de ativar ou desativar cada registro. A desativação preserva os dados já cadastrados, mas impede que suas perguntas sejam entregues ao jogo.
+\subsection{Movimentação, câmera e resistência}
 
-O módulo de questões implementa cadastro, listagem, edição e exclusão. Cada registro contém enunciado, quatro alternativas distintas, índice da resposta correta, dificuldade, situação de publicação, disciplina, andar e autoria. Antes da persistência, o servidor verifica a presença e o tamanho dos textos, a validade da alternativa correta, da dificuldade e do estado de publicação, bem como a existência do andar e da disciplina informados. A edição e a exclusão são limitadas às perguntas pertencentes ao professor autenticado. Na listagem, podem ser combinados filtros por trecho do enunciado, disciplina, andar e situação.
+O jogador explora o cenário em primeira pessoa, utilizando teclado e mouse. A movimentação emprega \texttt{Rigidbody}, colisores e verificações de contato com o chão. A orientação horizontal da câmera fornece a direção do deslocamento. A corrida utiliza a tecla Shift e consome resistência, apresentada como fôlego no HUD. Quando esse recurso termina, o controlador principal impede a corrida até sua recuperação completa.
 
-O estado de rascunho permite revisar a questão antes de disponibilizá-la. Somente registros publicados e associados a disciplinas ativas são retornados pela API. Essa separação reduz o risco de uma questão incompleta aparecer durante a partida.
+O controlador de resistência possui parâmetros de capacidade, consumo, regeneração e atraso antes da recuperação. Seus valores padrão são 100 unidades de capacidade, consumo de 20 unidades por segundo, recuperação de 10 unidades por segundo e atraso de dois segundos. Esses valores são configuráveis no Inspector e não devem ser interpretados como medidas de esforço fisiológico real.
 
-\subsection{Modelo de dados}
+A rotação da câmera utiliza deslocamentos brutos do mouse, preservando a sensibilidade configurada sem multiplicá-los novamente pelo tempo do quadro. A rotação é aplicada em \texttt{LateUpdate}, e o primeiro deslocamento após recuperar o foco ou recapturar o cursor é desconsiderado. Essa alteração procura evitar saltos e diferenças de resposta associados à taxa de quadros. O balanço de caminhada e a respiração em repouso são tratados separadamente da orientação usada para mirar e caminhar.
 
-O banco relacional utiliza o conjunto de caracteres UTF-8 e está organizado nas entidades apresentadas na Tabela~\ref{tab:modelo-dados}. Chaves estrangeiras preservam as relações entre perguntas, professores, disciplinas e andares, enquanto índices apoiam as consultas por autoria e publicação.
+\subsection{Perfis de dificuldade e progressão}
+
+O menu oferece Fácil, Normal e Difícil. A seleção altera simultaneamente a quantidade de acertos necessária, o limite de erros, a composição das perguntas, os parâmetros do inimigo e o comportamento da leitura. O nível da questão, denominado fácil, média ou difícil no banco, é distinto do modo global. Assim, uma partida Normal pode começar com perguntas fáceis.
 
 \begin{table}[H]
 \centering
-\caption{Entidades persistidas pelo sistema Web}
-\label{tab:modelo-dados}
+\caption{Regras de progressão e leitura por dificuldade}
+\label{tab:dificuldades}
 \small
-\begin{tabularx}{\textwidth}{p{2.8cm}X X}
+\begin{tabularx}{\textwidth}{l c c X X}
 \toprule
-\textbf{Entidade} & \textbf{Dados principais} & \textbf{Finalidade} \\
+\textbf{Modo} & \textbf{Acertos} & \textbf{Derrota} & \textbf{Mundo na leitura} & \textbf{Fechar sem responder} \\
 \midrule
-Professor & nome, correio eletrônico, senha protegida e estado & autenticar e identificar o autor do conteúdo \\
-\addlinespace
-Disciplina & nome, identificador textual e estado & classificar perguntas e controlar sua disponibilidade \\
-\addlinespace
-Andar & nome, identificador e nome da cena & relacionar o conteúdo Web às cenas da Unity \\
-\addlinespace
-Pergunta & enunciado, quatro alternativas, resposta correta, dificuldade e publicação & armazenar o conteúdo exibido nos livros do jogo \\
-\addlinespace
-Migração & nome do arquivo e data de aplicação & controlar atualizações incrementais do esquema \\
+Fácil & 5 & 5º erro & Pausado & Permitido \\
+Normal & 7 & 3º erro & Em execução & Permitido \\
+Difícil & 9 & 1º erro & Em execução & Não permitido \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-A associação entre andar e cena evita manter essa regra no código da API. Na configuração atual, \texttt{andar1} e \texttt{andar2} correspondem, respectivamente, ao primeiro e ao segundo andar. Perguntas antigas sem andar associado permanecem compatíveis e podem ser entregues a ambas as cenas até que sejam revisadas.
+Os limites da Tabela~\ref{tab:dificuldades} são aplicados por andar. A derrota ocorre no erro que alcança o limite, não em uma tentativa posterior. As portas consultam o mesmo gerenciador utilizado pelo HUD, de modo que a meta mostrada corresponde ao requisito efetivo. Os contadores reiniciam ao carregar o andar, inclusive ao tentar novamente, enquanto a dificuldade escolhida permanece na sessão.
 
-\subsection{API e integração com a Unity}
+No fluxo atual, o jogador passa da entrada ao primeiro andar, cumpre a meta para alcançar o segundo e, após concluí-lo, retorna ao primeiro em direção à saída principal. A porta final exige o registro de conclusão do segundo andar; somente visitá-lo não libera a vitória. Uma nova partida limpa os registros de conclusão e a seleção anterior de perguntas. O terceiro andar não é necessário para concluir a versão atual.
 
-A comunicação é iniciada pela Unity quando uma fase é carregada. O \textit{BookManager} identifica todos os livros ativos e solicita à API uma quantidade de perguntas igual ao total encontrado. A requisição informa o nome da cena, um limite entre 1 e 50 itens e a preferência por ordem aleatória. A API valida os parâmetros, localiza o andar ativo correspondente e consulta somente questões publicadas de disciplinas ativas. A resposta utiliza JSON e inclui enunciado, quatro alternativas, índice correto, dificuldade, disciplina e andar.
+A captura e o alcance do limite de erros levam à derrota. O cronômetro acompanha o tempo disponível da fase; seu esgotamento aciona a sequência de perseguição final existente no protótipo, que culmina na derrota. A interface permite tentar novamente no mesmo andar, iniciar outra partida após vencer ou retornar ao menu.
 
-No cliente, o \textit{RemoteQuestionLoader} realiza a requisição com tempo máximo configurável entre 2 e 30 segundos. Cada item válido é atribuído a um componente \textit{BookQuiz}; antes da substituição, são verificados o enunciado, a quantidade de alternativas e o índice da resposta. Se houver menos questões remotas do que livros, apenas os primeiros recebem o novo conteúdo. Os demais conservam sua configuração local.
+\subsection{Inteligência artificial e crescimento da ameaça}
 
-Falhas de conexão, respostas inválidas, ausência de conteúdo publicado ou URL não configurada não interrompem a fase. Nessas situações, a Unity registra o ocorrido e mantém as perguntas incluídas previamente na cena. Esse mecanismo de contingência permite jogar sem conexão permanente e impede que uma indisponibilidade do servidor inutilize o protótipo. Uma rota adicional de verificação de saúde testa a comunicação com o banco e retorna o código HTTP 200 quando o serviço está disponível ou 503 quando a persistência está inacessível.
+O inimigo utiliza \texttt{NavMeshAgent} para calcular trajetórias sobre áreas navegáveis e percorrer corredores. A detecção considera alcance e linha de visão, verificada por raios físicos que desconsideram gatilhos e os próprios personagens. Quando a máscara de obstáculos está vazia, o código utiliza as camadas físicas padrão, evitando interpretar a ausência de configuração como visão através das paredes.
 
-\subsection{Ambiente e recursos de desenvolvimento}
+\begin{table}[H]
+\centering
+\caption{Configuração da ameaça por modo de jogo}
+\label{tab:inimigo-modos}
+\small
+\begin{tabularx}{\textwidth}{l c c X}
+\toprule
+\textbf{Modo} & \textbf{Velocidade base} & \textbf{Incrementos} & \textbf{Comportamento} \\
+\midrule
+Fácil & $0{,}65\times$ & $0{,}25\times$ & Patrulha; persegue ao detectar o jogador e volta à busca ao perder a detecção. \\
+Normal & $1{,}00\times$ & $1{,}00\times$ & Segue devagar sem detecção e acelera quando detecta o jogador. \\
+Difícil & $1{,}50\times$ & $2{,}50\times$ & Segue continuamente em velocidade de perseguição, mesmo sem detecção visual. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-O jogo utiliza a Unity 6000.0.58f2 e a linguagem C\# para implementar regras e sistemas interativos. Também são empregados os recursos de interface da Unity para menus, perguntas e indicadores; o NavMesh para navegação do inimigo; e o gerenciamento de cenas para organizar a progressão. O Visual Studio auxilia a edição do código, enquanto modelos e texturas compõem os ambientes tridimensionais. O Git e o GitHub são utilizados no controle de versão e no histórico das alterações.
+Os multiplicadores incidem sobre valores configurados no componente e incrementos produzidos pelas respostas. A patrulha do modo Fácil utiliza pontos definidos no cenário. Quando esses pontos não existem, como na configuração consultada do primeiro andar, o sistema sorteia destinos próximos, verifica sua presença no NavMesh e exige um caminho completo. Essa busca não utiliza a posição do jogador para escolher o destino.
 
-O sistema de conteúdo utiliza PHP 8.3 no servidor, páginas HTML e folhas de estilo CSS na interface, JavaScript para comportamentos auxiliares e MySQL 8.4 na persistência. O acesso ao banco é realizado por meio da extensão PDO e de consultas preparadas. A integração com o jogo segue o estilo REST sobre HTTP e representa os dados em JSON.
+O crescimento da velocidade é cumulativo e pode ser expresso, para cada velocidade de referência, por:
+\begin{equation}
+ v = s\left[m_v v_0 + m_i\left(c a + e b + \left\lfloor c/2 \right\rfloor d\right)\right],
+\end{equation}
+na qual $v_0$ é a velocidade inicial de patrulha ou perseguição, $s$ é o fator de escala habilitado na cena, $m_v$ e $m_i$ são os multiplicadores do modo, $c$ e $e$ são acertos e erros, e $a$, $b$ e $d$ são os incrementos por acerto, erro e bônus a cada dois acertos. Os padrões do gerenciador são $a=0{,}08$, $b=0{,}12$ e $d=0{,}04$. Um acerto posterior não elimina o aumento acumulado por erros.
 
-Para tornar a instalação reproduzível, foram definidos contêineres para a aplicação PHP com Apache, para o MySQL e para o phpMyAdmin. O Docker Compose configura rede interna, volume persistente, portas, variáveis de ambiente e verificações de saúde. Na primeira execução, o esquema é criado, as migrações pendentes são aplicadas e uma conta inicial pode ser cadastrada a partir das variáveis do ambiente. O painel também pode ser acessado por outro computador na rede local mediante a configuração do endereço da API na Unity.
+A antiga ativação de perseguição permanente após erros sucessivos foi substituída pelos perfis da Tabela~\ref{tab:inimigo-modos}. Errar altera contadores e velocidade, mas não converte silenciosamente o Fácil em perseguição constante. Trata-se de adaptação determinística por regras, sem treinamento de modelos de aprendizagem de máquina ou personalização automática ao estudante.
 
-Para jogar são necessários um computador compatível com aplicações tridimensionais, teclado e mouse. A conexão com o painel é necessária para receber atualizações remotas, mas não é indispensável para a execução da fase, pois as perguntas locais permanecem disponíveis como contingência. Não são exigidos equipamentos especializados nem dispositivos de realidade virtual.
+\gamefigure{Figuras/inimigo.png}
+{Representação do inimigo no cenário do protótipo. Fonte: elaborado pelo autor.}
+{fig:inimigo}
 
-\subsection{Decisões técnicas e desafios}
+\subsection{Livros, resposta e retomada de perguntas}
 
-A utilização de componentes separados em C\# foi escolhida para facilitar a manutenção e a expansão do jogo. A navegação por NavMesh permite que o inimigo contorne obstáculos do cenário, enquanto a verificação de linha de visão evita detecções através de paredes. A interface de perguntas interrompe temporariamente os controles para impedir movimentos acidentais durante a resposta.
+A aproximação de um livro por seu gatilho abre uma questão com quatro alternativas. A interface bloqueia movimentação e rotação controlada pelo mouse para permitir a seleção; a suspensão do mundo depende do modo. No Fácil, pergunta e resultado suspendem o tempo. No Normal e no Difícil, inimigo e cronômetro continuam ativos durante a interação.
 
-Um dos principais desafios é equilibrar a velocidade do jogador e do inimigo. Caso o inimigo seja muito lento, a perseguição deixa de representar uma ameaça; caso seja excessivamente rápido, o jogador não consegue explorar ou responder às perguntas. Para reduzir esse problema, as velocidades de caminhada, corrida, patrulha e perseguição são configuráveis, e o aumento de dificuldade ocorre gradualmente.
+No Fácil e no Normal, o jogador pode fechar a questão por Escape ou pelo botão correspondente. Essa ação não pontua, não registra erro, não remove o livro e não solicita uma pergunta diferente. O conteúdo permanece no objeto e pode ser retomado com E nas proximidades ou por nova entrada em sua área de interação. No Difícil, fechamento e abertura da pausa durante a pergunta são bloqueados; é necessário responder, salvo quando a partida termina por outra condição.
 
-Outro desafio está na escala dos modelos e dos ambientes importados, que influencia colisores, distâncias de detecção e parâmetros de navegação. A implementação realiza ajustes proporcionais quando necessário e utiliza testes de cena para validar os valores. Também foram adotados controle de resistência, limite de erros e feedback visual do cronômetro para tornar as condições da partida mais compreensíveis.
+Após a escolha, o sistema aceita uma única resposta, informa acerto ou erro e apresenta a alternativa correta. O livro é retirado da cena, os contadores são atualizados e os parâmetros do inimigo são recalculados. A proteção contra respostas duplicadas impede pontuação adicional por cliques sucessivos. Se a resposta causar derrota, o estado final prevalece sobre a tela de feedback.
 
-A separação entre painel e jogo introduziu o desafio de associar conteúdo administrativo a objetos presentes em diferentes cenas. A solução utiliza o nome da cena como chave de integração: a API o relaciona ao andar cadastrado e a Unity calcula o limite da consulta a partir da quantidade real de livros. A manutenção de conteúdo local nos componentes foi uma decisão de tolerância a falhas, pois oferece um estado utilizável mesmo diante de erros de rede ou banco de dados.
+\gamefigure{Figuras/sistema-quiz.png}
+{Registro da interface de perguntas do protótipo; os controles de fechamento variam conforme a dificuldade. Fonte: elaborado pelo autor.}
+{fig:quiz}
 
-No painel, as decisões de segurança incluem consultas preparadas, proteção CSRF, codificação da saída, renovação do identificador de sessão e armazenamento de senhas por resumo criptográfico. O banco do ambiente de desenvolvimento é publicado apenas no endereço local por padrão, enquanto o painel e o phpMyAdmin podem ser disponibilizados na rede interna. Em uma implantação externa, ainda seriam necessários HTTPS, revisão das regras de acesso e credenciais próprias de produção.
+\subsection{Seleção de conteúdo sem repetição entre andares}
 
-As otimizações concentram-se no reaproveitamento de componentes, na configuração de materiais e na limitação dos cálculos de percepção ao necessário para a jogabilidade. Como o projeto é um protótipo acadêmico para computadores, a prioridade atual está na estabilidade, legibilidade da interface e consistência das mecânicas, e não em otimizações destinadas a dispositivos móveis.
+A API utiliza modo e andar para definir categorias elegíveis, conforme a Tabela~\ref{tab:perguntas-modos}. O conteúdo é compartilhado, sem depender das associações antigas de cada pergunta a um piso específico.
 
-\subsection{Delimitação do escopo}
+\begin{table}[H]
+\centering
+\caption{Dificuldade das perguntas por modo e andar}
+\label{tab:perguntas-modos}
+\small
+\begin{tabularx}{\textwidth}{l X X X}
+\toprule
+\textbf{Modo} & \textbf{Primeiro andar} & \textbf{Segundo andar} & \textbf{Terceiro previsto} \\
+\midrule
+Fácil & Fáceis & Fáceis e médias & Médias \\
+Normal & Fáceis & Médias & Difíceis \\
+Difícil & Difíceis & Difíceis & Difíceis \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-O trabalho contempla a criação do ambiente tridimensional, movimentação em primeira pessoa, interação com livros, perguntas de múltipla escolha, contagem de acertos e erros, dificuldade progressiva, inimigo com perseguição, limite de tempo, transição entre cenas, interface informativa e diferentes configurações de partida. Também fazem parte do produto a organização de questões por disciplina e andar, o painel autenticado para professores, o banco relacional, a API de leitura e a integração dinâmica desse conteúdo com a Unity.
+O servidor organiza conjuntos por dificuldade, embaralha registros e alterna a retirada entre categorias quando há combinação. No segundo andar Fácil, procura-se equilibrar perguntas fáceis e médias disponíveis. Caso uma categoria seja esgotada pela exclusão de perguntas anteriores, a outra categoria permitida pode completar o conjunto. O cliente também embaralha os livros antes da atribuição. A posição dos objetos permanece fixa: o que varia é o conteúdo associado a cada livro.
 
-Não fazem parte do escopo a implementação de modo multijogador, a integração direta com sistemas acadêmicos institucionais, o desenvolvimento de aplicativo móvel, o suporte a realidade virtual ou aumentada e a criação de uma inteligência artificial avançada que adapte todo o jogo ao perfil individual de cada estudante. O painel desenvolvido tem finalidade específica de abastecer o protótipo e não pretende substituir uma plataforma institucional completa de gestão educacional.
+Para impedir repetições entre andares, o cliente reserva todos os IDs distribuídos na sessão, inclusive os dos livros não respondidos, e os envia no parâmetro \texttt{exclude}. O servidor valida a lista e utiliza parâmetros vinculados em uma exclusão SQL antes do sorteio e do limite de resultados. O cliente também rejeita respostas que reutilizem identificadores reservados, protegendo o fluxo contra servidores desatualizados.
+
+O conjunto de cada andar é mantido em memória por modo e cena. Reiniciar ou revisitar esse mesmo andar reutiliza seu conjunto, com nova distribuição entre livros, sem consumir conteúdo destinado aos próximos pisos. Uma nova partida limpa o histórico e permite novo sorteio. A garantia é de não repetição de IDs entre andares distintos da sessão; não há detecção semântica de enunciados semelhantes cadastrados com IDs diferentes.
+
+\subsection{Banco inicial de conteúdo acadêmico}
+
+O repositório inclui uma carga de 90 perguntas de Ciência da Computação: 30 fáceis, 30 médias e 30 difíceis. As dez áreas contempladas são programação, algoritmos, estruturas de dados, banco de dados, redes de computadores, sistemas operacionais, arquitetura de computadores, segurança da informação, engenharia de software e fundamentos da computação. Cada área possui três perguntas de cada dificuldade.
+
+As fáceis priorizam conceitos básicos; as médias incluem aplicação e interpretação; e as difíceis envolvem análise de situações, concorrência, complexidade e conceitos teóricos. Essa classificação inicial está sujeita à revisão docente e à avaliação empírica. A existência dos itens no repositório não comprova que todos tenham sido importados e publicados no servidor em execução.
+
+A carga é armazenada em JSON e importada por um script PHP, que identifica o professor, cria disciplinas ausentes e publica as perguntas em uma transação. Uma nova execução ignora registros com o mesmo enunciado e professor, preservando edições anteriores. Há uma opção de validação sem gravação. Se faltarem questões inéditas elegíveis para preencher todos os livros, o jogo informa a falha em vez de repetir perguntas ou substituir categorias silenciosamente.
+
+\subsection{Interfaces, identidade visual e configurações}
+
+As telas são construídas em tempo de execução com Canvas, Unity UI, TextMeshPro e eventos de interface. O menu utiliza fundo escuro, tipografia serifada Cinzel, emblema procedural e destaque de seleção em azul associado à identidade visual da URI. A paleta azul substituiu a versão inicial dourada. A fonte Cinzel é acompanhada de sua licença SIL Open Font License no projeto. O CanvasScaler adequa a composição às resoluções, com referência de 1920 por 1080 pixels.
+
+O menu principal apresenta nova partida, dificuldade, configurações, créditos e saída. As demais telas contemplam pausa, confirmação de reinício ou retorno, perguntas, resultado da resposta, derrota, vitória, carregamento e falhas da API. Os botões recebem interação por mouse e teclado. Concentrar o controle de cursor e tempo em \texttt{GameInterface} evita que componentes concorram pela captura do mouse ou deixem o mundo pausado após uma transição.
+
+O HUD apresenta livros, erros e fôlego em cartões compactos com a mesma linguagem visual, além do cronômetro. Foram removidos os textos de depuração de stamina, corrida e exaustão. O aviso fixo de objetivo na parte inferior também foi retirado: o progresso é comunicado por uma mensagem de quatro segundos após a resposta, visível ao retornar ao jogo. As portas exibem avisos específicos para passagem bloqueada, avanço, retorno e saída final.
+
+\gamefigure{Figuras/interface-jogo.png}
+{Registro da interface em uma etapa do protótipo. O HUD atual utiliza cartões compactos em azul e avisos temporários. Fonte: elaborado pelo autor.}
+{fig:interface}
+
+As configurações permitem modificar volume geral e sensibilidade do mouse. O volume é aplicado por \texttt{AudioListener.volume}, e a sensibilidade multiplica a configuração base da câmera entre $0{,}2\times$ e $3\times$. As preferências são mantidas por \texttt{PlayerPrefs}. Esse armazenamento local destina-se a ajustes de uso, não à persistência de progresso acadêmico ou respostas da partida.
+
+\subsection{Efeito visual de exaustão}
+
+Ao atingir zero de resistência, o jogador recebe um efeito de tontura composto por oscilação suave da câmera, variação periódica do campo de visão e aumento da separação cromática no filtro VHS existente. O efeito não é disparado apenas por estar com pouco fôlego: exige uma condição explícita de esgotamento e diminui conforme o recurso se recupera.
+
+O controlador utiliza funções senoidais e aproximação gradual da intensidade. Os deslocamentos são aplicados sobre a orientação normal da câmera sem alterar a direção de movimento do personagem. O deslocamento anterior de campo de visão é removido antes de aplicar o seguinte, evitando acúmulo. Livros, menus, perda de foco e desativação da câmera restauram os parâmetros visuais. A intensidade é configurável no Inspector, inclusive com valor zero para desativação.
+
+A separação cromática é modulada em tempo de execução por \texttt{VHSFilterSettings}, sem sobrescrever os parâmetros originais do perfil. O processamento utiliza uma \textit{renderer feature} da Universal Render Pipeline. A avaliação de conforto visual e acessibilidade ainda precisa ser realizada; o efeito constitui uma decisão de ambientação e sinalização de estado.
+
+\subsection{Áudio orientado aos eventos da partida}
+
+Foram integrados 11 arquivos WAV e MP3 em \texttt{Assets/sons}. Uma biblioteca \textit{ScriptableObject}, referenciada em Resources, associa arquivos e eventos e permite carregá-los também no executável. \texttt{GameAudio} mantém fontes separadas para ambiente, passos, perseguição, respiração, eventos ocasionais e interface, usando \texttt{AudioSource}, \texttt{AudioClip}, reprodução em ciclo e \texttt{PlayOneShot}.
+
+\begin{table}[H]
+\centering
+\caption{Associação dos arquivos de áudio aos eventos}
+\label{tab:audio}
+\small
+\begin{tabularx}{\textwidth}{p{4.6cm}X}
+\toprule
+\textbf{Arquivo} & \textbf{Aplicação} \\
+\midrule
+\texttt{som\_clique} & Botões dos menus e clique nos controles de configuração. \\
+\texttt{som\_clique\_correto} & Resposta correta de um livro. \\
+\texttt{som\_clique\_errado} & Resposta incorreta de um livro. \\
+\texttt{som\_menus} & Ambiente do menu principal. \\
+\texttt{som\_ambiente\_entrada} & Ambiente da cena de entrada. \\
+\texttt{som\_andares} & Ambiente interno dos andares. \\
+\texttt{som\_passos} & Movimento no chão, com ritmo aumentado na corrida. \\
+\texttt{som\_perseguicao} & Perseguição rápida do inimigo. \\
+\texttt{som\_exausto} & Recuperação após esgotamento do fôlego. \\
+\texttt{som\_morte} & Entrada na tela de derrota. \\
+\texttt{som\_aleatorio} & Evento nos andares a cada 25 a 45 segundos. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Os ambientes anteriores gerados por código deixam de executar quando a biblioteca está disponível, evitando sobreposição. O som de passos depende de deslocamento e contato com o chão; o de perseguição acompanha o estado rápido do inimigo. O ambiente é reduzido durante a perseguição para destacar a ameaça. O volume geral controla todas as fontes.
+
+A pausa interrompe os sons do mundo e permite os cliques de interface. Nos modos em que o mundo continua ativo durante livros, o áudio acompanha essa continuidade. A derrota interrompe ambientes e ciclos, preservando o evento de morte, e a mudança de cena limpa as fontes anteriores. A configuração atual utiliza áudio não espacializado; posicionamento tridimensional e oclusão sonora são possibilidades futuras, não funcionalidades demonstradas nessa integração.
+
+\subsection{Sistema Web e modelo de dados}
+
+O painel permite que professores autenticados administrem disciplinas e perguntas sem modificar o executável. O acesso exige conta ativa, correio eletrônico e senha válidos. Indicadores apresentam totais de perguntas, publicações, rascunhos e disciplinas, além de alterações recentes. Disciplinas podem ser ativadas ou desativadas; a desativação preserva registros, mas retira suas perguntas do sorteio.
+
+Cada pergunta contém enunciado, quatro alternativas, índice correto, dificuldade, publicação, disciplina e autoria. O servidor valida conteúdo, tamanho e consistência dos campos. A edição e a exclusão respeitam a autoria do professor autenticado. O estado de rascunho separa elaboração e disponibilização: somente perguntas publicadas de disciplinas ativas participam do sorteio.
+
+A seleção de andar foi retirada do cadastro. Tabelas e associações antigas podem continuar no esquema por compatibilidade, mas não restringem o conteúdo entregue ao jogo. O andar orienta a regra de dificuldade pelo nome da cena; a pergunta permanece classificada por disciplina e dificuldade.
+
+\begin{table}[H]
+\centering
+\caption{Entidades e responsabilidades do banco de dados}
+\label{tab:modelo-dados}
+\small
+\begin{tabularx}{\textwidth}{p{2.6cm}X}
+\toprule
+\textbf{Entidade} & \textbf{Responsabilidade} \\
+\midrule
+Professor & Identificação, autenticação e autoria das questões. \\
+Disciplina & Organização temática e disponibilidade do conteúdo. \\
+Andar & Nome, identificador textual, cena correspondente e estado ativo. \\
+Pergunta & Enunciado, alternativas, gabarito, dificuldade e publicação. \\
+Migração & Histórico de alterações incrementais do esquema. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+A persistência utiliza MySQL, codificação UTF-8, chaves estrangeiras e índices de apoio às consultas. O acesso ocorre por PDO e consultas preparadas. As senhas são protegidas pelas funções de hash e verificação do PHP, e a autenticação renova o identificador de sessão. Operações de alteração utilizam POST e proteção CSRF, e a saída nas páginas é codificada. Essas medidas não equivalem a uma auditoria completa de segurança.
+
+\subsection{API, validação e tratamento de falhas}
+
+Ao carregar um andar, o jogo conta os livros ativos e solicita um lote do mesmo tamanho. A requisição a \texttt{/api/v1/questions.php} informa \texttt{scene}, \texttt{mode}, \texttt{limit}, \texttt{random} e \texttt{exclude}. O limite é controlado pelo servidor entre 1 e 50. A cena deve corresponder a um andar ativo, e a lista de exclusão aceita apenas identificadores inteiros positivos dentro dos limites definidos.
+
+A resposta JSON contém IDs, enunciados, alternativas, gabaritos, dificuldades e informações das disciplinas, além de metadados de modo e cena. \texttt{UnityWebRequest} executa a consulta assíncrona com tempo máximo entre 2 e 30 segundos, e \texttt{JsonUtility} realiza a desserialização. Antes de preencher os livros, o cliente verifica quantidade exata, metadados, identificadores únicos e inéditos, quatro alternativas não vazias, índice correto e dificuldade permitida.
+
+Lotes incompletos ou inválidos são rejeitados. Não há substituição por perguntas locais de dificuldade diferente como contingência. A prontidão permanece bloqueada e a interface apresenta a falha com opções de tentar novamente ou voltar ao menu. A insuficiência de perguntas inéditas produz HTTP 409; entradas inválidas recebem 422 e erros internos, 500. A rota de saúde verifica a comunicação com o banco, sinalizando disponibilidade ou falha.
+
+O carregamento exibe progresso quando há informação disponível e um indicador indeterminado quando não é possível estimar o total transferido. As trocas de cena também são assíncronas. O mundo fica suspenso durante carregamento e erro para não penalizar o jogador pela indisponibilidade do serviço. Para um andar ainda não reservado, a conexão é necessária; reutilizar um conjunto em memória não constitui suporte geral a partidas desconectadas.
+
+\subsection{Tecnologias e ambiente de implantação}
+
+A Tabela~\ref{tab:tecnologias} relaciona as tecnologias verificadas no projeto e suas aplicações. As versões descrevem as configurações consultadas no repositório, não a exigência de utilizar as versões mais recentes disponíveis.
+
+\begin{table}[H]
+\centering
+\caption{Tecnologias empregadas no projeto}
+\label{tab:tecnologias}
+\small
+\begin{tabularx}{\textwidth}{p{4.2cm}X}
+\toprule
+\textbf{Tecnologia ou recurso} & \textbf{Utilização} \\
+\midrule
+Unity 6000.0.58f2 e C\# & Cenas 3D, componentes, regras e ciclo de execução. \\
+Rigidbody, colisores e Physics & Movimento, contato com o chão, interação e obstáculos. \\
+AI Navigation e NavMeshAgent & Áreas navegáveis, caminhos e deslocamento do inimigo. \\
+Unity UI, TextMeshPro e EventSystem & Menus, HUD, alternativas e navegação por entrada. \\
+URP, shaders e filtro VHS & Processamento de imagem e efeitos de exaustão. \\
+AudioSource e AudioClip & Ambientes, ciclos e sons pontuais. \\
+ScriptableObject e Resources & Biblioteca de referências aos sons do jogo. \\
+PlayerPrefs & Persistência local de volume e sensibilidade. \\
+UnityWebRequest e JsonUtility & Consulta HTTP e leitura das respostas JSON. \\
+PHP 8.3, HTML, CSS e JavaScript & API, autenticação e interface administrativa Web. \\
+PDO e MySQL 8.4 & Consultas parametrizadas e persistência relacional. \\
+Apache, Docker e Docker Compose & Servidor Web e orquestração dos serviços. \\
+phpMyAdmin & Administração auxiliar do banco em desenvolvimento. \\
+Git, Git LFS e GitHub & Histórico do código e tratamento de arquivos versionados. \\
+LaTeX e BibTeX & Artigo, formatação SBC e referências bibliográficas. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+A imagem da aplicação parte de PHP 8.3 com Apache e instala \texttt{pdo\_mysql} e \texttt{mbstring}. O Docker Compose organiza aplicação, MySQL e phpMyAdmin, configurando rede interna, portas, variáveis de ambiente, verificações de saúde e volume persistente. A inicialização aplica esquema e migrações e permite criar uma conta inicial por configuração do ambiente.
+
+O servidor pode executar em outro computador da rede local. O jogo deve utilizar uma URL acessível pelo endereço desse computador; \texttt{localhost} identifica a própria máquina do jogador. Mudanças no código da API exigem atualizar e reconstruir a imagem remota, enquanto alterações de conteúdo publicadas pelo painel não exigem recompilar o jogo. O desenvolvimento utiliza HTTP; uma implantação externa deve incorporar HTTPS, credenciais próprias e revisão dos acessos expostos.
+
+\subsection{Escopo e decisões de implementação}
+
+O escopo atual compreende exploração em primeira pessoa, corrida, exaustão audiovisual, dois andares, três modos, questões, progressão, derrota, tempo, interfaces completas, áudio contextual e conteúdo remoto. As revisões priorizaram consistência entre apresentação e regras: limites inclusivos de erros, portas ligadas à dificuldade, vitória condicionada à conclusão, exclusão de perguntas anteriores e controle centralizado de pausa.
+
+Não fazem parte da versão demonstrada um terceiro andar jogável, multijogador, integração institucional, aplicativo móvel, realidade virtual, análise pedagógica automática ou adaptação por aprendizagem de máquina. O histórico de sessão não persiste após encerrar a aplicação. A posição dos livros não é sorteada, embora o conteúdo seja aleatório. Balanceamento, conforto visual e mixagem de áudio permanecem sujeitos a ajustes com testes de uso.
 
 \section{Resultados Parciais e Discussão}
 
-O desenvolvimento resultou em um protótipo integrado composto pelo jogo tridimensional e pelo sistema Web de conteúdo. No jogo, encontram-se funcionais a exploração em primeira pessoa, a corrida limitada por resistência, as interfaces de perguntas e indicadores, o cronômetro, a contagem de acertos e erros, as portas condicionadas ao progresso, a transição entre cenas e as condições de derrota. O inimigo patrulha o ambiente por NavMesh, considera distância e linha de visão, persegue e captura o jogador e tem seus parâmetros modificados pelo desempenho nas questões.
+\subsection{Resultados implementados}
 
-No componente educacional, os livros deixaram de depender exclusivamente de textos configurados no editor. O painel permite que professores autenticados cadastrem disciplinas e mantenham perguntas com quatro alternativas, resposta correta, nível de dificuldade, andar e estado de publicação. A API seleciona o conteúdo elegível de forma aleatória e a Unity o distribui automaticamente na abertura da cena. Assim, foi atingido o requisito técnico de atualizar o banco de perguntas sem alterar o código ou reconstruir o executável do jogo.
+O resultado técnico é um protótipo integrado no qual o conteúdo acadêmico participa da progressão e da ameaça enfrentada pelo jogador. Os modos diferenciam pressão temporal e comportamento do inimigo, além da dificuldade das perguntas. Isso permite comparar leitura protegida no Fácil com tomada de decisão sob continuidade do mundo nos outros modos, sem pressupor que maior pressão resulte em melhor aprendizagem.
 
-A Tabela~\ref{tab:resultados-implementados} resume os principais resultados verificáveis na versão atual.
+A autoria foi separada do cliente pelo painel e pela API. A carga inicial oferece 90 itens em dez áreas, e o sorteio mantém variedade entre andares sem alterar as cenas. O cache preserva consistência nas tentativas do mesmo piso, enquanto a exclusão de IDs impede reutilização de conteúdo distribuído em outros andares.
 
 \begin{table}[H]
 \centering
-\caption{Resultados implementados no protótipo}
+\caption{Síntese dos resultados verificáveis na implementação}
 \label{tab:resultados-implementados}
 \small
-\begin{tabularx}{\textwidth}{p{3.3cm}X X}
+\begin{tabularx}{\textwidth}{p{3cm}X}
 \toprule
-\textbf{Área} & \textbf{Resultado} & \textbf{Efeito no sistema} \\
+\textbf{Área} & \textbf{Resultado atual} \\
 \midrule
-Jogabilidade & exploração, resistência, quiz, tempo, progressão e dois andares & estabelece um ciclo completo de busca, resposta e acesso à área seguinte \\
-\addlinespace
-Inteligência artificial & patrulha, visão, perseguição, captura e dificuldade dinâmica & transforma acertos, erros e tempo em consequências durante a partida \\
-\addlinespace
-Gestão de conteúdo & autenticação, painel, disciplinas e operações sobre perguntas & permite ao professor preparar e publicar conteúdo fora da Unity \\
-\addlinespace
-Integração & API JSON, filtro pela cena e distribuição aleatória & mantém o conteúdo do jogo sincronizado com o banco publicado \\
-\addlinespace
-Confiabilidade & validações, controle de autoria, proteção CSRF, rota de saúde e conteúdo local & reduz entradas inválidas e mantém a fase utilizável diante de indisponibilidade \\
-\addlinespace
-Implantação & contêineres, volume persistente, migrações e configuração por ambiente & torna a instalação do painel reproduzível em diferentes computadores \\
+Progressão & Metas de 5, 7 e 9 acertos; derrota no 5º, 3º e 1º erro; saída condicionada à conclusão. \\
+IA & Patrulha e perseguição por modo, visão e crescimento cumulativo de velocidade. \\
+Perguntas & Sorteio, exclusão entre andares, cache e retomada sem consumir a questão. \\
+Interface & Menus por código, HUD compacto, preferências e tratamento de falhas. \\
+Audiovisual & Tontura por exaustão e 11 sons associados ao contexto. \\
+Conteúdo Web & Autenticação, disciplinas, autoria, publicação e carga inicial. \\
+Implantação & Contêineres, banco persistente e acesso pela rede local. \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-Esses resultados mostram que a pergunta não funciona como uma atividade isolada. A resposta atualiza o progresso e a velocidade do inimigo; após erros sucessivos, a perseguição torna-se permanente, e o esgotamento do tempo aciona a condição de derrota. Essa relação aproxima o protótipo do princípio de integração entre conteúdo e mecânica discutido na aprendizagem baseada em jogos. Ao mesmo tempo, o painel amplia a aplicabilidade do projeto, pois separa o trabalho pedagógico da implementação técnica.
+\subsection{Verificações técnicas realizadas}
 
-Os testes realizados durante o desenvolvimento tiveram caráter funcional e permitiram verificar os fluxos entre cadastro, publicação, consulta e apresentação das questões. O tratamento de falhas também foi incorporado à arquitetura: respostas incompletas não substituem o conteúdo dos livros e a indisponibilidade do serviço preserva as questões locais. No entanto, esses resultados demonstram funcionamento técnico, e não permitem afirmar, por si só, que houve melhoria da aprendizagem.
+A validação de desenvolvimento incluiu compilação C\#, verificações dos endpoints PHP e execuções isoladas na Unity. Os testes da API utilizaram SQLite em memória como fixture, sem acessar o banco remoto. Esse recurso de teste não substitui o MySQL da aplicação. Foram verificadas combinações de modo e andar, aleatoriedade, limites, categorias, exclusões, parâmetros inválidos e insuficiência de conteúdo. A regra futura do terceiro andar foi exercitada em fixture, sem afirmar sua existência como fase concluída.
 
-A etapa de avaliação com participantes permanece necessária. Os dados deverão ser organizados em funcionamento técnico, desempenho na partida, percepção dos participantes e limitações observadas. Serão considerados conclusão da fase, tempo, acertos, erros, clareza, dificuldade, diversão, imersão e utilidade educacional. A discussão poderá então verificar se o quiz conserva os benefícios de feedback e participação descritos por Wang e Tahir \cite{wang2020} e se a integração alcançada evita uma aplicação superficial dos elementos lúdicos, preocupação destacada por Dichev e Dicheva \cite{dichev2017}.
+No cliente, verificaram-se metas imediatamente antes e no limite, derrota no erro exato, gatilhos de portas, bloqueio após término, conclusão e limpeza da sessão. Também foram conferidos fechamento e retomada do livro, preservação da pergunta, proteção contra resposta duplicada, pausa no Fácil e bloqueio de saída no Difícil. Uma execução isolada com NavMesh real e obstáculo físico verificou destinos, velocidades com detecção e oclusão, busca sem pontos de patrulha e crescimento cumulativo.
 
-Entre as limitações atuais estão a ausência de uma avaliação controlada com usuários, o número inicial de disciplinas e questões, a dependência de uma rede local para atualização remota e o fato de o painel não possuir integração com sistemas acadêmicos institucionais. Portanto, as evidências apresentadas devem ser interpretadas como validação técnica e exploratória do protótipo, não como comprovação definitiva de ganho educacional.
+A câmera foi verificada com deslocamentos acumulados do mouse em diferentes partições de quadros e um quadro irregular, além de limites de rotação e recuperação de foco. Para exaustão, foram conferidos disparo em zero, entrada gradual, recuperação, ausência de reativação antes de novo esgotamento e restauração do campo de visão e das cores. No áudio, verificaram-se as 11 referências importadas, ambientes por cena, chamadas de reprodução, pausa, retomada e término.
+
+A interface passou por inspeção de renderização e verificações de acomodação de texto em execução isolada. Esses procedimentos documentam propriedades funcionais e regressões específicas; não constituem medição de desempenho em diversos equipamentos, certificação de acessibilidade, auditoria de segurança ou comprovação da qualidade perceptiva de todos os efeitos. Os percursos dos mapas completos e o balanceamento final continuam exigindo testes integrados.
+
+\subsection{Discussão, limitações e avaliação prevista}
+
+Um acerto contribui para a passagem, mas também aumenta a velocidade do inimigo; um erro aproxima a derrota e modifica a ameaça. O modo define se há tempo protegido para refletir ou necessidade de responder com o mundo em movimento. A adequação pedagógica dessas condições deve ser discutida conforme público, conteúdo e finalidade da atividade.
+
+A atualização de questões independente do executável introduz dependência do servidor para novos andares. Rejeitar lotes incompletos preserva a coerência das regras ao custo de impedir o início da fase até a correção. A ausência de repetição é limitada aos IDs da sessão: enunciados equivalentes cadastrados separadamente ainda exigem revisão editorial.
+
+Não foram obtidas evidências de ganho de aprendizagem ou resultados de avaliação controlada com participantes nesta etapa. São necessárias sessões para investigar clareza das regras e perguntas, desafio, diversão, imersão, conforto audiovisual e utilidade educacional. Acertos, erros, tempo e conclusão poderão complementar observações e questionários, sem confundir desempenho sob pressão com domínio de conteúdo.
+
+A avaliação poderá dialogar com os resultados sobre quizzes de Wang e Tahir \cite{wang2020} e com as limitações metodológicas discutidas por Dichev e Dicheva \cite{dichev2017}. A classificação das questões deverá ser revisada por professores, e os parâmetros de dificuldade, ajustados com participantes. O registro persistente de telemetria, quando implementado, deverá prever minimização e anonimização dos dados.
 
 \section{Conclusão e Trabalhos Futuros}
 
-O URI Escapist apresenta uma releitura da experiência universitária por meio de um jogo digital que combina exploração, perguntas e suspense. Ao integrar o conteúdo acadêmico às regras da partida, o projeto evita que a aprendizagem seja tratada apenas como um elemento sobreposto à jogabilidade.
+O URI Escapist materializa uma proposta de jogo sério contextualizada no ambiente universitário, reunindo exploração tridimensional, perguntas e suspense. A versão atual apresenta dois andares jogáveis, progressão e derrota coerentes com três perfis, perguntas sem repetição entre pisos da sessão, interfaces unificadas e feedback audiovisual associado aos eventos.
 
-A versão desenvolvida cumpre o objetivo técnico de produzir uma experiência funcional que associe entretenimento e conteúdo educacional. Suas contribuições incluem a representação de um ambiente universitário reconhecível, a integração de perguntas ao sistema de progressão, a dificuldade influenciada pelo desempenho e uma arquitetura modular que possibilita expansões.
+A integração entre Unity, PHP e MySQL separa autoria e execução. Professores podem organizar e publicar conteúdo; o cliente solicita conjuntos compatíveis com modo e fase, verifica sua integridade e informa problemas. O tratamento explícito de falhas substitui a contingência local, enquanto a memória de sessão mantém conjuntos em revisitas e tentativas do mesmo andar. A implantação em contêineres facilita reproduzir o ambiente Web e acessá-lo por outra máquina.
 
-O painel Web e a API ampliaram a proposta inicial ao permitir que professores administrem disciplinas e questões de maneira independente do projeto da Unity. A associação de cada pergunta a um andar, o controle entre rascunho e publicação e o carregamento automático pela cena formam um fluxo completo entre autoria e uso no jogo. A contingência local, as validações, o controle de autoria e a implantação em contêineres contribuem para a confiabilidade e a reprodução do ambiente.
+O trabalho reúne programação C\#, física, navegação, interfaces, processamento de imagem, áudio, desenvolvimento Web, banco de dados e comunicação entre sistemas. As verificações sustentam a viabilidade técnica em cenários controlados, mas não permitem concluir que a experiência melhora a aprendizagem ou que a pressão do inimigo seja adequada a todos os participantes.
 
-O trabalho também aplicou conceitos de jogos sérios e aprendizagem baseada em jogos em um produto concreto, envolvendo programação, inteligência artificial para jogos, modelagem de ambientes, interfaces, banco de dados, desenvolvimento Web e integração de software. A principal limitação desta etapa é a ausência de evidências empíricas suficientes para medir aprendizagem e engajamento, razão pela qual as conclusões educacionais permanecem abertas à avaliação com participantes.
-
-Como trabalhos futuros, propõe-se ampliar o número de disciplinas, perguntas, andares e áreas do campus; randomizar a posição dos livros; registrar dados anonimizados das partidas; aprimorar os perfis e permissões do painel; e publicar a integração por HTTPS. Estudos posteriores poderão empregar amostras maiores, grupos de comparação e avaliações anteriores e posteriores à utilização do jogo.
+Como trabalhos futuros, propõem-se implementar o terceiro andar, ampliar e revisar as questões, avaliar o balanceamento nos mapas completos, oferecer controles de conforto audiovisual ao jogador, aprimorar transições e espacialização do áudio, estudar a randomização física dos livros e registrar partidas de forma anonimizada. Também permanecem previstas publicação por HTTPS, revisão dos mecanismos de acesso e avaliações com usuários, incluindo comparações anteriores e posteriores ao uso e, quando viável, grupos de comparação.
 
 \bibliographystyle{article-config/sbc}
 \bibliography{Referencias/referencias}
