@@ -37,6 +37,7 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent agent;
     private int currentPatrolIndex = -1;
     private float waitRemaining;
+    public bool IsChasing { get; private set; }
     private bool pursuing;
     private bool caught;
     private bool initialized;
@@ -96,6 +97,7 @@ public class EnemyAI : MonoBehaviour
 
         // Destinos sempre passam pelo NavMesh: a perseguição respeita os corredores.
         bool chase = alwaysChasePlayer || detected;
+        IsChasing = chase;
         if (chase || alwaysFollowPlayer)
         {
             pursuing = true;

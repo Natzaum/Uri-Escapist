@@ -22,6 +22,8 @@ public class PlayerMove : MonoBehaviour
 
     Vector3 moveDirection;
     Rigidbody rb;
+    public bool IsWalkingOnGround => grounded && rb != null &&
+        new Vector2(rb.linearVelocity.x, rb.linearVelocity.z).sqrMagnitude > .04f;
 
     void Start()
     {

@@ -25,6 +25,7 @@ public class PlayerStamina : MonoBehaviour
     private PlayerMove playerMove;
     private float timeSinceLastSprint = 0f;
     private bool isSprinting = false;
+    public bool IsExhausted => isExhausted;
     private bool isExhausted = false;
 
     void Start()

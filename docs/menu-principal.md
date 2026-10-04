@@ -79,3 +79,23 @@ Multiplicadores em `GameDifficulty.cs`. A base usa as velocidades do `EnemyAI` e
 Ao chegar a zero de stamina, a câmera começa a oscilar suavemente (inclinação, movimento lateral e pulsação de campo de visão). A separação de cores aumenta no filtro VHS existente. O efeito perde intensidade conforme o fôlego se recupera, não dispara apenas por estar com pouca stamina e não altera a orientação usada no movimento. Livros, menus, perda de foco e desativação da câmera removem os deslocamentos visuais.
 
 `PlayerCam.exhaustionEffectStrength` controla a intensidade de 0 a 1 no Inspector; 0 desativa a tontura. O efeito cromático respeita a ativação do filtro VHS da câmera.
+
+
+### Sons do jogo
+
+Os arquivos permanecem em `Assets/sons`. `Assets/Resources/GameSoundLibrary.asset` referencia todos os 11 áudios e é carregado automaticamente por `GameAudio`, inclusive no build.
+
+| Arquivo | Uso |
+| --- | --- |
+| som_clique | Botões do menu principal e telas de pausa, configurações, confirmação e resultados, por mouse ou teclado |
+| som_clique_correto / som_clique_errado | Resposta do livro, uma vez por resposta |
+| som_menus | Ambiente do menu principal em loop |
+| som_ambiente_entrada | Ambiente da entrada (`MainScene`) em loop |
+| som_andares | Ambiente dos andares em loop |
+| som_passos | Movimento no chão; ritmo mais rápido durante corrida |
+| som_perseguicao | Enquanto o inimigo está em perseguição rápida |
+| som_exausto | Enquanto o jogador se recupera da exaustão |
+| som_morte | Ao abrir a derrota, sem repetir a cada quadro |
+| som_aleatorio | Evento sonoro nos andares a cada 25–45 segundos |
+
+A pausa interrompe os sons do mundo; os cliques continuam disponíveis. No normal/difícil os sons do mundo continuam durante os livros. O volume geral das configurações controla todos os sons. Os ambientes procedurais anteriores ficam desativados quando a biblioteca está disponível.

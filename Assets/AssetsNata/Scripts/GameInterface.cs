@@ -42,7 +42,7 @@ public class GameInterface : MonoBehaviour
     private readonly Color muted = new Color(0.64f, 0.73f, 0.85f);
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void Initialize() { var ui = Instance; AudioListener.volume = GamePreferences.Volume; }
+    private static void Initialize() { var ui = Instance; var audio = GameAudio.Instance; AudioListener.volume = GamePreferences.Volume; }
 
     private void Awake()
     {
@@ -182,7 +182,7 @@ public class GameInterface : MonoBehaviour
         text.rectTransform.anchoredPosition = Vector2.zero;
         text.enableAutoSizing = true; text.fontSizeMin = 19; text.fontSizeMax = prose ? 25 : 27;
         if (prose) { text.alignment = TextAlignmentOptions.MidlineLeft; text.color = new Color(.84f,.90f,.98f); }
-        button.onClick.AddListener(() => action());
+        button.onClick.AddListener(() => { if (!prose) GameAudio.Instance.Click(); action(); });
         var hover = rect.gameObject.AddComponent<EventTrigger>();
         var enter = new EventTrigger.Entry {eventID=EventTriggerType.PointerEnter};
         enter.callback.AddListener(_ => { if(button.interactable) EventSystem.current.SetSelectedGameObject(button.gameObject); });
@@ -244,6 +244,10 @@ public class GameInterface : MonoBehaviour
         var handle=MakeRect("Indicador",handleArea,new Vector2(12,-12),Vector2.zero).gameObject.AddComponent<Image>();
         handle.color=uriBlue;
         slider.handleRect=handle.rectTransform; slider.targetGraphic=handle; slider.value=value;
+        var clickTrigger = rect.gameObject.AddComponent<EventTrigger>();
+        var pointerDown = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
+        pointerDown.callback.AddListener(_ => GameAudio.Instance.Click());
+        clickTrigger.triggers.Add(pointerDown);
         slider.onValueChanged.AddListener(v=>{changed(v);valueText.text=format(v);});
         controls.Add(slider);
     }
@@ -282,6 +286,7 @@ public class GameInterface : MonoBehaviour
     public void ShowResult(bool victory,string detail=null)
     {
         if (State==ScreenState.Result || transitioning || State==ScreenState.Loading || State==ScreenState.Error) return;
+        if (!victory) GameAudio.Instance.Death();
         renderCurrent=null;
         if (QuizManager.Instance!=null) QuizManager.Instance.ForceCloseQuiz();
         Begin(ScreenState.Result,victory ? "Você escapou" : "A jornada chegou ao fim",

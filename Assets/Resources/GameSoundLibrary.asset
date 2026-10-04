@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb3d1b0f896b4860aef2f935dd7cf6f4, type: 3}
+  m_Name: GameSoundLibrary
+  m_EditorClassIdentifier: 
+  som_aleatorio: {fileID: 8300000, guid: 70b20ba7d58ad924a91a526c76c7f96a, type: 3}
+  som_ambiente_entrada: {fileID: 8300000, guid: 9e04829843ae2594ea1ca05c61abc23c, type: 3}
+  som_andares: {fileID: 8300000, guid: 536a1e2d2a038fb408e36249fa5dec78, type: 3}
+  som_clique: {fileID: 8300000, guid: ec8c6c93f06749248a2a8f746aa31b92, type: 3}
+  som_clique_correto: {fileID: 8300000, guid: 8af01604e2386194f936efa9802d159f, type: 3}
+  som_clique_errado: {fileID: 8300000, guid: d3dc703e2fc26184a9d21df197d43e9c, type: 3}
+  som_exausto: {fileID: 8300000, guid: 4bcebda48153db440a61226ae7fccce6, type: 3}
+  som_menus: {fileID: 8300000, guid: aada1e7b543d9ef48845d9f48cea9386, type: 3}
+  som_morte: {fileID: 8300000, guid: 8df99ce5d8fa015419b29dae76d8186b, type: 3}
+  som_passos: {fileID: 8300000, guid: 9f9a2e0dec48aeb478e64e1823f0c2d9, type: 3}
+  som_perseguicao: {fileID: 8300000, guid: 85ecd32c1eee3aa43a2192d6e5a5a7f8, type: 3}

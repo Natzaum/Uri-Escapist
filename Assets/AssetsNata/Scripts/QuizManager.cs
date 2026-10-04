@@ -38,6 +38,7 @@ public class QuizManager : MonoBehaviour
         BookQuiz book = currentBook;
         bool correct = index == book.correctIndex;
         string correctAnswer = book.options[book.correctIndex];
+        GameAudio.Instance.Answer(correct);
         book.Answer(index);
         currentBook = null;
         if (GameInterface.Instance.IsTerminal) return;

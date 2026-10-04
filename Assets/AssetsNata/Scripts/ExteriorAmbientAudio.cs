@@ -19,6 +19,7 @@ public sealed class ExteriorAmbientAudio : MonoBehaviour
 
     private IEnumerator Start()
     {
+        if (GameAudio.Instance.Library != null) yield break;
         AudioListener listener = FindFirstObjectByType<AudioListener>();
         listenerTransform = listener != null ? listener.transform : Camera.main?.transform;
 

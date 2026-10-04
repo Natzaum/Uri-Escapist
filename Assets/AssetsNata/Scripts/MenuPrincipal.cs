@@ -170,7 +170,7 @@ public class MenuPrincipal : MonoBehaviour
         glow.color = new Color(1, 1, 1, 0);
         Button button = rect.gameObject.AddComponent<Button>();
         button.transition = Selectable.Transition.None;
-        button.onClick.AddListener(() => { if (!isStartingGame) action(); });
+        button.onClick.AddListener(() => { if (!isStartingGame) { GameAudio.Instance.Click(); action(); } });
         TMP_Text text = Text("Texto", rect, label, 23, new Vector2(500, 46), Vector2.zero, muted, true);
         buttons.Add(button);
         highlights.Add(glow);

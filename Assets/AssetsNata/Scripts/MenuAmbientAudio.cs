@@ -14,6 +14,7 @@ public sealed class MenuAmbientAudio : MonoBehaviour
 
     public void Initialize(float volume, float feedbackVolume)
     {
+        if (GameAudio.Instance.Library != null) return;
         audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.loop = true;
@@ -49,6 +50,7 @@ public sealed class MenuAmbientAudio : MonoBehaviour
 
     public IEnumerator FadeOut(float duration)
     {
+        if (audioSource == null) yield break;
         if (fadeRoutine != null)
         {
             StopCoroutine(fadeRoutine);
