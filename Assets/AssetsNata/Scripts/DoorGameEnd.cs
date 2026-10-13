@@ -32,7 +32,13 @@ public class DoorGameEnd : MonoBehaviour
     private GameObject player;
     private static readonly HashSet<string> completedFloors = new HashSet<string>();
     public static bool HasCompletedFloor(string scene) => completedFloors.Contains(scene);
-    public static void MarkFloorCompleted(string scene) => completedFloors.Add(scene);
+    public static void MarkFloorCompleted(string scene)
+    {
+        var manager = BookManager.Instance;
+        if (manager != null)
+            GameRunScore.CompleteFloor(scene, manager.GetBooksCollected(), manager.GetErrors());
+        completedFloors.Add(scene);
+    }
 
     void Start()
     {
@@ -96,9 +102,11 @@ public class DoorGameEnd : MonoBehaviour
     // Compatibilidade com SceneVisitMarker: visitar não equivale a concluir.
     public static void SetVisitedRequiredScene() { }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     public static void ResetRequirement()
     {
         completedFloors.Clear();
+        GameRunScore.Reset();
         RemoteQuestionLoader.ResetSession();
     }
 

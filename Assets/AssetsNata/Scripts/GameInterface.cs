@@ -291,8 +291,11 @@ public class GameInterface : MonoBehaviour
         if (QuizManager.Instance!=null) QuizManager.Instance.ForceCloseQuiz();
         Begin(ScreenState.Result,victory ? "Você escapou" : "A jornada chegou ao fim",
             detail ?? (victory ? "Os desafios foram vencidos. O conhecimento abriu sua saída." : "Ainda há uma chance de escapar."));
-        if(BookManager.Instance!=null)
-            Text("Acertos: "+BookManager.Instance.GetBooksCollected()+"    Erros: "+BookManager.Instance.GetErrors(),50,23);
+        var manager = BookManager.Instance;
+        var score = GameRunScore.GetTotal(SceneManager.GetActiveScene().name,
+            manager != null ? manager.GetBooksCollected() : 0,
+            manager != null ? manager.GetErrors() : 0);
+        Text("Acertos: "+score.correct+"    Erros: "+score.errors,50,23);
         Button(victory ? "Jogar novamente" : "Tentar novamente",-50,()=>{
             if(victory) DoorGameEnd.ResetRequirement();
             LoadScene(victory ? "MainScene" : SceneManager.GetActiveScene().name);
