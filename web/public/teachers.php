@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 require dirname(__DIR__) . '/src/bootstrap.php';
-require_auth();
+require_once WEB_ROOT . '/src/registration_auth.php';
+require_registration_admin();
 require_once WEB_ROOT . '/src/teacher_registration.php';
 
 if (is_post()) {
@@ -27,4 +28,4 @@ if (is_post()) {
     redirect('/teachers.php');
 }
 
-render('teachers', ['pageTitle' => 'Professores', 'activePage' => 'teachers']);
+render('teachers', ['pageTitle' => 'Professores', 'standalone' => true]);

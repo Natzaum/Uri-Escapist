@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$teacher = current_teacher();
+$teacher = !empty($standalone) ? null : current_teacher();
 $pageTitle = $pageTitle ?? 'Painel';
 $activePage = $activePage ?? '';
 $bodyClass = $teacher === null ? 'guest-page' : 'admin-page';
@@ -47,9 +47,6 @@ $flashes = consume_flashes();
                 </a>
                 <a class="<?= $activePage === 'disciplines' ? 'active' : '' ?>" href="<?= e(url('/disciplines.php')) ?>">
                     <span class="nav-icon">#</span> Disciplinas
-                </a>
-                <a class="<?= $activePage === 'teachers' ? 'active' : '' ?>" href="<?= e(url('/teachers.php')) ?>">
-                    <span class="nav-icon">+</span> Professores
                 </a>
             </nav>
 

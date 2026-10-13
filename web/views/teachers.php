@@ -23,4 +23,8 @@
         </label>
         <button class="button button-primary" type="submit">Cadastrar professor</button>
     </form>
+    <form action="<?= e(url('/actions/registration-logout.php')) ?>" method="post">
+        <?= csrf_field() ?>
+        <button class="button button-ghost" type="submit">Sair do cadastro</button>
+    </form>
 </section>
