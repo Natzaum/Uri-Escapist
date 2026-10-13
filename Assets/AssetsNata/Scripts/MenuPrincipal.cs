@@ -19,6 +19,11 @@ public class MenuPrincipal : MonoBehaviour
     [Range(0f, 1f)] public float playFeedbackVolume = 0.45f;
 
     public static string GameMode { get; private set; } = "normal";
+    public static bool TestMode { get; private set; }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetTestMode() => TestMode = false;
+
     private static bool isNightmareMode;
     private bool isStartingGame;
     private Coroutine revealRoutine;
@@ -214,15 +219,28 @@ public class MenuPrincipal : MonoBehaviour
     private void ShowMain()
     {
         ClearPage("main");
-        playButton = Option("Nova partida", 90, () => StartCoroutine(StartGame()));
-        Option("Dificuldade  ·  " + ModeLabel(), 36, ShowDifficulty);
-        Option("Configurações", -18, () => GameInterface.Instance.ShowSettings(ShowMain));
-        Option("Créditos", -72, ShowCredits);
+        playButton = Option("Nova partida", 114, () => StartCoroutine(StartGame()));
+        Option("Dificuldade  ·  " + ModeLabel(), 66, ShowDifficulty);
+        Option(TestModeLabel(), 18, () => {
+            TestMode = !TestMode;
+            labels[2].text = TestModeLabel();
+            UpdateMainDescription();
+        });
+        Option("Configurações", -30, () => GameInterface.Instance.ShowSettings(ShowMain));
+        Option("Créditos", -78, ShowCredits);
         exitButton = Option("Sair", -126, ShowExit);
+        UpdateMainDescription();
+        FinishPage();
+    }
+
+    private string TestModeLabel() => (TestMode ? "[x]" : "[ ]") + "  Modo teste";
+
+    private void UpdateMainDescription()
+    {
         description.text = GameMode == "facil" ? "Inimigo lento em patrulha. A leitura pausa o mundo; você pode fechar o livro."
             : GameMode == "dificil" ? "Perseguição rápida constante. O mundo não pausa nos livros; responda para sair."
             : "Perseguição lenta fora de vista e rápida ao detectar você. É possível fechar os livros.";
-        FinishPage();
+        if (TestMode) description.text += "\nModo teste ativo: a alternativa correta pisca suavemente nos livros.";
     }
 
     private void ShowDifficulty()
@@ -244,7 +262,7 @@ public class MenuPrincipal : MonoBehaviour
     private void ShowCredits()
     {
         ClearPage("credits");
-        Text("Créditos", menu, "UM PROJETO DE CIÊNCIA DA COMPUTAÇÃO\n\nTrabalho de Conclusão de Curso\nURI Escapist", 21,
+        Text("Créditos", menu, "UM PROJETO DE CIÊNCIA DA COMPUTAÇÃO\n\nTrabalho de Conclusão de Curso\nURI Escapist\nNatã Cezer Bordignon", 21,
             new Vector2(820, 160), new Vector2(0, 40), uriBlue);
         Option("Voltar", -95, ShowMain);
         description.text = "Tipografia: Cinzel · The Cinzel Project Authors · SIL Open Font License";

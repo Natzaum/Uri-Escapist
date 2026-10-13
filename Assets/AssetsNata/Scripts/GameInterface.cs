@@ -30,6 +30,8 @@ public class GameInterface : MonoBehaviour
     private Texture2D glowTexture;
     private Sprite glowSprite;
     private TMP_Text message;
+    private TMP_Text testAnswerLabel;
+    private Image testAnswerGlow;
     private TMP_Text progressText;
     private RectTransform progressFill;
     private float progress = -1;
@@ -86,6 +88,13 @@ public class GameInterface : MonoBehaviour
     private void LateUpdate()
     {
         if (State == ScreenState.None) return;
+        if (State == ScreenState.Quiz && MenuPrincipal.TestMode && testAnswerLabel != null)
+        {
+            float pulse = 0.5f + 0.5f * Mathf.Cos(Time.unscaledTime * Mathf.PI);
+            testAnswerLabel.color = Color.Lerp(new Color(.45f, .68f, 1f), Color.white, pulse);
+            if (testAnswerGlow != null)
+                testAnswerGlow.color = new Color(.28f, .59f, .96f, Mathf.Lerp(.06f, .3f, pulse));
+        }
         Time.timeScale = Pauses ? 0f : 1f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -112,6 +121,8 @@ public class GameInterface : MonoBehaviour
 
     public void Hide()
     {
+        testAnswerLabel = null;
+        testAnswerGlow = null;
         State = ScreenState.None;
         root.gameObject.SetActive(false);
         renderCurrent = null;
@@ -147,6 +158,8 @@ public class GameInterface : MonoBehaviour
 
     private void Begin(ScreenState state, string title, string subtitle)
     {
+        testAnswerLabel = null;
+        testAnswerGlow = null;
         foreach (Transform child in root) { child.gameObject.SetActive(false); Destroy(child.gameObject); }
         controls.Clear(); progressFill = null; progressText = null;
         State = state;
@@ -262,7 +275,18 @@ public class GameInterface : MonoBehaviour
         for(int i=0;i<book.options.Length;i++)
         {
             int index=i;
-            Button(((char)('A'+i))+"   "+book.options[i],65-i*105,()=>answer(index),1360,94,true);
+            var option = Button(((char)('A'+i))+"   "+book.options[i],65-i*105,()=>answer(index),1360,94,true);
+            if (MenuPrincipal.TestMode && i == book.correctIndex)
+            {
+                testAnswerLabel = option.GetComponentInChildren<TMP_Text>();
+                // Uma imagem própria evita que o hover/seleção do botão apague o efeito.
+                var hint = MakeRect("Dica do modo teste", option.transform, new Vector2(1360, 94), Vector2.zero);
+                hint.SetAsFirstSibling();
+                testAnswerGlow = hint.gameObject.AddComponent<Image>();
+                testAnswerGlow.sprite = glowSprite;
+                testAnswerGlow.color = new Color(.28f, .59f, .96f, .18f);
+                testAnswerGlow.raycastTarget = false;
+            }
         }
         if (GameDifficulty.CanLeaveBook)
             Button("Fechar livro · Esc",-355,()=>QuizManager.Instance?.CloseBook(),650,54);

@@ -6,5 +6,5 @@ public static class GameDifficulty
     public static bool PausesReading => MenuPrincipal.GameMode == "facil";
     public static bool CanLeaveBook => MenuPrincipal.GameMode != "dificil";
     public static float EnemySpeedMultiplier => MenuPrincipal.GameMode == "facil" ? .65f : MenuPrincipal.GameMode == "dificil" ? 1.5f : 1f;
-    public static float EnemyGrowthMultiplier => MenuPrincipal.GameMode == "facil" ? .25f : MenuPrincipal.GameMode == "dificil" ? 2.5f : 1f;
+    public static float EnemyGrowthMultiplier => MenuPrincipal.GameMode == "facil" ? .2f : MenuPrincipal.GameMode == "dificil" ? 1f : .5f;
 }

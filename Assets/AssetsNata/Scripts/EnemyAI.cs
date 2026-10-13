@@ -9,8 +9,10 @@ public class EnemyAI : MonoBehaviour
     public Transform player;
 
     [Header("Settings")]
-    public float patrolSpeed = 0.3f;
-    public float chaseSpeed = 0.6f;
+    public float patrolSpeed = 1.8f;
+    public float chaseSpeed = 3.8f;
+    [Tooltip("Limite de velocidade após os aumentos por respostas; abaixo da corrida do jogador (10).")]
+    public float maxMovementSpeed = 6.5f;
     public float chaseRange = 5f;
     public float catchRange = 1.5f;
     public float waitTimeAtWaypoint = 2f;
@@ -57,8 +59,9 @@ public class EnemyAI : MonoBehaviour
         extendedDetectionRange *= speedScale;
         catchRange *= speedScale;
         waypointReachThreshold *= speedScale;
-        initialPatrolSpeed = patrolSpeed * speedScale * GameDifficulty.EnemySpeedMultiplier;
-        initialChaseSpeed = chaseSpeed * speedScale * GameDifficulty.EnemySpeedMultiplier;
+        // A escala do modelo ajusta distâncias, não a velocidade em unidades por segundo.
+        initialPatrolSpeed = Mathf.Min(patrolSpeed * GameDifficulty.EnemySpeedMultiplier, maxMovementSpeed);
+        initialChaseSpeed = Mathf.Min(chaseSpeed * GameDifficulty.EnemySpeedMultiplier, maxMovementSpeed);
         patrolSpeed = initialPatrolSpeed;
         chaseSpeed = initialChaseSpeed;
         alwaysFollowPlayer = MenuPrincipal.GameMode == "normal";
@@ -73,6 +76,8 @@ public class EnemyAI : MonoBehaviour
         agent.radius = .5f * scale;
         agent.height = 2f * scale;
         agent.speed = patrolSpeed;
+        agent.acceleration = Mathf.Max(agent.acceleration, 10f);
+        agent.angularSpeed = Mathf.Max(agent.angularSpeed, 240f);
     }
 
     public void ApplyScore(int correct, int errors, float perCorrect, float perError, float bonusEveryTwo)
@@ -80,9 +85,9 @@ public class EnemyAI : MonoBehaviour
         InitializeDifficulty();
         // Recalcula a partir da base: acertar depois de errar não apaga aumentos anteriores.
         float increase = (correct * perCorrect + errors * perError + (correct / 2) * bonusEveryTwo)
-            * GameDifficulty.EnemyGrowthMultiplier * speedScale;
-        patrolSpeed = initialPatrolSpeed + increase;
-        chaseSpeed = initialChaseSpeed + increase;
+            * GameDifficulty.EnemyGrowthMultiplier;
+        patrolSpeed = Mathf.Min(initialPatrolSpeed + increase, maxMovementSpeed);
+        chaseSpeed = Mathf.Min(initialChaseSpeed + increase, maxMovementSpeed);
     }
 
     private void Update()
