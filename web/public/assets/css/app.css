@@ -673,6 +673,11 @@ textarea::placeholder {
     color: #626c7c;
 }
 
+.teacher-registration {
+    width: 100%;
+    max-width: 600px;
+}
+
 .stack-form,
 .field-group {
     display: grid;
