@@ -150,12 +150,12 @@ public class BookManager : MonoBehaviour
     {
         string title = correct ? "Resposta correta" : "Resposta incorreta";
         string detail;
-        if (DoorGameEnd.HasCompletedFloor("andar2") && SceneManager.GetActiveScene().name != "andar2")
+        if (DoorGameEnd.HasCompletedFloor("andar3") && SceneManager.GetActiveScene().name == "andar1")
             detail = "Saída liberada. Alcance a porta principal e escape.";
         else if (booksCollected >= minBooksToWin)
         {
             title = "Passagem liberada";
-            detail = SceneManager.GetActiveScene().name == "andar2"
+            detail = SceneManager.GetActiveScene().name == "andar3"
                 ? "Retorne ao primeiro andar e alcance a saída principal."
                 : "Encontre a porta para o próximo andar.";
         }

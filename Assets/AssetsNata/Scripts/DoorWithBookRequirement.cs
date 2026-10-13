@@ -107,7 +107,9 @@ public class DoorWithBookRequirement : MonoBehaviour
             isTransitioning = true;
             GameHud.Instance?.Notify("Andar superado", targetSceneName == "andar2"
                 ? "O próximo desafio espera por você. Avançando ao segundo andar…"
-                : "O caminho de volta está aberto. Retornando para a saída principal…", 3);
+                : targetSceneName == "andar3"
+                    ? "O próximo desafio espera por você. Avançando ao terceiro andar…"
+                    : "O caminho de volta está aberto. Retornando para a saída principal…", 3);
             Invoke(nameof(LoadScene), 2f);
         }
         else

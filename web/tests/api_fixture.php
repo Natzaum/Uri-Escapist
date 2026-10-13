@@ -7,10 +7,7 @@ function db(): PDO
 {
     static $connection;
     if ($connection instanceof PDO) {
-        if (($_GET['fixture'] ?? '') === 'third-floor') {
-        $connection->exec("UPDATE floors SET active = 1 WHERE id = 3");
-    }
-    return $connection;
+        return $connection;
     }
     $connection = new PDO('sqlite::memory:', null, null, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -19,7 +16,7 @@ function db(): PDO
     $connection->sqliteCreateFunction('RAND', fn () => random_int(0, PHP_INT_MAX));
     $connection->exec("CREATE TABLE floors (id INTEGER, name TEXT, slug TEXT, scene_name TEXT, active INTEGER);
         INSERT INTO floors VALUES (1,'Andar 1','andar-1','andar1',1),(2,'Andar 2','andar-2','andar2',1),
-        (3,'Andar 3','andar-3','andar3',0);
+        (3,'Andar 3','andar-3','andar3',1);
         CREATE TABLE disciplines (id INTEGER, name TEXT, slug TEXT, active INTEGER);
         INSERT INTO disciplines VALUES (1,'Geral','geral',1),(2,'Inativa','inativa',0);
         CREATE TABLE questions (id INTEGER, discipline_id INTEGER, floor_id INTEGER, prompt TEXT,
@@ -38,8 +35,8 @@ function db(): PDO
     if (($_GET['fixture'] ?? '') === 'missing-medium') {
         $connection->exec("DELETE FROM questions WHERE difficulty = 'media'");
     }
-    if (($_GET['fixture'] ?? '') === 'third-floor') {
-        $connection->exec("UPDATE floors SET active = 1 WHERE id = 3");
+    if (($_GET['fixture'] ?? '') === 'inactive-floor') {
+        $connection->exec("UPDATE floors SET active = 0 WHERE id = 3");
     }
     return $connection;
 }

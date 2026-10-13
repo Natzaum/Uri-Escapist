@@ -12,14 +12,14 @@ public class DoorGameEnd : MonoBehaviour
 
     [Header("Requisitos")]
     [Tooltip("Nome da cena que deve ser concluída antes")]
-    public string requiredSceneName = "andar2";
+    public string requiredSceneName = "andar3";
 
     [Header("Mensagem")]
     [TextArea(3, 5)]
     public string victoryMessage = "Parabéns você completou a faculdade";
     
     [TextArea(2, 3)]
-    public string deniedMessage = "você precisa completar o 2 andar primeiro";
+    public string deniedMessage = "você precisa completar o 3 andar primeiro";
     
     [Range(30, 100)]
     public int fontSize = 60;
@@ -71,7 +71,7 @@ public class DoorGameEnd : MonoBehaviour
         // Verificar se concluiu a cena obrigatória
         if (!HasCompletedFloor(requiredSceneName))
         {
-            Debug.LogWarning($"❌ Acesso negado! Você precisa concluir o segundo andar primeiro!");
+            Debug.LogWarning($"❌ Acesso negado! Você precisa concluir {requiredSceneName} primeiro!");
             ShowDeniedMessage();
             return;
         }
@@ -85,12 +85,12 @@ public class DoorGameEnd : MonoBehaviour
 
     void ShowVictoryMessage()
     {
-        GameInterface.Instance.ShowResult(true, "Você superou os dois andares e conquistou sua saída.\nO conhecimento foi sua chave para a liberdade.");
+        GameInterface.Instance.ShowResult(true, "Você superou os três andares e conquistou sua saída.\nO conhecimento foi sua chave para a liberdade.");
     }
 
     void ShowDeniedMessage()
     {
-        GameHud.Instance?.Notify("A saída ainda está selada", "Conclua o segundo andar e retorne pela passagem para liberar a porta principal.", 6);
+        GameHud.Instance?.Notify("A saída ainda está selada", "Conclua o terceiro andar e retorne pela passagem para liberar a porta principal.", 6);
     }
 
     // Compatibilidade com SceneVisitMarker: visitar não equivale a concluir.

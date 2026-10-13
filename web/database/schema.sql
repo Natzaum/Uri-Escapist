@@ -66,7 +66,8 @@ ON DUPLICATE KEY UPDATE name = VALUES(name);
 INSERT INTO floors (name, slug, scene_name, active)
 VALUES
     ('Andar 1', 'andar-1', 'andar1', 1),
-    ('Andar 2', 'andar-2', 'andar2', 1)
+    ('Andar 2', 'andar-2', 'andar2', 1),
+    ('Andar 3', 'andar-3', 'andar3', 1)
 ON DUPLICATE KEY UPDATE
     name = VALUES(name),
     scene_name = VALUES(scene_name),
@@ -80,5 +81,6 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 INSERT INTO schema_migrations (name)
 VALUES
     ('002_add_floors.sql'),
-    ('003_rename_floor_scenes.sql')
+    ('003_rename_floor_scenes.sql'),
+    ('004_add_third_floor.sql')
 ON DUPLICATE KEY UPDATE name = VALUES(name);

@@ -61,15 +61,15 @@ Para começar com conteúdo pronto, o projeto inclui [90 perguntas de Ciência d
 4. No menu do jogo, o jogador escolhe **Fácil**, **Normal** ou **Difícil**.
 5. A Unity envia o modo escolhido e a cena atual. A API sorteia questões de disciplinas ativas, e o jogo as distribui aleatoriamente entre todos os livros.
 
-| Modo da partida | Andar 1 | Andar 2 | Andar 3 (futuro) |
+| Modo da partida | Andar 1 | Andar 2 | Andar 3 |
 | --- | --- | --- | --- |
 | Fácil | Fáceis | Fáceis + médias | Médias |
 | Normal | Fáceis | Médias | Difíceis |
 | Difícil | Difíceis | Difíceis | Difíceis |
 
-O terceiro andar ainda não existe no jogo e não foi habilitado. Sua regra está preparada para quando a cena e o cadastro ativo com slug `andar-3` forem adicionados.
+O percurso é `andar1` → `andar2` → `andar3` → `andar1`. Acerte a quantidade de livros exigida pelo modo em cada andar; ao retornar, alcance a porta principal para vencer. Para habilitar o terceiro andar em um banco existente, execute `php scripts/migrate.php` na pasta `web`. No Docker, `docker compose up -d --build app` atualiza a aplicação e aplica a migração automaticamente.
 
-No modo fácil, o segundo andar procura equilibrar as duas dificuldades e usa mais questões da categoria com conteúdo disponível se necessário, sempre incluindo ambas quando há pelo menos dois livros. As perguntas não se repetem dentro do mesmo andar; podem reaparecer em outro andar ou em uma nova tentativa.
+No modo fácil, o segundo andar procura equilibrar as duas dificuldades e usa mais questões da categoria com conteúdo disponível se necessário, sempre incluindo ambas quando há pelo menos dois livros. As perguntas não se repetem entre os três andares da mesma partida. A quantidade reservada corresponde a todos os livros de cada cena, inclusive os não respondidos.
 
 Não há mais escolha de andar no cadastro. Associações antigas são ignoradas na seleção, sem apagar as perguntas existentes. O modo permanece selecionado entre andares e tentativas, e pode ser alterado ao voltar ao menu. O modo Pesadelo, se usado, continua independente da dificuldade das perguntas.
 
@@ -79,7 +79,7 @@ A URL padrão do `BookManager` é:
 http://127.0.0.1:8000/api/v1/questions.php
 ```
 
-As cenas `andar1` e `andar2` estão configuradas para `http://192.168.0.10:8000/api/v1/questions.php`. Se o IP do servidor mudar, altere **Questions Api Url** no Inspector em ambos os andares para uma URL acessível pela máquina que executa o jogo. `localhost` sempre representa a própria máquina do jogador.
+As cenas `andar1`, `andar2` e `andar3` estão configuradas para `http://192.168.0.3:8000/api/v1/questions.php`. Se o IP do servidor mudar, altere **Questions Api Url** no Inspector nos três andares para uma URL acessível pela máquina que executa o jogo. `localhost` sempre representa a própria máquina do jogador.
 
 O projeto está configurado para aceitar HTTP durante o desenvolvimento local. Em uma publicação real, hospede o painel com HTTPS e troque a URL no Inspector antes de gerar o jogo.
 
@@ -94,7 +94,8 @@ GET /api/v1/questions.php?scene=andar1&mode=normal&limit=10&random=1
 Mapeamento inicial:
 
 - `andar1` → Andar 1;
-- `andar2` → Andar 2.
+- `andar2` → Andar 2;
+- `andar3` → Andar 3.
 
 O parâmetro `limit` é preenchido automaticamente com a quantidade de livros ativos da cena.
 

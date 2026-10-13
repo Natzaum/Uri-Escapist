@@ -35,7 +35,7 @@ function request(array $query): array
 
 try {
     foreach (['facil', 'normal', 'dificil'] as $mode) {
-        foreach ([1, 2] as $floor) {
+        foreach ([1, 2, 3] as $floor) {
             [$status, $body] = request(['scene' => "andar$floor", 'mode' => $mode, 'limit' => 10]);
             check($status === 200 && $body['success'], "HTTP failure: $mode/$floor");
             $rows = $body['data'];
@@ -52,7 +52,7 @@ try {
     }
     foreach ([
         [['scene' => 'andar1', 'mode' => 'bad'], 422],
-        [['scene' => 'andar3'], 422],
+        [['scene' => 'andar3', 'fixture' => 'inactive-floor'], 422],
         [['scene' => 'unknown'], 422],
         [['scene' => 'andar1', 'fixture' => 'shortage'], 409],
         [['scene' => 'andar2', 'mode' => 'facil', 'fixture' => 'missing-medium'], 409],
@@ -68,7 +68,7 @@ try {
         $used = [];
         foreach ([1, 2, 3] as $floor) {
             [$status, $body] = request(['scene' => "andar$floor", 'mode' => $mode,
-                'limit' => 4, 'exclude' => implode(',', $used), 'fixture' => 'third-floor']);
+                'limit' => 4, 'exclude' => implode(',', $used)]);
             check($status === 200, "Fresh questions missing for $mode floor $floor");
             $ids = array_column($body['data'], 'id');
             check(array_intersect($used, $ids) === [], 'Question repeated across floors');
@@ -84,7 +84,7 @@ try {
     check($status === 409, 'Exhaustion must fail without repeating questions');
     [$status, $body] = request(['scene' => 'andar2', 'mode' => 'facil', 'exclude' => implode(',', range(1, 12))]);
     check($status === 200 && array_unique(array_column($body['data'], 'difficulty')) === ['media'], 'Use remaining eligible category');
-    echo "PASS: endpoint SQL/JSON against SQLite fixtures, six playable combinations, errors and compatibility.\n";
+    echo "PASS: endpoint SQL/JSON against SQLite fixtures, nine playable combinations, errors and compatibility.\n";
 } finally {
     foreach (['public/api/v1/questions.php', 'src/question_selection.php', 'src/bootstrap.php'] as $file) {
         unlink($temp . '/' . $file);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/** The third-floor rule is reserved; only registered, active scenes can use it. */
+/** Difficulty rules for the three playable floors; scenes must be registered and active. */
 function question_difficulties(string $mode, string $floor): array
 {
     $rules = [
